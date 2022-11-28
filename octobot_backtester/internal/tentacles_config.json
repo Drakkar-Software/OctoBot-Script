@@ -25,7 +25,7 @@
         "Evaluator": {
             "ADXMomentumEvaluator": false,
             "BBMomentumEvaluator": false,
-            "BlankStrategyEvaluator": false,
+            "BlankStrategyEvaluator": true,
             "BollingerBands": false,
             "CandlesUtil": true,
             "CryptoCoinersStrategyEvaluator": false,
