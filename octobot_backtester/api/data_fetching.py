@@ -25,7 +25,8 @@ async def get_data(symbol, time_frame, exchange="binance", exchange_type="spot",
                    start_timestamp=None, end_timestamp=None):
     # data = await historical_data(symbol, timeframe=time_frame, exchange=exchange, exchange_type=exchange_type,
     #                              start_timestamp=start_timestamp, end_timestamp=end_timestamp)
-    data = "ExchangeHistoryDataCollector_1669826723.9668117.data"
+    # data = "ExchangeHistoryDataCollector_1669821305.9084802.data"   # 1d
+    data = "ExchangeHistoryDataCollector_1669826723.9668117.data"   # 4h
     return await backtesting_api.create_and_init_backtest_data(
         [data],
         octobot_mocks.get_config(),

@@ -7,7 +7,8 @@ import octobot_commons.enums as commons_enums
 import octobot_backtester.model as models
 
 
-async def run(backtesting_data, update_func, strategy_config, enable_logs=False, all_timeframes=True):
+async def run(backtesting_data, update_func, strategy_config,
+              enable_logs=False, enable_storage=False):
     # 1. load importers and reset cache indexes
     # 2. set candle managers
 
@@ -24,11 +25,11 @@ async def run(backtesting_data, update_func, strategy_config, enable_logs=False,
         run_on_common_part_only=True,
         start_timestamp=None,
         end_timestamp=None,
-        enable_logs=True,
+        enable_logs=enable_logs,
         stop_when_finished=False,
         run_on_all_available_time_frames=True,
         enforce_total_databases_max_size_after_run=False,
-        enable_storage=False,
+        enable_storage=enable_storage,
         backtesting_data=backtesting_data,
     )
     await octobot_api.initialize_and_run_independent_backtesting(independent_backtesting)
