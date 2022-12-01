@@ -17,4 +17,17 @@ async def historical_data(symbol, timeframe, exchange="binance", exchange_type="
         time_frames=time_frames,
         start_timestamp=start_timestamp,
         end_timestamp=end_timestamp)
-    await backtesting_api.initialize_and_run_data_collector(data_collector_instance)
+    datafile = await backtesting_api.initialize_and_run_data_collector(data_collector_instance)
+    return datafile
+
+
+async def get_data(symbol, time_frame, exchange="binance", exchange_type="spot",
+                   start_timestamp=None, end_timestamp=None):
+    # data = await historical_data(symbol, timeframe=time_frame, exchange=exchange, exchange_type=exchange_type,
+    #                              start_timestamp=start_timestamp, end_timestamp=end_timestamp)
+    data = "ExchangeHistoryDataCollector_1669826723.9668117.data"
+    return await backtesting_api.create_and_init_backtest_data(
+        [data],
+        octobot_mocks.get_config(),
+        octobot_mocks.get_tentacles_config(),
+    )
