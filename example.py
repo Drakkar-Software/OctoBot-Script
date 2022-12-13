@@ -31,15 +31,14 @@ async def rsi_test():
             # Position exists could also be set separately.
             await op.market(ctx, "buy", amount="10%", stop_loss_offset="-5%", take_profit_offset="5%")
 
-    # Configuration that will be passed to each run
-    # It will be accessible under "ctx.tentacle.trading_config"
+    # Configuration that will be passed to each run.
+    # It will be accessible under "ctx.tentacle.trading_config".
     config = {
         "period": 10,
         "buy_limit": 30,
     }
 
     # Run a backtest using the above data, strategy and configuration.
-    # When looping, subsequent runs will be faster as many elements are cached.
     res = await op.run(data, strategy, config)
     print(res.describe())
 
