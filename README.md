@@ -1,3 +1,21 @@
+# Octobot-Pro [0.0.1](https://github.com/Drakkar-Software/OctoBot-Pro/tree/master/CHANGELOG.md)
+[![PyPI](https://img.shields.io/pypi/v/octobot-pro.svg)](https://pypi.python.org/pypi/octobot-pro/)
+[![Downloads](https://pepy.tech/badge/octobot-pro/month)](https://pepy.tech/project/octobot-pro)
+[![Github-Action-CI](https://github.com/Drakkar-Software/octobot-pro/workflows/octobot-pro-CI/badge.svg)](https://github.com/Drakkar-Software/octobot-pro/actions)
+
+## OctoBot Pro is the backtesting framework using the OctoBot Ecosystem
+
+> OctoBot Pro is in early alpha version
+
+## Install OctoBot Pro from pip
+
+``` {.sourceCode .bash}
+$ python3 -m pip install octobot-pro
+```
+
+## Example of a backtesting script
+
+``` python
 import asyncio
 import tulipy    # Can be any TA library.
 import octobot_pro as op
@@ -46,3 +64,4 @@ async def rsi_test():
 
 # call the execution of the script inside "asyncio.run" as OctoBot-Pro runs using the python asyncio framework.
 asyncio.run(rsi_test())
+```
