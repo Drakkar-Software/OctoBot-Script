@@ -18,7 +18,8 @@ async def rsi_test():
             times = await op.Time(ctx, max_history=True, use_close_time=True)
             rsi_v = tulipy.rsi(closes, period=ctx.tentacle.trading_config["period"])
             delta = len(closes) - len(rsi_v) + 1
-            # Populate entries with timestamps of candles where RSI is bellow the "buy_limit" configuration.
+            # Populate entries with timestamps of candles where RSI is
+            # bellow the "buy_limit" configuration.
             run_data["entries"] = {
                 times[index + delta]
                 for index, rsi_val in enumerate(rsi_v)
@@ -26,10 +27,12 @@ async def rsi_test():
             }
         if op.current_live_time(ctx) in run_data["entries"]:
             # Uses pre-computed entries times to enter positions when relevant.
-            # Also instantly set take profits and stop losses. Position exists could also be set separately.
+            # Also instantly set take profits and stop losses.
+            # Position exists could also be set separately.
             await op.market(ctx, "buy", amount="10%", stop_loss_offset="-5%", take_profit_offset="5%")
 
-    # Configuration that will be passed to each run, accessible under "ctx.tentacle.trading_config"
+    # Configuration that will be passed to each run
+    # It will be accessible under "ctx.tentacle.trading_config"
     config = {
         "period": 10,
         "buy_limit": 30,
@@ -44,5 +47,6 @@ async def rsi_test():
     await data.stop()
 
 
-# call the execution of the script inside "asyncio.run" as OctoBot-Pro runs using the python asyncio framework.
+# Call the execution of the script inside "asyncio.run" as
+# OctoBot-Pro runs using the python asyncio framework.
 asyncio.run(rsi_test())
