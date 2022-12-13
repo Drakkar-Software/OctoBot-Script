@@ -61,7 +61,7 @@ async def rsi_test():
     res = await op.run(data, strategy, config)
     print(res.describe())
 
-    # stop data to release local databases.
+    # Stop data to release local databases.
     await data.stop()
 
 
