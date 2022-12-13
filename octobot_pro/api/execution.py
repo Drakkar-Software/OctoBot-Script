@@ -4,7 +4,7 @@ import octobot_backtesting.api as backtesting_api
 import octobot_commons.constants as commons_constants
 import octobot_commons.enums as commons_enums
 
-import octobot_backtester.model as models
+import octobot_pro.model as models
 
 
 async def run(backtesting_data, update_func, strategy_config,
