@@ -4,7 +4,7 @@ import octobot_pro as op
 
 
 async def rsi_test():
-    # read and cache candle data to make subsequent backtesting runs faster.
+    # Read and cache candle data to make subsequent backtesting runs faster.
     data = await op.get_data("BTC/USDT", "1d", start_timestamp=1505606400)
     run_data = {
         "entries": None,
@@ -27,7 +27,7 @@ async def rsi_test():
             }
         if op.current_live_time(ctx) in run_data["entries"]:
             # Uses pre-computed entries times to enter positions when relevant.
-            # Also instantly set take profits and stop losses.
+            # Also,instantly set take profits and stop losses.
             # Position exists could also be set separately.
             await op.market(ctx, "buy", amount="10%", stop_loss_offset="-5%", take_profit_offset="5%")
 
