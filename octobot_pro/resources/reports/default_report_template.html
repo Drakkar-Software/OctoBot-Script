@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+    {% include 'header.html' %}
+    <body class="bg-dark px-1 px-md-4">
+        <div class="text-center">
+            <h1>
+
+                {{ title }}
+                <span class="font-weight-bold">
+                    <img src="https://octobot.online/assets/images/octobot.png" class="octobot-logo" alt=""> OctoBot pro
+                </span>
+                report
+            </h1>
+        </div>
+        <div>
+            <h3>
+                {{ top_title }}
+            </h3>
+            <div class="primary-charts">
+                <div id="charts">
+                    <div id="main-chart"></div>
+                    <div id="sub-chart"></div>
+                </div>
+            </div>
+        </div>
+        <div>
+            <h3>
+                {{ middle_title }}
+            </h3>
+            <div class="secondary-charts">
+                <div id="backtesting-run-overview"></div>
+            </div>
+        </div>
+        <div>
+            <h3>
+                {{ bottom_title }}
+            </h3>
+            <div id="backtesting-details"></div>
+            <div id="tables">
+                <div id="list-of-trades-part"></div>
+            </div>
+        </div>
+
+    </body>
+    {% include 'scripts.html' %}
+</html>

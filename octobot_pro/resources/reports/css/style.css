@@ -1,0 +1,44 @@
+/** colors **/
+:root {
+    --bg: #131722;
+    --fnt: #b2b5be;
+    --brdr: #2a2e39;
+    --brdr-actv: #1e53e5;
+    --fnt-hvr: #131722;
+    --bg-hvr: #2a2e39;
+    --fnt-actv: #1e53e5;
+    --new-warning: #fb3;
+    --new-success: #00c851;
+}
+
+.bg-dark, .form-control options, ul {
+    background: var(--bg) !important;
+    color: var(--fnt) !important;
+}
+
+.octobot-logo {
+    height: 40px;
+}
+
+/** plotting **/
+
+.hoverlayer line:first-child, .hoverlayer line:nth-child(3) {
+    /*hide selector borders*/
+    stroke: unset;
+}
+
+.main-chart {
+    height: 300px;
+}
+
+.sub-chart {
+    height: 200px;
+}
+
+.sub-chart {
+    height: 200px;
+}
+
+.backtesting-run-overview{
+    height: 200px;
+}
