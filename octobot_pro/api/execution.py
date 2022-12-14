@@ -49,6 +49,7 @@ async def _gather_results(independent_backtesting, backtest_result):
         for candle_manager in backtest_result.backtesting_data.preloaded_candle_managers.values()
     )
     backtest_result.report = await independent_backtesting.get_dict_formatted_report()
+    backtest_result.bot_id = independent_backtesting.octobot_backtesting.bot_id
 
 
 def _register_strategy(update_func, strategy_config):
