@@ -35,6 +35,18 @@
             <h3>
                 {{ bottom_title }}
             </h3>
+            <div class="configuration container-fluid row">
+                <div class="col-12">
+                    <h4 class="text-center">
+                        Configuration
+                    </h4>
+                </div>
+                {% for key, val in strategy_config.items() %}
+                <div class="col text-center">
+                    {{key}}: <span class="font-weight-bold">{{val}}</span>
+                </div>
+                {% endfor %}
+            </div>
             <div id="backtesting-details"></div>
             <div id="tables">
                 <div id="list-of-trades-part"></div>

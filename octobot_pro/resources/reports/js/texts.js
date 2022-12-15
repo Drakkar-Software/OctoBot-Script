@@ -2,7 +2,7 @@ $(document).ready(function() {
 
 const _add_labelled_backtesting_values = (sub_element, parentDiv) => {
     parentDiv.append(
-        `<div data-role="values" class="backtesting-run-container-values container-fluid row"></div>`
+        `<div data-role="values" class="backtesting-run-container-values"></div>`
     );
     const backtestingValuesGridDiv = parentDiv.find("[data-role='values']");
     backtestingValuesGridDiv.empty();
