@@ -37,7 +37,8 @@ class BacktestPlot:
         return {
             "FULL_DATA": full_data,
             "title": f"{', '.join(symbols)}",
-            "top_title": f"{', '.join(symbols)} on {', '.join(time_frames)} from {', '.join(exchanges)}",
+            "top_title": f"{', '.join(symbols)} on {', '.join(time_frames)} from "
+                         f"{', '.join([e.capitalize() for e in exchanges])}",
             "middle_title": "Portfolio value",
             "bottom_title": "Details",
             "strategy_config": self.backtest_result.strategy_config
