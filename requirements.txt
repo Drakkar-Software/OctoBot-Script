@@ -1,0 +1,2 @@
+# Drakkar-Software requirements
+OctoBot==0.4.27
