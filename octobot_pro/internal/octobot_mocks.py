@@ -4,15 +4,24 @@ import appdirs
 
 import octobot_pro
 import octobot_pro.constants as constants
+import octobot_pro.internal.backtester_trading_mode
+import octobot_commons.constants as commons_constants
 import octobot_tentacles_manager.api as octobot_tentacles_manager_api
 import octobot_tentacles_manager.constants as octobot_tentacles_manager_constants
 import octobot.configuration_manager as octobot_configuration_manager
 
 
 def get_tentacles_config():
-    return octobot_tentacles_manager_api.get_tentacles_setup_config(
-        get_module_config_path("tentacles_config.json")
+    # use tentacles config from user appdirs as it is kept up to date at each tentacle packages install
+    ref_tentacles_config_path = os.path.join(
+        get_module_appdir_path(),
+        octobot_tentacles_manager_constants.USER_REFERENCE_TENTACLE_CONFIG_PATH,
+        commons_constants.CONFIG_TENTACLES_FILE
     )
+    tentacles_setup_config = octobot_tentacles_manager_api.get_tentacles_setup_config(ref_tentacles_config_path)
+    # activate octobot-pro required tentacles
+    _force_tentacles_config_activation(tentacles_setup_config)
+    return tentacles_setup_config
 
 
 def get_config():
@@ -50,3 +59,18 @@ def get_public_tentacles_urls():
     return [
         octobot_configuration_manager.get_default_tentacles_url()
     ]
+
+
+def _force_tentacles_config_activation(tentacles_setup_config):
+    import tentacles.Evaluator
+    forced_tentacles = {
+        octobot_tentacles_manager_constants.TENTACLES_EVALUATOR_PATH: {
+            tentacles.Evaluator.BlankStrategyEvaluator.get_name(): True
+        },
+        octobot_tentacles_manager_constants.TENTACLES_TRADING_PATH: {
+            octobot_pro.internal.backtester_trading_mode.BacktesterTradingMode.get_name(): True
+        }
+    }
+    for topic, activations in forced_tentacles.items():
+        for tentacle, activated in activations.items():
+            tentacles_setup_config.tentacles_activation[topic][tentacle] = activated
