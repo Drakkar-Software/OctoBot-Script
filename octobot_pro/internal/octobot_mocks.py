@@ -1,6 +1,8 @@
 import os
 import json
+import appdirs
 
+import octobot_pro
 import octobot_pro.constants as constants
 import octobot_tentacles_manager.api as octobot_tentacles_manager_api
 import octobot_tentacles_manager.constants as octobot_tentacles_manager_constants
@@ -26,17 +28,22 @@ def get_module_config_path(file_name):
     return os.path.join(get_module_install_path(), constants.CONFIG_PATH, file_name)
 
 
+def get_module_appdir_path():
+    dirs = appdirs.AppDirs(octobot_pro.PROJECT_NAME, octobot_pro.AUTHOR, octobot_pro.VERSION)
+    return dirs.user_data_dir
+
+
 def get_internal_import_path():
-    return os.path.join(get_module_install_path(), constants.ADDITIONAL_IMPORT_PATH)
+    return os.path.join(get_module_appdir_path(), constants.ADDITIONAL_IMPORT_PATH)
+
+
+def get_tentacles_path():
+    return os.path.join(get_internal_import_path(), octobot_tentacles_manager_constants.TENTACLES_PATH)
 
 
 def get_imported_tentacles_path():
     import tentacles
     return os.path.dirname(os.path.abspath(tentacles.__file__))
-
-
-def get_tentacles_path():
-    return os.path.join(get_internal_import_path(), octobot_tentacles_manager_constants.TENTACLES_PATH)
 
 
 def get_public_tentacles_urls():

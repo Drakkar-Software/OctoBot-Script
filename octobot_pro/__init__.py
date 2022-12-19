@@ -1,13 +1,20 @@
+PROJECT_NAME = "OctoBot-Pro"
+AUTHOR = "Drakkar-Software"
+VERSION = "0.0.1"  # major.minor.revision
+
+
 def _use_module_local_tentacles():
     import sys
     import os
+    import appdirs
     if os.getenv("USE_CUSTOM_TENTACLES", "").lower() == "true":
         # do not use octobot_pro/imports tentacles
         # WARNING: in this case, all the required tentacles imports still have to work
         # and therefore be bound to another tentacles folder
         return
-    # import tentacles from octobot_pro/imports directory
-    internal_import_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "imports")
+    # import tentacles from user-appdirs/imports directory
+    dirs = appdirs.AppDirs(PROJECT_NAME, AUTHOR, VERSION)
+    internal_import_path = os.path.join(dirs.user_data_dir, "imports")
     sys.path.insert(0, internal_import_path)
 
 
@@ -33,6 +40,3 @@ except ImportError:
 from octobot_pro.constants import *
 from octobot_pro.api import *
 from octobot_pro.model import *
-
-PROJECT_NAME = "OctoBot-Pro"
-VERSION = "0.0.1"  # major.minor.revision

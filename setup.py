@@ -1,10 +1,25 @@
+import asyncio
+
 from setuptools import find_packages
 from setuptools import setup
+from distutils.command.install import install
+
 
 # from octobot_pro import PROJECT_NAME, VERSION
 # todo figure out how not to import octobot_pro.__init__.py here
 PROJECT_NAME = "OctoBot-Pro"
 VERSION = "0.0.1"  # major.minor.revision
+
+
+def _post_install():
+    import octobot_pro.cli
+    asyncio.run(octobot_pro.cli.install_all_tentacles(True))
+
+
+class InstallWithPostInstallAction(install):
+    def run(self):
+        install.run(self)
+        self.execute(_post_install, (), msg="Installing OctoBot-Pro tentacles")
 
 
 PACKAGES = find_packages(
@@ -31,7 +46,7 @@ setup(
     author_email='drakkar-software@protonmail.com',
     description='Backtesting framework of the OctoBot Ecosystem',
     packages=PACKAGES,
-    include_package_data=True,
+    cmdclass={'install': InstallWithPostInstallAction},
     long_description=DESCRIPTION,
     long_description_content_type='text/markdown',
     tests_require=["pytest"],

@@ -25,11 +25,11 @@ import octobot_pro.internal.logging_util as octobot_pro_logging
 import octobot_tentacles_manager.api as api
 
 
-async def _install_all_tentacles(quite_mode) -> int:
+async def install_all_tentacles(quite_mode) -> int:
     octobot_pro_logging.enable_base_logger()
     error_count = 0
     logger = commons_logging.get_logger(f"{op.PROJECT_NAME}-CLI")
-    install_path = octobot_mocks.get_module_install_path()
+    install_path = octobot_mocks.get_module_appdir_path()
     tentacles_path = octobot_mocks.get_tentacles_path()
     tentacles_urls = octobot_mocks.get_public_tentacles_urls()
     async with aiohttp.ClientSession() as aiohttp_session:
@@ -52,7 +52,7 @@ def handle_octobot_pro_command(starting_args) -> int:
         print(f"{op.PROJECT_NAME} version {op.VERSION}")
         return 0
     if starting_args.install_tentacles:
-        return asyncio.run(_install_all_tentacles(starting_args.quite))
+        return asyncio.run(install_all_tentacles(starting_args.quite))
     print(f"No provided command. See --help to get more details on how to use {op.PROJECT_NAME}-CLI", file=sys.stderr)
     return -1
 
