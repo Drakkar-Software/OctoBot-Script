@@ -6,8 +6,6 @@ import octobot_pro.resources as resources
 import octobot_commons.constants as commons_constants
 import octobot_commons.display as display
 import octobot_commons.logging as logging
-import tentacles.Trading.Mode as trading_modes
-import tentacles.Meta.Keywords.scripting_library as scripting_library
 
 
 class BacktestPlot:
@@ -45,6 +43,9 @@ class BacktestPlot:
         }
 
     async def _get_full_data(self):
+        # tentacles not available during first install
+        import tentacles.Trading.Mode as trading_modes
+        import tentacles.Meta.Keywords.scripting_library as scripting_library
         elements = display.display_translator_factory()
         trading_mode = trading_modes.ScriptedTradingMode
         symbols = []

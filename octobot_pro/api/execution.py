@@ -1,22 +1,18 @@
 import octobot.api as octobot_api
-import octobot_tentacles_manager.loaders as loaders
 import octobot_backtesting.api as backtesting_api
 import octobot_commons.constants as commons_constants
 import octobot_commons.enums as commons_enums
 
 import octobot_pro.model as models
+import octobot_pro.internal.logging_util as logging_util
 
 
 async def run(backtesting_data, update_func, strategy_config,
               enable_logs=False, enable_storage=False):
-    # 1. load importers and reset cache indexes
-    # 2. set candle managers
-
     backtest_result = models.BacktestResult(backtesting_data, strategy_config)
     if enable_logs:
-        models.load_logging_config()
+        logging_util.load_logging_config()
 
-    loaders.reload_tentacle_by_tentacle_class()
     _register_strategy(update_func, strategy_config)
     independent_backtesting = octobot_api.create_independent_backtesting(
         backtesting_data.config,

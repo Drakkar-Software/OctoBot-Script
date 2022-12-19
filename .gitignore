@@ -114,6 +114,7 @@ backtesting/data/
 
 # Tentacles
 tentacles
+octobot_pro/internal
 downloaded_temp_tentacles
 
 # User config
