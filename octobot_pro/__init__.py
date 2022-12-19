@@ -34,4 +34,5 @@ from octobot_pro.constants import *
 from octobot_pro.api import *
 from octobot_pro.model import *
 
+PROJECT_NAME = "OctoBot-Pro"
 VERSION = "0.0.1"  # major.minor.revision
