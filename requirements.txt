@@ -3,3 +3,6 @@ OctoBot==0.4.27
 
 # manage tentacles install path
 appdirs==1.4.4
+
+# CLI
+click==8.1.3
