@@ -13,22 +13,20 @@
 #
 #  You should have received a copy of the GNU Lesser General Public
 #  License along with this library.
-import argparse
+import click
 import asyncio
 import aiohttp
 import sys
 
-import octobot_commons.logging as commons_logging
-import octobot_pro as op
+import octobot_pro
 import octobot_pro.internal.octobot_mocks as octobot_mocks
 import octobot_pro.internal.logging_util as octobot_pro_logging
 import octobot_tentacles_manager.api as api
 
 
-async def install_all_tentacles(quite_mode) -> int:
+async def install_all_tentacles(quite_mode) -> bool:
     octobot_pro_logging.enable_base_logger()
     error_count = 0
-    logger = commons_logging.get_logger(f"{op.PROJECT_NAME}-CLI")
     install_path = octobot_mocks.get_module_appdir_path()
     tentacles_path = octobot_mocks.get_tentacles_path()
     tentacles_urls = octobot_mocks.get_public_tentacles_urls()
@@ -40,37 +38,24 @@ async def install_all_tentacles(quite_mode) -> int:
                                                            aiohttp_session=aiohttp_session,
                                                            quite_mode=quite_mode,
                                                            bot_install_dir=install_path)
-
-    if error_count > 0:
-        logger.error(f"{error_count} errors occurred while processing tentacles.")
-        return 1
-    return 0
+    return error_count == 0
 
 
-def handle_octobot_pro_command(starting_args) -> int:
-    if starting_args.version:
-        print(f"{op.PROJECT_NAME} version {op.VERSION}")
-        return 0
-    if starting_args.install_tentacles:
-        return asyncio.run(install_all_tentacles(starting_args.quite))
-    print(f"No provided command. See --help to get more details on how to use {op.PROJECT_NAME}-CLI", file=sys.stderr)
-    return -1
-
-
-def register_octobot_pro_arguments(parser) -> None:
-    parser.add_argument('-v', '--version', help=f'Show {op.PROJECT_NAME} current version.',
-                        action='store_true')
-    parser.add_argument("-it", "--install-tentacles",
-                        help="(Re)-install the available OctoBot tentacles in this modules install directory",
-                        action='store_true')
-    parser.add_argument("-q", "--quite", help="Only display errors in logs.", action='store_true')
-
-
+@click.group
+@click.version_option(version=octobot_pro.VERSION, prog_name=octobot_pro.PROJECT_NAME)
 def main():
-    parser = argparse.ArgumentParser(prog="octobot_pro", description=f"{op.PROJECT_NAME}-CLI")
-    register_octobot_pro_arguments(parser)
-    args = parser.parse_args(sys.argv[1:])
-    sys.exit(handle_octobot_pro_command(args))
+    """
+    OctoBot-Pro command line interface.
+    """
+
+
+@main.command("install_tentacles")
+@click.option('--quite', flag_value=True, help='Only display errors in logs.')
+def sync_install_tentacles(quite):
+    """
+    (Re)-install the available OctoBot tentacles.
+    """
+    sys.exit(0 if asyncio.run(install_all_tentacles(quite)) else -1)
 
 
 if __name__ == "__main__":
