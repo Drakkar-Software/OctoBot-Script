@@ -87,8 +87,8 @@ const _createOrAdaptChartedElements = (chartDetails, yAxis, xAxis, chartIdentifi
 
 const createChartLayout = (chartDetails, chartData, yAxis, xAxis, xaxis_list, yaxis_list, chartIdentifier) => {
     const xaxis = {
-        gridcolor: "#2a2e39",
-        color: "#b2b5be",
+        gridcolor: borderColor,
+        color: textColor,
         autorange: true,
         rangeslider: {
             visible: false,
@@ -115,11 +115,11 @@ const createChartLayout = (chartDetails, chartData, yAxis, xAxis, xaxis_list, ya
         plot_bgcolor: 'rgba(0,0,0,0)',
         dragmode: "pan",
         font: {
-            color: "#b2b5be"
+            color: textColor
         },
         yaxis: {
-            gridcolor: "#2a2e39",
-            color: "#b2b5be",
+            gridcolor: borderColor,
+            color: textColor,
             fixedrange: false,
             anchor: "free",
             overlaying: "y",
@@ -127,8 +127,8 @@ const createChartLayout = (chartDetails, chartData, yAxis, xAxis, xaxis_list, ya
             position: 0
         },
         yaxis2: {
-            gridcolor: "#2a2e39",
-            color: "#b2b5be",
+            gridcolor: borderColor,
+            color: textColor,
             fixedrange: false,
             anchor: "free",
             overlaying: "y",
@@ -136,8 +136,8 @@ const createChartLayout = (chartDetails, chartData, yAxis, xAxis, xaxis_list, ya
             position: 1
         },
         yaxis3: {
-            gridcolor: "#2a2e39",
-            color: "#b2b5be",
+            gridcolor: borderColor,
+            color: textColor,
             fixedrange: false,
             anchor: "free",
             overlaying: "y",
@@ -145,8 +145,8 @@ const createChartLayout = (chartDetails, chartData, yAxis, xAxis, xaxis_list, ya
             position: 0.985
         },
         yaxis4: {
-            gridcolor: "#2a2e39",
-            color: "#b2b5be",
+            gridcolor: borderColor,
+            color: textColor,
             fixedrange: false,
             anchor: "free",
             overlaying: "y",
@@ -159,7 +159,7 @@ const createChartLayout = (chartDetails, chartData, yAxis, xAxis, xaxis_list, ya
         layout.hovermode = "x unified";
         layout.hoverlabel = {
             bgcolor: "#131722",
-            bordercolor: "#2a2e39"
+            bordercolor: borderColor
         };
     } else {
         layout.hovermode = false;
