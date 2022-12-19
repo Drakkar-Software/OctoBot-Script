@@ -8,20 +8,22 @@ import octobot.configuration_manager as octobot_configuration_manager
 
 
 def get_tentacles_config():
-    return octobot_tentacles_manager_api.get_tentacles_setup_config(_mock_file_path("../config/tentacles_config.json"))
+    return octobot_tentacles_manager_api.get_tentacles_setup_config(
+        get_module_config_path("tentacles_config.json")
+    )
 
 
 def get_config():
-    with open(_mock_file_path("../config/config_mock.json")) as f:
+    with open(get_module_config_path("config_mock.json")) as f:
         return json.load(f)
-
-
-def _mock_file_path(file_name):
-    return os.path.join(os.path.dirname(os.path.abspath(__file__)), file_name)
 
 
 def get_module_install_path():
     return os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+
+def get_module_config_path(file_name):
+    return os.path.join(get_module_install_path(), constants.CONFIG_PATH, file_name)
 
 
 def get_internal_import_path():

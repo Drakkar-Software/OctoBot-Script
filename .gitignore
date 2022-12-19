@@ -111,6 +111,7 @@ creator_temp/
 # Data
 backtesting/collector/data/
 backtesting/data/
+report.html
 
 # Tentacles
 tentacles

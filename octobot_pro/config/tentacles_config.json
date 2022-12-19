@@ -1,19 +1,8 @@
 {
     "installation_context": {
-        "octobot_version": "0.4.23"
+        "octobot_version": "0.4.27"
     },
-    "registered_tentacles": {
-        "Matrix-Octo-UI2": "Unknown package location",
-        "Matrix-Tentacles": "Unknown package location",
-        "OctoBot-Default-Tentacles": "https://tentacles.octobot.online/repository/tentacles/officials/packages/full/base/latest/any_platform.zip",
-        "OctoBot-Private-Tentacles": "any_platform.zip",
-        "OctoBot-other-Tentacles": "Unknown package location",
-        "PERSOOctoBot-Default-Tentacles": "Unknown package location",
-        "Unknown package location": "any_platform.zip",
-        "Valentin&Co": "any_platform.zip",
-        "matrix indicators": "any_platform.zip",
-        "matrix-strategy-maker": "Unknown package location"
-    },
+    "registered_tentacles": {},
     "tentacle_activation": {
         "Backtesting": {
             "ExchangeBotSnapshotCollector": true,
@@ -114,6 +103,7 @@
             "BitgetCryptofeedWebsocketConnector": true,
             "Bithumb": true,
             "Bitmex": true,
+            "Bitso": true,
             "Bitstamp": true,
             "Bittrex": true,
             "BittrexCryptofeedWebsocketConnector": true,
@@ -122,7 +112,6 @@
             "CoinbasePro": true,
             "CoinbaseProCryptofeedWebsocketConnector": true,
             "Coinex": true,
-            "Crex24": true,
             "CryptoCoinersTradingMode": false,
             "DCATradingMode": false,
             "DailyTradingMode": false,
@@ -131,8 +120,6 @@
             "ExchangeTesterDipAnalyserTradingMode": false,
             "ExchangeTesterRemoteTradingSignalsTradingMode": false,
             "ExchangeTesterTradingViewSignalsTradingMode": false,
-            "FTX": true,
-            "FTXCryptofeedWebsocketConnector": true,
             "GateIO": true,
             "GateIOCryptofeedWebsocketConnector": true,
             "GridTradingMode": false,
@@ -144,6 +131,7 @@
             "KrakenCryptofeedWebsocketConnector": true,
             "Kucoin": true,
             "KucoinCryptofeedWebsocketConnector": true,
+            "Ndax": true,
             "OKXCryptofeedWebsocketConnector": true,
             "Okcoin": true,
             "Okx": true,
@@ -151,7 +139,7 @@
             "PhemexCryptofeedWebsocketConnector": true,
             "Poloniex": true,
             "RemoteTradingSignalsTradingMode": false,
-            "ScriptedTradingMode": true,
+            "BacktesterTradingMode": true,
             "SignalTradingMode": false,
             "StaggeredOrdersTradingMode": false,
             "TradingViewSignalsTradingMode": false,
