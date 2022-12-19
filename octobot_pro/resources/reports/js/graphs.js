@@ -197,6 +197,7 @@ const createCharts = () => {
         const chartDivID = `${maybeChart.name}-${index}`;
         const parentDiv = $(document.getElementById(maybeChart.name));
         parentDiv.append(`<div id="${chartDivID}" class="${maybeChart.name}"></div>`);
+        let layout = undefined;
         maybeChart.data.elements.forEach((chartDetails) => {
             if (chartDetails.own_yaxis && yAxis < 4) {
                 yAxis += 1;
@@ -208,11 +209,9 @@ const createCharts = () => {
                 xAxis += 1;
             }
             const chartIdentifier = "";
-            const layout = createChartLayout(chartDetails, chartData, yAxis, xAxis, xaxis_list, yaxis_list, chartIdentifier);
-
-            Plotly.newPlot(chartDivID, chartData, layout, getPlotlyConfig());
-
+            layout = createChartLayout(chartDetails, chartData, yAxis, xAxis, xaxis_list, yaxis_list, chartIdentifier);
         })
+        Plotly.newPlot(chartDivID, chartData, layout, getPlotlyConfig());
     })
 }
 
