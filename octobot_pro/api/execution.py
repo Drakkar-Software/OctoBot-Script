@@ -3,7 +3,7 @@ import octobot_pro.internal.runners as runners
 
 
 async def run(backtesting_data, update_func, strategy_config,
-              enable_logs=False, enable_storage=False):
+              enable_logs=False, enable_storage=True):
     if enable_logs:
         logging_util.load_logging_config()
     return await runners.run(
