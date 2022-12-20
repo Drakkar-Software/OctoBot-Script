@@ -19,12 +19,11 @@ async def test_precomputed_vs_iteration_rsi(one_day_btc_usdt_data):
             rsi_v = tulipy.rsi(closes, period=ctx.tentacle.trading_config["period"])
             delta = len(closes) - len(rsi_v)
             run_data["entries"] = {
-                times[index + delta]: rsi_val
+                times[index + delta]
                 for index, rsi_val in enumerate(rsi_v)
                 if rsi_val < ctx.tentacle.trading_config["rsi_value_buy_threshold"]
             }
-            await op.plot(ctx, "RSI", x=times[delta-1:], y=rsi_v)
-            await op.plot(ctx, "entries", x=list(run_data["entries"]), y=list(run_data["entries"].values()), mode="markers")
+            await op.plot_indicator(ctx, "RSI", times[delta:], rsi_v, run_data["entries"])
         if op.current_live_time(ctx) in run_data["entries"]:
             await op.market(ctx, "buy", amount="10%", stop_loss_offset="-15%", take_profit_offset="25%")
     run_data = {
@@ -46,7 +45,7 @@ async def test_precomputed_vs_iteration_rsi(one_day_btc_usdt_data):
     assert res.report['bot_report']['profitability']['binance'] > 0
     assert res.duration < 10
     assert res.candles_count == 1932
-    await _check_plot_report(res)
+    await _check_report(res)
 
     # ensure second run gives the same result
     run_data = {
@@ -95,9 +94,11 @@ async def test_precomputed_vs_iteration_rsi(one_day_btc_usdt_data):
     assert res_iteration.report['bot_report']['profitability'] == res_3.report['bot_report']['profitability']
 
 
-async def _check_plot_report(res):
+async def _check_report(res):
+    description = res.describe()
+    assert str(res.strategy_config) in description
     report = "report.html"
-    await res.plot(report_file=report)
+    await res.plot(report_file=report, show=False)
     with open(report) as rep:
         report_content = rep.read()
     for key, val in res.strategy_config.items():

@@ -26,10 +26,13 @@ class BacktestResult:
                f"market average: {self.report['bot_report']['market_average_profitability']} " \
                f"strategy_config: {self.strategy_config}"
 
-    async def plot(self, report_file=None):
+    async def plot(self, report_file=None, show=False):
         if not commons_databases.RunDatabasesProvider.instance().is_storage_enabled(self.bot_id):
             raise errors.ParameterError("storage has to be enabled to plot backtesting data")
-        return await self._get_plotted_result(report_file=report_file)
+        plot_result = await self._get_plotted_result(report_file=report_file)
+        if show:
+            plot_result.show()
+        return plot_result
 
     async def _get_plotted_result(self, report_file=None):
         run_db_id = commons_databases.RunDatabasesProvider.instance().get_run_databases_identifier(self.bot_id)
