@@ -5,7 +5,7 @@ import octobot_trading.enums as trading_enums
 import octobot_pro.internal.octobot_mocks as octobot_mocks
 
 
-async def historical_data(symbol, timeframe, exchange="binance", exchange_type="spot",
+async def historical_data(symbol, timeframe, exchange="binance", exchange_type=trading_enums.ExchangeTypes.SPOT.value,
                           start_timestamp=None, end_timestamp=None):
     symbols = [symbol]
     time_frames = [commons_enums.TimeFrames(timeframe)]
@@ -17,11 +17,10 @@ async def historical_data(symbol, timeframe, exchange="binance", exchange_type="
         time_frames=time_frames,
         start_timestamp=start_timestamp,
         end_timestamp=end_timestamp)
-    datafile = await backtesting_api.initialize_and_run_data_collector(data_collector_instance)
-    return datafile
+    return await backtesting_api.initialize_and_run_data_collector(data_collector_instance)
 
 
-async def get_data(symbol, time_frame, exchange="binance", exchange_type="spot",
+async def get_data(symbol, time_frame, exchange="binance", exchange_type=trading_enums.ExchangeTypes.SPOT.value,
                    start_timestamp=None, end_timestamp=None, data_file=None):
     data = data_file or \
            await historical_data(symbol, timeframe=time_frame, exchange=exchange, exchange_type=exchange_type,
