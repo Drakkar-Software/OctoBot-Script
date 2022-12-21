@@ -22,12 +22,6 @@ import octobot_pro as op
 
 
 async def rsi_test():
-    # Read and cache candle data to make subsequent backtesting runs faster.
-    data = await op.get_data("BTC/USDT", "1d", start_timestamp=1505606400)
-    run_data = {
-        "entries": None,
-    }
-
     async def strategy(ctx):
         # Will be called at each candle.
         if run_data["entries"] is None:
@@ -54,14 +48,19 @@ async def rsi_test():
     # It will be accessible under "ctx.tentacle.trading_config".
     config = {
         "period": 10,
-        "rsi_value_buy_threshold": 30,
+        "rsi_value_buy_threshold": 28,
     }
 
+    # Read and cache candle data to make subsequent backtesting runs faster.
+    data = await op.get_data("BTC/USDT", "1d", start_timestamp=1505606400)
+    run_data = {
+        "entries": None,
+    }
     # Run a backtest using the above data, strategy and configuration.
     res = await op.run(data, strategy, config)
     print(res.describe())
     # Generate and open report including indicators plots 
-    await res.plot(report_file="report.html", show=True)
+    await res.plot(show=True)
     # Stop data to release local databases.
     await data.stop()
 
