@@ -1,0 +1,43 @@
+name: OctoBot-Pro-CI
+on:
+  push:
+    branches:
+      - 'master'
+    tags:
+      - '*'
+  pull_request:
+
+jobs:
+  lint:
+    uses: Drakkar-Software/.github/.github/workflows/python3_lint_workflow.yml@master
+    with:
+      project_main_package: octobot_pro
+
+  tests:
+    needs: lint
+    uses: Drakkar-Software/.github/.github/workflows/python3_tests_workflow.yml@master
+    with:
+      use_cython: false
+    secrets:
+      COVERALLS_REPO_TOKEN: ${{ secrets.COVERALLS_REPO_TOKEN }}
+
+  publish:
+    needs: tests
+    if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags')
+    uses: Drakkar-Software/.github/.github/workflows/python3_wheel_workflow.yml@master
+    with:
+      use_cython: false
+    secrets:
+      PYPI_OFFICIAL_UPLOAD_URL: ${{ secrets.PYPI_OFFICIAL_UPLOAD_URL }}
+      PYPI_USERNAME: ${{ secrets.PYPI_USERNAME }}
+      PYPI_PASSWORD: ${{ secrets.PYPI_PASSWORD }}
+
+  notify:
+    if: ${{ failure() }}
+    needs:
+      - lint
+      - tests
+      - publish
+    uses: Drakkar-Software/.github/.github/workflows/failure_notify_workflow.yml@master
+    secrets:
+      DISCORD_GITHUB_WEBHOOK: ${{ secrets.DISCORD_GITHUB_WEBHOOK }}
