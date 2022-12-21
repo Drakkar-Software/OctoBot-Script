@@ -15,6 +15,7 @@ $ python3 -m pip install octobot-pro
 
 ## Example of a backtesting script
 
+### Script
 ``` python
 import asyncio
 import tulipy    # Can be any TA library.
@@ -69,3 +70,6 @@ async def rsi_test():
 # OctoBot-Pro runs using the python asyncio framework.
 asyncio.run(rsi_test())
 ```
+
+### Generated report
+![report-p1](https://raw.githubusercontent.com/Drakkar-Software/OctoBot-Pro/assets/images/report_1.jpg)
