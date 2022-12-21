@@ -3,32 +3,6 @@ $(document).ready(function() {
 const CANDLES_PLOT_SOURCES = ["open", "high", "low", "close"];
 const ALL_PLOT_SOURCES = ["y", "z", "volume"].concat(CANDLES_PLOT_SOURCES);
 
-// show hide when not in charts crosshair
-const handleCrosshairVisibility = () => {
-    function hideCrosshair() {
-        $(".hair").css("display", "none")
-    }
-    function showCrosshair(){
-       $(".hair").css("display", "block")
-    }
-    const charts = $("#pairs-tabcontent");
-    charts.on('mouseover', function(event){showCrosshair()});
-    charts.on('mouseout', function(event){hideCrosshair()});
-    const backtestingChart = $("#backtesting-run-overview");
-    backtestingChart.on('mouseover', function(event){showCrosshair()});
-    backtestingChart.on('mouseout', function(event){hideCrosshair()});
-}
-
-const handleCrossHair = () => {
-    // todo remove from event listener when not on chart instead of display none
-    $('#crosshair-h').removeClass(hidden_class);
-    $('#crosshair-v').removeClass(hidden_class);
-    $(document).on('mousemove',function(e){
-        $('#crosshair-h').css('top',e.pageY);
-        $('#crosshair-v').css('left',e.pageX);
-    });
-}
-
 const getPlotlyConfig = () => {
     return {
         scrollZoom: true,
@@ -216,8 +190,6 @@ const createCharts = () => {
 }
 
 const init = () => {
-    // handleCrossHair();
-    // handleCrosshairVisibility();
     createCharts();
 }
 
