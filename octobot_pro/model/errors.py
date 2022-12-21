@@ -1,2 +1,0 @@
-class ParameterError(Exception):
-    pass
