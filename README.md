@@ -7,6 +7,9 @@
 
 > OctoBot Pro is in early alpha version
 
+Documentation available at [https://www.pro.octobot.info/](https://www.pro.octobot.info/)
+
+
 ## Install OctoBot Pro from pip
 
 ``` {.sourceCode .bash}
