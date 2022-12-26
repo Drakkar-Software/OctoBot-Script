@@ -1,14 +1,14 @@
 # Table of contents
 
 * [Getting Started](README.md)
-* [OctoBot Pro Documentation](https://pro.octobot.info)
-* [OctoBot Documentation](https://www.octobot.info)
+* [OctoBot Pro Docs](https://pro.octobot.info)
+* [OctoBot](https://www.octobot.online)
 
-## Creating a trading strategy
+## Trading strategies
 
 * [Strategy basis](docs/strategies/basis.md)
 
-## Trading
+## Trading keywords
 
 * [Creating orders](docs/trading/orders.md)
 
