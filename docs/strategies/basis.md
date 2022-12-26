@@ -10,7 +10,7 @@ In most cases, a strategy will:
 1. Read price data
 2. Use technical evaluators or statistics
 3. Decide to take (or not take) action depending on its configuration 
-4. Create / cancel or edit orders (see [Creating orders](docs/trading/orders.md))
+4. Create / cancel or edit orders (see [Creating orders](../../docs/trading/orders.md))
 
 As OctoBot-Pro strategies are meant for backtesting, it is possible to create a strategy in 2 ways:
 ## Pre-computed strategies
@@ -87,12 +87,12 @@ OctoBot live trading.
 ## Running a strategy
 
 When running a backtest, a strategy should be referenced alongside:
-- The [data it should be run on](docs/data/fetching_data.md) using `op.run`:
+- The [data it should be run on](../../docs/data/fetching_data.md) using `op.run`:
 - Its configuration (a dict in above examples, it could be anything)
 
 ``` python
 res = await op.run(data, strategy, config)
 ```
 
-Have a look [here](https://pro.octobot.info/#script) for a full example of 
+Have a look [here](../../#script) for a full example of 
 how to run a strategy within a python script.

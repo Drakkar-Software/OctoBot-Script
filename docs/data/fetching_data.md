@@ -19,7 +19,7 @@ Optional arguments:
 data = await op.get_data("BTC/USDT", "1d", start_timestamp=1505606400)
 ```
 
-{% hint style="info" %}
+## Re-using fetched data
 Calling `data = await op.get_data` will save the downloaded data into the `backtesting/data` local folder. 
 If you want to speedup subsequent calls, you can provide the `data_file` optional argument to read 
 data from this file instead of downloading historical data. This also makes it possible to run a 
@@ -39,4 +39,3 @@ datafile = "ExchangeHistoryDataCollector_1671754854.5234916.data"
 # will not download historical data as a local data_file is provided
 data = await op.get_data("BTC/USDT", "1d", start_timestamp=1505606400, data_file=datafile)
 ```
-{% endhint %}
