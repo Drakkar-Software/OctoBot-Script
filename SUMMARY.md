@@ -12,6 +12,10 @@
 
 * [Creating orders](docs/trading/orders.md)
 
+## Plotting
+
+* [Plotting](docs/plotting/basis.md)
+
 ## Trading data
 
 * [Fetching data](docs/data/fetching_data.md)
