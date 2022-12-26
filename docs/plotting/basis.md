@@ -11,7 +11,7 @@ Where:
 - `signal`: (optional) x values for which a signal is fired
 
 Example where the goal is to plot the value of the rsi indicator from 
-the [example script](https://pro.octobot.info/#script)
+the [example script](../../#script).
 ``` python
 await op.plot_indicator(ctx, "RSI", time_values, indicator_values, signal_times)
 ```
