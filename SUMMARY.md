@@ -14,4 +14,4 @@
 
 ## Trading data
 
-* [Creating orders](docs/data/fetching_data.md)
+* [Fetching data](docs/data/fetching_data.md)
