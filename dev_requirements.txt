@@ -4,6 +4,9 @@ pytest-pep8
 pytest-cov
 pytest-xdist
 
+mock>=4.0.2
+
+
 coverage
 coveralls
 
