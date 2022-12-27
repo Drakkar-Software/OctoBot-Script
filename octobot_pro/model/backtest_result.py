@@ -14,7 +14,6 @@
 #  You should have received a copy of the GNU General Public
 #  License along with OctoBot-Pro. If not, see <https://www.gnu.org/licenses/>.
 
-import json
 import os
 import octobot_pro.model.backtest_plot as backtest_plot
 import octobot_pro.model.errors as errors
@@ -28,14 +27,8 @@ class BacktestResult:
         self.independent_backtesting = None
         self.duration = None
         self.candles_count = None
-        self.report = None
+        self.report = {}
         self.bot_id = None
-
-    def report(self):
-        return json.dumps(
-            self.report,
-            indent=4
-        )
 
     def describe(self):
         return f"[{round(self.duration, 3)}s / {self.candles_count} candles] profitability: {self.report['bot_report']['profitability']} " \
