@@ -14,12 +14,26 @@ jobs:
       project_main_package: octobot_pro
 
   tests:
-    needs: lint
-    uses: Drakkar-Software/.github/.github/workflows/python3_tests_workflow.yml@master
-    with:
-      use_cython: false
-    secrets:
-      COVERALLS_REPO_TOKEN: ${{ secrets.COVERALLS_REPO_TOKEN }}
+    name: ${{ matrix.os }} - Python - ${{ matrix.type }} - tests
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ macos-latest, windows-latest, ubuntu-latest ]
+        type: [ sources ]
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Python 3.8
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.8.x
+          architecture: x64
+
+      - name: Install dependencies
+        run: pip install --prefer-binary -r dev_requirements.txt -r requirements.txt
+
+      - name: Pytests
+        run: pytest -s --durations=0 -rw tests
 
   publish:
     needs: tests
