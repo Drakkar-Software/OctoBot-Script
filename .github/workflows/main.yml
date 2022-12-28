@@ -36,7 +36,14 @@ jobs:
         run: python start.py install_tentacles
 
       - name: Pytests
-        run: pytest -s --durations=0 -rw tests
+        run: pytest  --cov=. --cov-config=.coveragerc --durations=0 -rw tests
+
+      - name: Publish coverage
+        if: matrix.type == 'sources' && github.event_name == 'push'
+        run: coveralls
+        continue-on-error: true
+        env:
+          COVERALLS_REPO_TOKEN: ${{ secrets.COVERALLS_REPO_TOKEN }}
 
   publish:
     needs: tests
