@@ -8,7 +8,7 @@ from distutils.command.install import install
 # from octobot_pro import PROJECT_NAME, VERSION
 # todo figure out how not to import octobot_pro.__init__.py here
 PROJECT_NAME = "OctoBot-Pro"
-VERSION = "0.0.2"  # major.minor.revision
+VERSION = "0.0.3"  # major.minor.revision
 
 
 def _post_install():
@@ -53,6 +53,7 @@ setup(
     test_suite="tests",
     zip_safe=False,
     data_files=[],
+    include_package_data=True,  # copy non python files on install
     setup_requires=REQUIRED,
     install_requires=REQUIRED,
     python_requires=REQUIRES_PYTHON,
