@@ -33,7 +33,7 @@ jobs:
         run: pip install --prefer-binary -r dev_requirements.txt -r requirements.txt
 
       - name: Install tentacles from cli
-        run: python octobot_pro/cli.py install_tentacles
+        run: python start.py install_tentacles
 
       - name: Pytests
         run: pytest -s --durations=0 -rw tests
