@@ -46,15 +46,29 @@ jobs:
           COVERALLS_REPO_TOKEN: ${{ secrets.COVERALLS_REPO_TOKEN }}
 
   publish:
-    needs: tests
+    needs:
+      - lint
+      - tests
     if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags')
-    uses: Drakkar-Software/.github/.github/workflows/python3_wheel_workflow.yml@master
-    with:
-      use_cython: false
-    secrets:
-      PYPI_OFFICIAL_UPLOAD_URL: ${{ secrets.PYPI_OFFICIAL_UPLOAD_URL }}
-      PYPI_USERNAME: ${{ secrets.PYPI_USERNAME }}
-      PYPI_PASSWORD: ${{ secrets.PYPI_PASSWORD }}
+    name: Source distribution - Python - deploy
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.8.x
+          architecture: x64
+
+      - name: Install dependencies
+        run: pip install --prefer-binary -r dev_requirements.txt -r requirements.txt
+
+      - name: Build sdist
+        run: python setup.py sdist
+
+      - name: Publish package
+        run: |
+          python -m twine upload --repository-url ${{ secrets.PYPI_OFFICIAL_UPLOAD_URL }} -u ${{ secrets.PYPI_USERNAME }} -p ${{ secrets.PYPI_PASSWORD }} --skip-existing dist/*
 
   notify:
     if: ${{ failure() }}
