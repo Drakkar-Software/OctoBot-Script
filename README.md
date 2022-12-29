@@ -12,7 +12,14 @@ Documentation available at [https://pro.octobot.info/](https://pro.octobot.info/
 
 ## Install OctoBot Pro from pip
 
+### Windows
 ``` {.sourceCode .bash}
+$ python3 -m pip install wheel
+$ python3 -m pip install octobot-pro
+```
+### Linux and Macos
+``` {.sourceCode .bash}
+$ python3 -m pip install OctoBot wheel
 $ python3 -m pip install octobot-pro
 ```
 
