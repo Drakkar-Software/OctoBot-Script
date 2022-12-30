@@ -13,8 +13,8 @@ Documentation available at [https://pro.octobot.info/](https://octobot.click/Xza
 ## Install OctoBot Pro from pip
 
 ``` {.sourceCode .bash}
-$ python3 -m pip install OctoBot wheel
-$ python3 -m pip install octobot-pro
+python3 -m pip install OctoBot wheel
+python3 -m pip install octobot-pro
 ```
 
 ## Example of a backtesting script
