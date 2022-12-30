@@ -12,12 +12,17 @@ Documentation available at [https://pro.octobot.info/](https://octobot.click/Xza
 
 ## Install OctoBot Pro from pip
 
-> OctoBot pro requires **python 3.8**
+> OctoBot pro requires **Python 3.8**
 
 ``` {.sourceCode .bash}
 python3 -m pip install OctoBot wheel
 python3 -m pip install octobot-pro
 ```
+
+### Windows install troubleshoot
+If you are running into issues when running `python3 -m pip install OctoBot wheel` during the `cryptofeed` dependency install, you might need to install 
+[Visual Studio Build Tools](https://developer.octobot.info/installation/developer-installation/octobot-developer-installation#additional-dependencies-for-windows) 
+on your computer.
 
 ## Example of a backtesting script
 
