@@ -13,7 +13,7 @@
 #
 #  You should have received a copy of the GNU General Public
 #  License along with OctoBot-Pro. If not, see <https://www.gnu.org/licenses/>.
-
+import time
 import webbrowser
 import jinja2
 import json
@@ -21,6 +21,7 @@ import json
 import octobot_commons.constants as commons_constants
 import octobot_commons.display as display
 import octobot_commons.logging as logging
+import octobot_commons.timestamp_util as timestamp_util
 import octobot.api as octobot_api
 import octobot_pro.resources as resources
 import octobot_pro.internal.backtester_trading_mode as backtester_trading_mode
@@ -32,6 +33,7 @@ class BacktestPlot:
     JINJA_ENVIRONMENT = jinja2.Environment(loader=jinja2.FileSystemLoader(
         resources.get_report_resource_path(None)
     ))
+    GENERATED_TIME_FORMAT = "%Y-%m-%d at %H:%M:%S"
 
     def __init__(self, backtest_result, run_db_identifier, report_file=None):
         self.backtest_result = backtest_result
@@ -55,6 +57,7 @@ class BacktestPlot:
             "title": f"{', '.join(symbols)}",
             "top_title": f"{', '.join(symbols)} on {', '.join(time_frames)} from "
                          f"{', '.join([e.capitalize() for e in exchanges])}",
+            "creation_time": timestamp_util.convert_timestamp_to_datetime(time.time(), self.GENERATED_TIME_FORMAT),
             "middle_title": "Portfolio value",
             "bottom_title": "Details",
             "strategy_config": self.backtest_result.strategy_config
