@@ -21,6 +21,13 @@ import octobot_trading.enums as trading_enums
 import octobot_pro.internal.octobot_mocks as octobot_mocks
 
 
+def _ensure_ms_timestamp(timestamp):
+    if timestamp is None:
+        return timestamp
+    if timestamp < 16737955050:  # Friday 28 May 2500 07:57:30
+        return timestamp * 1000
+
+
 async def historical_data(symbol, timeframe, exchange="binance", exchange_type=trading_enums.ExchangeTypes.SPOT.value,
                           start_timestamp=None, end_timestamp=None):
     symbols = [symbol]
@@ -31,8 +38,9 @@ async def historical_data(symbol, timeframe, exchange="binance", exchange_type=t
         octobot_mocks.get_tentacles_config(),
         [commons_symbols.parse_symbol(symbol) for symbol in symbols],
         time_frames=time_frames,
-        start_timestamp=start_timestamp,
-        end_timestamp=end_timestamp)
+        start_timestamp=_ensure_ms_timestamp(start_timestamp),
+        end_timestamp=_ensure_ms_timestamp(end_timestamp)
+    )
     return await backtesting_api.initialize_and_run_data_collector(data_collector_instance)
 
 
