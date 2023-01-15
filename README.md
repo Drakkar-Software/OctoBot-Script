@@ -19,11 +19,6 @@ python3 -m pip install OctoBot wheel
 python3 -m pip install octobot-pro
 ```
 
-### Windows install troubleshoot
-If you are running into issues when running `python3 -m pip install OctoBot wheel` during the `cryptofeed` dependency install, you might need to install 
-[Visual Studio Build Tools](https://developer.octobot.info/installation/developer-installation/octobot-developer-installation#additional-dependencies-for-windows) 
-on your computer.
-
 ## Example of a backtesting script
 
 ### Script
