@@ -21,7 +21,7 @@ import octobot_pro as op
 
 # only load config once
 BACKTESTING_FILES_DIR = os.path.join("tests", "test_util")
-ONE_DAY_BTC_USDT_DATA = os.path.join(BACKTESTING_FILES_DIR, "ExchangeHistoryDataCollector_1669821305.9084802.data")
+ONE_DAY_BTC_USDT_DATA = os.path.join(BACKTESTING_FILES_DIR, "ExchangeHistoryDataCollector_1673796151.325921.data")
 
 
 @pytest_asyncio.fixture
