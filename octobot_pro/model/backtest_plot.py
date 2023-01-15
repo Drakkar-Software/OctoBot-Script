@@ -17,6 +17,8 @@ import time
 import webbrowser
 import jinja2
 import json
+import http.server
+import socketserver
 
 import octobot_commons.constants as commons_constants
 import octobot_commons.display as display
@@ -34,6 +36,8 @@ class BacktestPlot:
         resources.get_report_resource_path(None)
     ))
     GENERATED_TIME_FORMAT = "%Y-%m-%d at %H:%M:%S"
+    SERVER_PORT = 5555
+    SERVER_HOST = "localhost"
 
     def __init__(self, backtest_result, run_db_identifier, report_file=None):
         self.backtest_result = backtest_result
@@ -48,7 +52,28 @@ class BacktestPlot:
             report.write(template.render(template_data))
 
     def show(self):
-        return webbrowser.open(self.report_file)
+        backtest_plot_instance = self
+        print(f"Report in {self.report_file}")
+
+        class ReportRequestHandler(http.server.SimpleHTTPRequestHandler):
+            def log_request(self, *_, **__):
+                # do not log requests
+                pass
+
+            def do_GET(self):
+                self.send_response(http.HTTPStatus.OK)
+                self.send_header("Content-type", "text/html")
+                self.end_headers()
+
+                with open(backtest_plot_instance.report_file, "rb") as report:
+                    self.wfile.write(report.read())
+
+        try:
+            with socketserver.TCPServer(("", self.SERVER_PORT), ReportRequestHandler) as httpd:
+                webbrowser.open(f"http://{self.SERVER_HOST}:{self.SERVER_PORT}")
+                httpd.handle_request()
+        except Exception:
+            webbrowser.open(self.report_file)
 
     async def _get_template_data(self):
         full_data, symbols, time_frames, exchanges = await self._get_full_data()
