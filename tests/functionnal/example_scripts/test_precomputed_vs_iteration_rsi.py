@@ -60,7 +60,7 @@ async def test_precomputed_vs_iteration_rsi(one_day_btc_usdt_data):
     assert res.bot_id is not None
     assert res.report['bot_report']['profitability']['binance'] > 0
     assert res.duration < 10
-    assert res.candles_count == 1932
+    assert res.candles_count == 1947
     await _check_report(res)
 
     # ensure second run gives the same result
