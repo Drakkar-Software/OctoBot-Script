@@ -16,7 +16,7 @@
 
 PROJECT_NAME = "OctoBot-Pro"
 AUTHOR = "Drakkar-Software"
-VERSION = "0.0.6"  # major.minor.revision
+VERSION = "0.0.7"  # major.minor.revision
 
 
 def _use_module_local_tentacles():
