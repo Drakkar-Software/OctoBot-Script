@@ -1,7 +1,13 @@
 # Octobot-Pro [0.0.8](https://github.com/Drakkar-Software/OctoBot-Pro/tree/master/CHANGELOG.md)
-[![PyPI](https://img.shields.io/pypi/v/octobot-pro.svg)](https://pypi.python.org/pypi/octobot-pro/)
+[![PyPI](https://img.shields.io/pypi/v/octobot-pro.svg?logo=pypi)](https://pypi.python.org/pypi/octobot-pro/)
 [![Downloads](https://static.pepy.tech/badge/octobot-pro/month)](https://pepy.tech/project/octobot-pro)
 [![Github-Action-CI](https://github.com/Drakkar-Software/OctoBot-Pro/workflows/OctoBot-Pro-CI/badge.svg)](https://github.com/Drakkar-Software/OctoBot-Pro/actions)
+
+## Octobot-Pro Community
+[![Telegram Chat](https://img.shields.io/badge/telegram-chat-green.svg?logo=telegram&label=Telegram)](https://octobot.click/readme-telegram-octobot-pro)
+[![Discord](https://img.shields.io/discord/530629985661222912.svg?logo=discord&label=Discord)](https://octobot.click/gh-discord-octobot-pro)
+[![Twitter](https://img.shields.io/twitter/follow/DrakkarsOctobot.svg?label=twitter&style=social)](https://octobot.click/gh-twitter-octobot-pro)
+
 
 ## OctoBot Pro is the backtesting framework using the OctoBot Ecosystem
 
@@ -79,3 +85,8 @@ asyncio.run(rsi_test())
 
 ### Generated report
 ![report-p1](https://raw.githubusercontent.com/Drakkar-Software/OctoBot-Pro/assets/images/report_1.jpg)
+
+### Join the community
+We recently created a telegram channel dedicated to OctoBot Pro.
+
+[![Telegram News](https://img.shields.io/static/v1?label=Telegram%20chat&message=Join&logo=telegram&&color=007bff&style=for-the-badge)](https://octobot.click/readme-telegram-octobot-pro)
