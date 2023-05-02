@@ -1,4 +1,4 @@
-# Octobot-Pro [0.0.8](https://github.com/Drakkar-Software/OctoBot-Pro/tree/master/CHANGELOG.md)
+# Octobot-Pro [0.0.9](https://github.com/Drakkar-Software/OctoBot-Pro/tree/master/CHANGELOG.md)
 [![PyPI](https://img.shields.io/pypi/v/octobot-pro.svg?logo=pypi)](https://pypi.python.org/pypi/octobot-pro/)
 [![Downloads](https://static.pepy.tech/badge/octobot-pro/month)](https://pepy.tech/project/octobot-pro)
 [![Github-Action-CI](https://github.com/Drakkar-Software/OctoBot-Pro/workflows/OctoBot-Pro-CI/badge.svg)](https://github.com/Drakkar-Software/OctoBot-Pro/actions)
