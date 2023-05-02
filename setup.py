@@ -43,7 +43,7 @@ setup(
     url='https://github.com/Drakkar-Software/OctoBot-Pro',
     license='GPL-3.0',
     author='Drakkar-Software',
-    author_email='drakkar-software@protonmail.com',
+    author_email='contact@drakkar.software',
     description='Backtesting framework of the OctoBot Ecosystem',
     packages=PACKAGES,
     cmdclass={'install': InstallWithPostInstallAction},
@@ -54,7 +54,6 @@ setup(
     zip_safe=False,
     data_files=[],
     include_package_data=True,  # copy non python files on install
-    setup_requires=REQUIRED,
     install_requires=REQUIRED,
     python_requires=REQUIRES_PYTHON,
     entry_points={
