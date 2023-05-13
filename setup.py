@@ -8,7 +8,7 @@ from distutils.command.install import install
 # from octobot_pro import PROJECT_NAME, VERSION
 # todo figure out how not to import octobot_pro.__init__.py here
 PROJECT_NAME = "OctoBot-Pro"
-VERSION = "0.0.9"  # major.minor.revision
+VERSION = "0.0.10"  # major.minor.revision
 
 
 def _post_install():
