@@ -8,7 +8,7 @@ from distutils.command.install import install
 # from octobot_pro import PROJECT_NAME, VERSION
 # todo figure out how not to import octobot_pro.__init__.py here
 PROJECT_NAME = "OctoBot-Pro"
-VERSION = "0.0.10"  # major.minor.revision
+VERSION = "0.0.11"  # major.minor.revision
 
 
 def _post_install():
@@ -67,7 +67,6 @@ setup(
         'Operating System :: MacOS :: MacOS X',
         'Operating System :: Microsoft :: Windows',
         'Operating System :: POSIX',
-        'Programming Language :: Python :: 3.8',
-        'Programming Language :: Python :: 3.9',
+        'Programming Language :: Python :: 3.10',
     ],
 )
