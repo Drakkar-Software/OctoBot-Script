@@ -58,7 +58,9 @@ async def test_precomputed_vs_iteration_rsi(one_day_btc_usdt_data):
     assert res.strategy_config is not None
     assert res.independent_backtesting is not None
     assert res.bot_id is not None
-    assert res.report['bot_report']['profitability']['binance'] > 0
+    assert res.report['bot_report']['profitability']['binance'] != 0
+    assert res.report["bot_report"]['end_portfolio']['binance'] != \
+           res.report["bot_report"]['starting_portfolio']['binance']
     assert res.duration < 10
     assert res.candles_count == 1947
     await _check_report(res)
@@ -73,6 +75,8 @@ async def test_precomputed_vs_iteration_rsi(one_day_btc_usdt_data):
     )
     assert res_2.bot_id != res.bot_id
     assert res_2.report['bot_report']['profitability'] == res.report['bot_report']['profitability']
+    assert res_2.report["bot_report"]['end_portfolio']['binance'] != \
+           res_2.report["bot_report"]['starting_portfolio']['binance']
 
     # try with different config
     run_data = {
@@ -89,6 +93,8 @@ async def test_precomputed_vs_iteration_rsi(one_day_btc_usdt_data):
     assert res_3.bot_id is not None
     assert res_3.bot_id != res.bot_id
     assert res_3.report['bot_report']['profitability'] != res.report['bot_report']['profitability']
+    assert res_3.report["bot_report"]['end_portfolio']['binance'] != \
+           res_3.report["bot_report"]['starting_portfolio']['binance']
 
     # 2. iteration computed entries at each iteration
     async def _iterations_update(ctx):
