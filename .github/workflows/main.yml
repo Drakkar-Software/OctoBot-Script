@@ -1,4 +1,4 @@
-name: OctoBot-Pro-CI
+name: OctoBot-Pro - CI
 on:
   push:
     branches:
