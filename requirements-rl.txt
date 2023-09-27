@@ -1,0 +1,6 @@
+numpy
+tensorflow
+gymnasium
+tqdm
+tensorboard
+stable-baselines3[mpi]

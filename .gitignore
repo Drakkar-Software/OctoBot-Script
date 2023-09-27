@@ -134,3 +134,5 @@ cython_debug/
 
 # dev env
 .env
+
+*.zip
