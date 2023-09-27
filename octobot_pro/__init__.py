@@ -56,3 +56,4 @@ except ImportError:
 from octobot_pro.constants import *
 from octobot_pro.api import *
 from octobot_pro.model import *
+from octobot_pro.ai import *
