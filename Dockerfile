@@ -2,6 +2,10 @@ FROM python:3.10-slim-buster AS base
 
 WORKDIR /pro
 
+# requires git to install requirements with git+https
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends build-essential git gcc binutils
+
 COPY . .
 
 RUN pip3 install --no-cache-dir -U setuptools wheel pip \
