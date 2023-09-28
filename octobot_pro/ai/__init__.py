@@ -1,6 +1,6 @@
-from octobot_pro.ai.callback import *
 from octobot_pro.ai.environments import *
-from octobot_pro.ai.model import *
+from octobot_pro.ai.models import *
+from octobot_pro.ai.agents import *
 
 from gymnasium.envs.registration import register
 
