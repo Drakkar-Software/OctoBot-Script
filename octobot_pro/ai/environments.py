@@ -13,47 +13,54 @@ def basic_reward_function(current_portfolio_value, previous_portfolio_value):
 
 async def basic_trade_function(ctx, action):
     (
-        action_type,
-        amount,
-        price_offset,
-        stop_loss_offset,
-        take_profit_offset,
+        buy_market_amount,
+        sell_market_amount,
+        buy_limit_amount,
+        sell_limit_amount,
     ) = list(action)
 
-    if action_type > 50:
+    price_offset = 2 # TODO to be integrated later
+    stop_loss_offset = 10 # TODO to be integrated later
+    take_profit_offset = 10 # TODO to be integrated later
+
+    if buy_market_amount > 0:
         await op.market(
             ctx,
             "buy",
-            amount=f"{abs(amount)}%",
-            stop_loss_offset=f"{stop_loss_offset}%",
-            take_profit_offset=f"{take_profit_offset}%",
+            amount=f"{buy_market_amount}%",
+            # stop_loss_offset=f"-{stop_loss_offset}%",
+            # take_profit_offset=f"{take_profit_offset}%",
         )
-    elif action_type > 0:
+    elif sell_market_amount > 0:
         await op.market(
             ctx,
             "sell",
-            amount=f"{abs(amount)}%",
-            stop_loss_offset=f"{stop_loss_offset}%",
-            take_profit_offset=f"{take_profit_offset}%",
+            amount=f"{sell_market_amount}%",
+            # stop_loss_offset=f"{stop_loss_offset}%",
+            # take_profit_offset=f"-{take_profit_offset}%",
         )
-    elif action_type > -50:
+    elif buy_limit_amount > 0:
         await op.limit(
             ctx,
             "buy",
-            amount=f"{abs(amount)}%",
+            amount=f"{buy_limit_amount}%",
+            offset=f"-{price_offset}%",
+            # stop_loss_offset=f"-{stop_loss_offset}%",
+            # take_profit_offset=f"{take_profit_offset}%",
+        )
+    elif sell_limit_amount > 0:
+        await op.limit(
+            ctx,
+            "sell",
+            amount=f"{sell_limit_amount}%",
             offset=f"{price_offset}%",
-            stop_loss_offset=f"{stop_loss_offset}%",
-            take_profit_offset=f"{take_profit_offset}%",
+            # stop_loss_offset=f"{stop_loss_offset}%",
+            # take_profit_offset=f"-{take_profit_offset}%",
         )
     else:
-        await op.limit(
-            ctx,
-            "sell",
-            amount=f"{abs(amount)}%",
-            offset=f"{price_offset}%",
-            stop_loss_offset=f"{stop_loss_offset}%",
-            take_profit_offset=f"{take_profit_offset}%",
-        )
+        # Nothing for now
+        # cancel orders, idle ?
+        pass
 
 # TODO move somewhere else
 def get_profitabilities(ctx):
@@ -97,13 +104,13 @@ class TradingEnv(gym.Env):
         self.traded_symbols = traded_symbols
         self.static_features = [] # TODO there are computed once before being used in the environement
         self.dynamic_feature_functions = dynamic_feature_functions #  are computed at each step of the environment
-        self._nb_features = 4 + len(self.traded_symbols) * 4 + len(self.static_features) + len(self.dynamic_feature_functions)
+        self._nb_features = 14 + len(self.traded_symbols) * 4 + len(self.static_features) + len(self.dynamic_feature_functions)
 
         self.reward_function = reward_function
         self.trade_function = trade_function
         self.max_episode_duration = max_episode_duration
         
-        self.action_space = spaces.Box(low=-100, high=100, shape=(5,))  # 5 float in range [-100, 100]
+        self.action_space = spaces.Box(low=0, high=100, shape=(4,))  # 4 float in range [0, 100]
         self.observation_space = spaces.Box(
             -np.inf,
             np.inf,
