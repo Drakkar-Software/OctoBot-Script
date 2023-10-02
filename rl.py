@@ -5,8 +5,9 @@ from tqdm import tqdm
 import numpy as np
 import time
 import re
-
+from tensorflow.keras.callbacks import TensorBoard
 import argparse
+
 import octobot_commons.symbols as symbols
 import octobot_pro as op
 
@@ -81,6 +82,7 @@ def main():
 
     gym_env = gym.make(id='TradingEnv', name= "test", dynamic_feature_functions=[basic_evaluation_function], traded_symbols=[symbol])
     agent = op.DQNAgent(4)
+    tensorboard_callback = TensorBoard(log_dir='tensorboard_logs', histogram_freq=1)
 
     if not args.train:
         # load trained weights
@@ -95,7 +97,7 @@ def main():
         
         if args.train and len(agent.memory) > args.batch_size:
             print("Starting replay...")
-            agent.replay(args.batch_size)
+            agent.replay(args.batch_size, tensorboard_callback)
 
         if args.train and (episode + 1) % 10 == 0:  # checkpoint weights
             print("Saving...")
