@@ -18,13 +18,16 @@ async def basic_evaluation_function(ctx):
     vol = await op.Volume(ctx, limit=30)
     rsi_v = tulipy.rsi(closes, period=10)
 
-    if (len(rsi_v) > 5 and len(closes) > 5):
-        return np.array([
-            closes[-5:],
-            vol[-5:],
-            rsi_v[-5:],
-        ], dtype=np.float32).flatten()
-    else:
+    try:
+        if (len(rsi_v) > 5 and len(closes) > 5):
+            return np.array([
+                closes[-5:],
+                vol[-5:],
+                rsi_v[-5:],
+            ], dtype=np.float32).flatten()
+        else:
+            return np.zeros(15, dtype=np.float32) 
+    except ValueError:
         return np.zeros(15, dtype=np.float32) 
 
 async def run_strategy(data, env, agent, symbol, time_frame, is_training=False, plot=False):
@@ -55,6 +58,9 @@ async def run_strategy(data, env, agent, symbol, time_frame, is_training=False, 
 
 def init_argparse() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser()
+    parser.add_argument("-ex", "--exchange", type=str, default="binance")
+    parser.add_argument("-s", "--symbol", type=str, default="BTC/USDT")
+    parser.add_argument("-tf", "--timeframe", type=str, default="1d")
     parser.add_argument("-e", "--episode", type=int, default=1)
     parser.add_argument('-b', '--batch_size', type=int, default=32,
                         help='batch size for experience replay')
@@ -69,9 +75,9 @@ def main():
     args = parser.parse_args()
 
     timestamp = time.strftime('%Y%m%d%H%M')
-    symbol = symbols.parse_symbol("BTC/USDT")
-    time_frame = "1d"
-    data = asyncio.run(op.get_data(symbol.merged_str_symbol(), time_frame, exchange='binanceus', start_timestamp=1505606400))
+    symbol = symbols.parse_symbol(args.symbol)
+    time_frame = args.timeframe
+    data = asyncio.run(op.get_data(symbol.merged_str_symbol(), time_frame, exchange=args.exchange, start_timestamp=1505606400))
 
     gym_env = gym.make(id='TradingEnv', name= "test", dynamic_feature_functions=[basic_evaluation_function], traded_symbols=[symbol])
     agent = op.DQNAgent(4)
