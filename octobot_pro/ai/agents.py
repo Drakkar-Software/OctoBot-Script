@@ -1,8 +1,8 @@
 from collections import deque
 import random
 import numpy as np
-from octobot_pro.ai.models import mlp
 
+from octobot_pro.ai.models import mlp
 
 class DQNAgent:
     def __init__(self, action_size):
@@ -23,12 +23,12 @@ class DQNAgent:
         act_values = self.model.predict(state)
         return np.argmax(act_values[0])  # returns action
 
-    def replay(self, batch_size=32):
+    def replay(self, batch_size=32, tensorboard_callback=None):
         """ vectorized implementation; 30x speed up compared with for loop """
         minibatch = random.sample(self.memory, batch_size)
 
         states = np.array([tup[0][0] for tup in minibatch])
-        actions = np.array([tup[1][0] for tup in minibatch])
+        # actions = np.array([tup[1][0] for tup in minibatch])
         rewards = np.array([tup[2] for tup in minibatch])
         next_states = np.array([tup[3][0] for tup in minibatch])
         done = np.array([tup[4] for tup in minibatch])
@@ -47,7 +47,7 @@ class DQNAgent:
         target_f[range(batch_size), 2] = target
         target_f[range(batch_size), 3] = target
 
-        self.model.fit(states, target_f, epochs=1, verbose=0)
+        self.model.fit(states, target_f, epochs=1, verbose=0, callbacks=[tensorboard_callback])
 
         if self.epsilon > self.epsilon_min:
             self.epsilon *= self.epsilon_decay
