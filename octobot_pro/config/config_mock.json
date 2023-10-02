@@ -20,6 +20,7 @@
       },
       "starting-portfolio": {
           "BTC": 0,
+          "ETH": 10,
           "USD": 0,
           "USDT": 10000
       }

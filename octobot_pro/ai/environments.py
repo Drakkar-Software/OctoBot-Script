@@ -6,10 +6,15 @@ import octobot_pro as op
 import octobot_trading.errors as octobot_trading_errors
 import octobot_trading.api as trading_api
 
-def basic_reward_function(current_portfolio_value, previous_portfolio_value):
+def basic_reward_function(current_portfolio_value, previous_portfolio_value, current_profitability, market_profitability):
     if previous_portfolio_value is None:
         return 0
-    return np.log(float(current_portfolio_value) / float(previous_portfolio_value))
+    try:
+        pf_reward = np.log(float(current_portfolio_value) / float(previous_portfolio_value))
+        prof_reward = np.log(float(current_profitability) / float(market_profitability))
+        return 0 if np.isnan(pf_reward) else pf_reward + 0 if np.isnan(prof_reward) else prof_reward
+    except ZeroDivisionError:
+        return 0
 
 async def basic_trade_function(ctx, action):
     try:
@@ -162,7 +167,13 @@ class TradingEnv(gym.Env):
 
         if not done and forced_reward is None:
             current_pf_value = get_current_portfolio_value(ctx)
-            reward = self.reward_function(current_pf_value, self._previous_portfolio_value)
+            profitabilities = get_profitabilities(ctx)
+            current_profitability = profitabilities[1]
+            market_profitability = profitabilities[3]
+            reward = self.reward_function(current_pf_value, 
+                                          self._previous_portfolio_value, 
+                                          current_profitability, 
+                                          market_profitability)
             self._previous_portfolio_value = current_pf_value
         else:
             reward = forced_reward

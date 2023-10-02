@@ -2,6 +2,7 @@ import asyncio
 import tulipy
 import gymnasium as gym
 from tqdm import tqdm
+from datetime import datetime
 import numpy as np
 import time
 import re
@@ -82,11 +83,13 @@ def main():
 
     gym_env = gym.make(id='TradingEnv', name= "test", dynamic_feature_functions=[basic_evaluation_function], traded_symbols=[symbol])
     agent = op.DQNAgent(4)
-    tensorboard_callback = TensorBoard(log_dir='tensorboard_logs', histogram_freq=1)
+
+    logdir = "tensorboard_logs/scalars/" + datetime.now().strftime("%Y%m%d-%H%M%S")
+    tensorboard_callback = TensorBoard(log_dir=logdir, histogram_freq=1)
 
     if args.weights:
         print(f"Loading model {args.weights}...")
-        
+
         # load trained weights
         agent.load(args.weights)
     elif not args.train:
