@@ -33,7 +33,7 @@ async def basic_trade_function(ctx, action):
             await op.market(
                 ctx,
                 "buy",
-                amount=f"{buy_market_amount}%",
+                amount=f"{min(buy_market_amount, 100)}%",
                 # stop_loss_offset=f"-{stop_loss_offset}%",
                 # take_profit_offset=f"{take_profit_offset}%",
             )
@@ -41,7 +41,7 @@ async def basic_trade_function(ctx, action):
             await op.market(
                 ctx,
                 "sell",
-                amount=f"{sell_market_amount}%",
+                amount=f"{min(sell_market_amount, 100)}%",
                 # stop_loss_offset=f"{stop_loss_offset}%",
                 # take_profit_offset=f"-{take_profit_offset}%",
             )
@@ -49,7 +49,7 @@ async def basic_trade_function(ctx, action):
             await op.limit(
                 ctx,
                 "buy",
-                amount=f"{buy_limit_amount}%",
+                amount=f"{min(buy_limit_amount, 100)}%",
                 offset=f"-{price_offset}%",
                 # stop_loss_offset=f"-{stop_loss_offset}%",
                 # take_profit_offset=f"{take_profit_offset}%",
@@ -58,7 +58,7 @@ async def basic_trade_function(ctx, action):
             await op.limit(
                 ctx,
                 "sell",
-                amount=f"{sell_limit_amount}%",
+                amount=f"{min(sell_limit_amount, 100)}%",
                 offset=f"{price_offset}%",
                 # stop_loss_offset=f"{stop_loss_offset}%",
                 # take_profit_offset=f"-{take_profit_offset}%",
