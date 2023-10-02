@@ -12,54 +12,57 @@ def basic_reward_function(current_portfolio_value, previous_portfolio_value):
     return np.log(float(current_portfolio_value) / float(previous_portfolio_value))
 
 async def basic_trade_function(ctx, action):
-    (
-        buy_market_amount,
-        sell_market_amount,
-        buy_limit_amount,
-        sell_limit_amount,
-    ) = list(action)
+    try:
+        (
+            buy_market_amount,
+            sell_market_amount,
+            buy_limit_amount,
+            sell_limit_amount,
+        ) = list(action)
 
-    price_offset = 2 # TODO to be integrated later
-    stop_loss_offset = 10 # TODO to be integrated later
-    take_profit_offset = 10 # TODO to be integrated later
+        price_offset = 2 # TODO to be integrated later
+        stop_loss_offset = 10 # TODO to be integrated later
+        take_profit_offset = 10 # TODO to be integrated later
 
-    if buy_market_amount > 0:
-        await op.market(
-            ctx,
-            "buy",
-            amount=f"{buy_market_amount}%",
-            # stop_loss_offset=f"-{stop_loss_offset}%",
-            # take_profit_offset=f"{take_profit_offset}%",
-        )
-    elif sell_market_amount > 0:
-        await op.market(
-            ctx,
-            "sell",
-            amount=f"{sell_market_amount}%",
-            # stop_loss_offset=f"{stop_loss_offset}%",
-            # take_profit_offset=f"-{take_profit_offset}%",
-        )
-    elif buy_limit_amount > 0:
-        await op.limit(
-            ctx,
-            "buy",
-            amount=f"{buy_limit_amount}%",
-            offset=f"-{price_offset}%",
-            # stop_loss_offset=f"-{stop_loss_offset}%",
-            # take_profit_offset=f"{take_profit_offset}%",
-        )
-    elif sell_limit_amount > 0:
-        await op.limit(
-            ctx,
-            "sell",
-            amount=f"{sell_limit_amount}%",
-            offset=f"{price_offset}%",
-            # stop_loss_offset=f"{stop_loss_offset}%",
-            # take_profit_offset=f"-{take_profit_offset}%",
-        )
-    else:
-        # Nothing for now
-        # cancel orders, idle ?
+        if buy_market_amount > 0:
+            await op.market(
+                ctx,
+                "buy",
+                amount=f"{buy_market_amount}%",
+                # stop_loss_offset=f"-{stop_loss_offset}%",
+                # take_profit_offset=f"{take_profit_offset}%",
+            )
+        elif sell_market_amount > 0:
+            await op.market(
+                ctx,
+                "sell",
+                amount=f"{sell_market_amount}%",
+                # stop_loss_offset=f"{stop_loss_offset}%",
+                # take_profit_offset=f"-{take_profit_offset}%",
+            )
+        elif buy_limit_amount > 0:
+            await op.limit(
+                ctx,
+                "buy",
+                amount=f"{buy_limit_amount}%",
+                offset=f"-{price_offset}%",
+                # stop_loss_offset=f"-{stop_loss_offset}%",
+                # take_profit_offset=f"{take_profit_offset}%",
+            )
+        elif sell_limit_amount > 0:
+            await op.limit(
+                ctx,
+                "sell",
+                amount=f"{sell_limit_amount}%",
+                offset=f"{price_offset}%",
+                # stop_loss_offset=f"{stop_loss_offset}%",
+                # take_profit_offset=f"-{take_profit_offset}%",
+            )
+        else:
+            # Nothing for now
+            # cancel orders, idle ?
+            pass
+    except TypeError:
         pass
 
 # TODO move somewhere else
