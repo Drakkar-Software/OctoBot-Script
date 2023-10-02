@@ -32,7 +32,7 @@ async def basic_trade_function(ctx, action):
                 # stop_loss_offset=f"-{stop_loss_offset}%",
                 # take_profit_offset=f"{take_profit_offset}%",
             )
-        elif sell_market_amount > 0:
+        if sell_market_amount > 0:
             await op.market(
                 ctx,
                 "sell",
@@ -40,7 +40,7 @@ async def basic_trade_function(ctx, action):
                 # stop_loss_offset=f"{stop_loss_offset}%",
                 # take_profit_offset=f"-{take_profit_offset}%",
             )
-        elif buy_limit_amount > 0:
+        if buy_limit_amount > 0:
             await op.limit(
                 ctx,
                 "buy",
@@ -49,7 +49,7 @@ async def basic_trade_function(ctx, action):
                 # stop_loss_offset=f"-{stop_loss_offset}%",
                 # take_profit_offset=f"{take_profit_offset}%",
             )
-        elif sell_limit_amount > 0:
+        if sell_limit_amount > 0:
             await op.limit(
                 ctx,
                 "sell",

@@ -84,12 +84,14 @@ def main():
     agent = op.DQNAgent(4)
     tensorboard_callback = TensorBoard(log_dir='tensorboard_logs', histogram_freq=1)
 
-    if not args.train:
+    if args.weights:
+        print(f"Loading model {args.weights}...")
+        
         # load trained weights
         agent.load(args.weights)
-        
-        # when test, the timestamp is same as time when weights was trained
-        timestamp = re.findall(r'\d{12}', args.weights)[0]
+    elif not args.train:
+        print("weights has not be provided when using model!")
+        return
 
     for episode in range(args.episode):
         print(f"Starting episode {episode}...") 
