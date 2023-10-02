@@ -71,7 +71,7 @@ def main():
     timestamp = time.strftime('%Y%m%d%H%M')
     symbol = symbols.parse_symbol("BTC/USDT")
     time_frame = "1d"
-    data = asyncio.run(op.get_data(symbol.merged_str_symbol(), time_frame, exchange='binance', start_timestamp=1505606400))
+    data = asyncio.run(op.get_data(symbol.merged_str_symbol(), time_frame, exchange='binanceus', start_timestamp=1505606400))
 
     gym_env = gym.make(id='TradingEnv', name= "test", dynamic_feature_functions=[basic_evaluation_function], traded_symbols=[symbol])
     agent = op.DQNAgent(4)
