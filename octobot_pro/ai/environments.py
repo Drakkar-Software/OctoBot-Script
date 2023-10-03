@@ -21,72 +21,55 @@ async def basic_trade_function(ctx, actions):
     try:
         (
             order_type,
-            order_amount_type,
-            order_price_offset_type,
-            should_set_stop_loss_or_take_profit,
+            order_amount,
+            order_price_offset,
+            stop_loss_or_take_profit,
         ) = list(actions)
+        
+        real_order_amout = min(abs(order_amount), 1) * 100
+        real_order_price_offset = min(abs(order_price_offset), 1) * 10
 
-        stop_loss_offset = 3 # to be integrated later as model variable
-        take_profit_offset = 3 # to be integrated later as model variable
-        
-        if order_amount_type > 0.75:
-            order_amount = 50
-        elif order_amount_type > 0.5:
-            order_amount = 20
-        elif order_amount_type > 0.25:
-            order_amount = 10
-        elif order_amount_type > -0.5:
-            order_amount = 5
-        else:
-            order_amount = 2
-        
-        if order_price_offset_type > 0.5:
-            order_price_offset = 8
-        elif order_amount_type > 0:
-            order_price_offset = 4
-        elif order_amount_type > -0.5:
-            order_price_offset = 2
-        else:
-            order_price_offset = 1
-        
-        # TODO enable both stop loss and take profit ?
-        should_set_stop_loss = True if should_set_stop_loss_or_take_profit < -0.5 else False
-        should_set_take_profit_loss = True if should_set_stop_loss_or_take_profit > 0.5 else False
+        real_take_profit_offset = 0
+        real_stop_loss_offset = 0
+        if stop_loss_or_take_profit > 0:
+            real_take_profit_offset = min(abs(stop_loss_or_take_profit), 1) * 10
+        elif stop_loss_or_take_profit < 0:
+            real_stop_loss_offset = min(abs(stop_loss_or_take_profit), 1) * 10
 
         created_orders = []
         if order_type > 0.66:
             created_orders.append(await op.market(
                 ctx,
                 "buy",
-                amount=f"{min(order_amount, 100)}%",
-                stop_loss_offset=f"-{stop_loss_offset}%" if should_set_stop_loss else None,
-                take_profit_offset=f"{take_profit_offset}%" if should_set_take_profit_loss else None,
+                amount=f"{real_order_amout}%",
+                stop_loss_offset=f"-{real_stop_loss_offset}%" if real_stop_loss_offset != 0 else None,
+                take_profit_offset=f"{real_take_profit_offset}%" if real_take_profit_offset != 0 else None,
             ))
         elif order_type > 0.33:
             created_orders.append(await op.market(
                 ctx,
                 "sell",
-                amount=f"{min(order_amount, 100)}%",
-                # stop_loss_offset=f"{stop_loss_offset}%" if should_set_stop_loss else None, => disable for now
-                # take_profit_offset=f"-{take_profit_offset}%" if should_set_take_profit_loss else None, => disable for now
+                amount=f"{real_order_amout}%",
+                stop_loss_offset=f"{real_stop_loss_offset}%" if real_stop_loss_offset != 0 else None,
+                take_profit_offset=f"-{real_take_profit_offset}%" if real_take_profit_offset != 0 else None,
             ))
         if order_type > 0:
             created_orders.append(await op.limit(
                 ctx,
                 "buy",
-                amount=f"{min(order_amount, 100)}%",
-                offset=f"-{order_price_offset}%",
-                stop_loss_offset=f"-{stop_loss_offset}%" if should_set_stop_loss else None,
-                take_profit_offset=f"{take_profit_offset}%" if should_set_take_profit_loss else None,
+                amount=f"{real_order_amout}%",
+                offset=f"-{real_order_price_offset}%",
+                stop_loss_offset=f"-{real_stop_loss_offset}%" if real_stop_loss_offset != 0 else None,
+                take_profit_offset=f"{real_take_profit_offset}%" if real_take_profit_offset != 0 else None,
             ))
         if order_type > -0.33:
             created_orders.append(await op.limit(
                 ctx,
                 "sell",
-                amount=f"{min(order_amount, 100)}%",
-                offset=f"{order_price_offset}%",
-                # stop_loss_offset=f"{stop_loss_offset}%" if should_set_stop_loss else None, => disable for now
-                # take_profit_offset=f"-{take_profit_offset}%" if should_set_take_profit_loss else None, => disable for now
+                amount=f"{real_order_amout}%",
+                offset=f"{real_order_price_offset}%",
+                stop_loss_offset=f"{real_stop_loss_offset}%" if real_stop_loss_offset != 0 else None,
+                take_profit_offset=f"-{real_take_profit_offset}%" if real_take_profit_offset != 0 else None,
             ))
         else:
             # Nothing for now
