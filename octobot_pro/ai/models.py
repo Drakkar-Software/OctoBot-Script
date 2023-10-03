@@ -12,7 +12,7 @@ def mlp(n_action, n_hidden_layer=1, n_neuron_per_layer=32,
     model.add(Dense(n_neuron_per_layer, input_dim=1, activation=activation))
     for _ in range(n_hidden_layer):
         model.add(Dense(n_neuron_per_layer, activation=activation))
-    model.add(Dense(n_action, activation='linear'))
+    model.add(Dense(n_action, activation='relu'))
     model.compile(loss=loss, optimizer=Adam())
     print(model.summary())
     return model

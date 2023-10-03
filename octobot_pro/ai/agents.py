@@ -19,7 +19,7 @@ class DQNAgent:
 
     def act(self, state):
         if np.random.rand() <= self.epsilon:
-            return [random.uniform(0, 100) for _ in range(self.action_size)]
+            return [random.uniform(-1, 1) for _ in range(self.action_size)]
         act_values = self.model.predict(state)
         return np.argmax(act_values[0])  # returns action
 
@@ -45,7 +45,6 @@ class DQNAgent:
         target_f[range(batch_size), 0] = target
         target_f[range(batch_size), 1] = target
         target_f[range(batch_size), 2] = target
-        target_f[range(batch_size), 3] = target
 
         self.model.fit(states, target_f, epochs=1, verbose=0, callbacks=[tensorboard_callback])
 
