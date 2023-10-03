@@ -1,7 +1,6 @@
 import asyncio
 import tulipy
 import gymnasium as gym
-from tqdm import tqdm
 from datetime import datetime
 import numpy as np
 import time

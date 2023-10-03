@@ -1,3 +1,4 @@
+# pylint: disable=maybe-no-member
 import gymnasium as gym
 from gymnasium import spaces
 import numpy as np
@@ -25,8 +26,7 @@ async def basic_trade_function(ctx, actions):
             order_price_offset,
             stop_loss_or_take_profit,
         ) = list(actions)
-        
-        real_order_amout = min(abs(order_amount), 1) * 100
+        real_order_amout = min(abs(order_amount), 1) * 30 # max 30%
         real_order_price_offset = min(abs(order_price_offset), 1) * 10
 
         real_take_profit_offset = 0
