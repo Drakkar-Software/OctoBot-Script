@@ -81,7 +81,7 @@ def main():
     timestamp = time.strftime('%Y%m%d%H%M')
     symbol = symbols.parse_symbol(args.symbol)
     time_frame = args.timeframe
-    data = asyncio.run(op.get_data(symbol.merged_str_symbol(), time_frame, exchange=args.exchange)) # , start_timestamp=1505606400
+    data = asyncio.run(op.get_data(symbol.merged_str_symbol(), time_frame, exchange=args.exchange, start_timestamp=1505606400))
 
     gym_env = gym.make(action_types=[0, 0, 0, 0], id='TradingEnv', name= "test", dynamic_feature_functions=[basic_evaluation_function], traded_symbols=[symbol])
     agent = op.DQNAgent(4)
