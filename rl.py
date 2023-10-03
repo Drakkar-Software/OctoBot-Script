@@ -5,7 +5,6 @@ from tqdm import tqdm
 from datetime import datetime
 import numpy as np
 import time
-import re
 from tensorflow.keras.callbacks import TensorBoard
 import argparse
 
@@ -23,14 +22,17 @@ async def basic_evaluation_function(ctx):
     try:
         if (len(rsi_v) > 5 and len(closes) > 5):
             return np.array([
-                closes[-5:],
-                vol[-5:],
-                rsi_v[-5:],
+                closes[-10:],
+                open[-10:],
+                high[-10:],
+                low[-10:],
+                vol[-10:],
+                rsi_v[-10:],
             ], dtype=np.float32).flatten()
         else:
-            return np.zeros(15, dtype=np.float32) 
+            return np.zeros(60, dtype=np.float32) 
     except ValueError:
-        return np.zeros(15, dtype=np.float32) 
+        return np.zeros(60, dtype=np.float32) 
 
 async def run_strategy(data, env, agent, symbol, time_frame, is_training=False, plot=False):
     async def strategy(ctx):
@@ -81,11 +83,11 @@ def main():
     time_frame = args.timeframe
     data = asyncio.run(op.get_data(symbol.merged_str_symbol(), time_frame, exchange=args.exchange, start_timestamp=1505606400))
 
-    gym_env = gym.make(id='TradingEnv', name= "test", dynamic_feature_functions=[basic_evaluation_function], traded_symbols=[symbol])
+    gym_env = gym.make(action_types=[0, 0, 0, 0], id='TradingEnv', name= "test", dynamic_feature_functions=[basic_evaluation_function], traded_symbols=[symbol])
     agent = op.DQNAgent(4)
 
     logdir = "tensorboard_logs/scalars/" + datetime.now().strftime("%Y%m%d-%H%M%S")
-    tensorboard_callback = TensorBoard(log_dir=logdir, histogram_freq=1)
+    tensorboard_callback = TensorBoard(log_dir=logdir)
 
     if args.weights:
         print(f"Loading model {args.weights}...")

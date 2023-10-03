@@ -6,67 +6,93 @@ import octobot_pro as op
 import octobot_trading.errors as octobot_trading_errors
 import octobot_trading.api as trading_api
 
-def basic_reward_function(current_portfolio_value, previous_portfolio_value, current_profitability, market_profitability):
+def basic_reward_function(current_portfolio_value, previous_portfolio_value, current_profitability, market_profitability, created_orders):
     if previous_portfolio_value is None:
         return 0
     try:
         pf_reward = np.log(float(current_portfolio_value) / float(previous_portfolio_value))
         prof_reward = np.log(float(current_profitability) / float(market_profitability))
-        return 0 if np.isnan(pf_reward) else pf_reward + 0 if np.isnan(prof_reward) else prof_reward
+        reward = 0 if np.isnan(pf_reward) else pf_reward + 0 if np.isnan(prof_reward) else prof_reward
+        return reward
     except ZeroDivisionError:
         return 0
 
-async def basic_trade_function(ctx, action):
+async def basic_trade_function(ctx, actions):
     try:
         (
-            buy_market_amount,
-            sell_market_amount,
-            buy_limit_amount,
-            sell_limit_amount,
-        ) = list(action)
+            order_type,
+            order_amount_type,
+            order_price_offset_type,
+            should_set_stop_loss_or_take_profit,
+        ) = list(actions)
 
-        price_offset = 2 # TODO to be integrated later
-        stop_loss_offset = 10 # TODO to be integrated later
-        take_profit_offset = 10 # TODO to be integrated later
+        stop_loss_offset = 3 # to be integrated later as model variable
+        take_profit_offset = 3 # to be integrated later as model variable
+        
+        if order_amount_type > 0.75:
+            order_amount = 50
+        elif order_amount_type > 0.5:
+            order_amount = 20
+        elif order_amount_type > 0.25:
+            order_amount = 10
+        elif order_amount_type > -0.5:
+            order_amount = 5
+        else:
+            order_amount = 2
+        
+        if order_price_offset_type > 0.5:
+            order_price_offset = 8
+        elif order_amount_type > 0:
+            order_price_offset = 4
+        elif order_amount_type > -0.5:
+            order_price_offset = 2
+        else:
+            order_price_offset = 1
+        
+        # TODO enable both stop loss and take profit ?
+        should_set_stop_loss = True if should_set_stop_loss_or_take_profit < -0.5 else False
+        should_set_take_profit_loss = True if should_set_stop_loss_or_take_profit > 0.5 else False
 
-        if buy_market_amount > 0:
-            await op.market(
+        created_orders = []
+        if order_type > 0.66:
+            created_orders.append(await op.market(
                 ctx,
                 "buy",
-                amount=f"{min(buy_market_amount, 100)}%",
-                # stop_loss_offset=f"-{stop_loss_offset}%",
-                # take_profit_offset=f"{take_profit_offset}%",
-            )
-        if sell_market_amount > 0:
-            await op.market(
+                amount=f"{min(order_amount, 100)}%",
+                stop_loss_offset=f"-{stop_loss_offset}%" if should_set_stop_loss else None,
+                take_profit_offset=f"{take_profit_offset}%" if should_set_take_profit_loss else None,
+            ))
+        elif order_type > 0.33:
+            created_orders.append(await op.market(
                 ctx,
                 "sell",
-                amount=f"{min(sell_market_amount, 100)}%",
-                # stop_loss_offset=f"{stop_loss_offset}%",
-                # take_profit_offset=f"-{take_profit_offset}%",
-            )
-        if buy_limit_amount > 0:
-            await op.limit(
+                amount=f"{min(order_amount, 100)}%",
+                # stop_loss_offset=f"{stop_loss_offset}%" if should_set_stop_loss else None, => disable for now
+                # take_profit_offset=f"-{take_profit_offset}%" if should_set_take_profit_loss else None, => disable for now
+            ))
+        if order_type > 0:
+            created_orders.append(await op.limit(
                 ctx,
                 "buy",
-                amount=f"{min(buy_limit_amount, 100)}%",
-                offset=f"-{price_offset}%",
-                # stop_loss_offset=f"-{stop_loss_offset}%",
-                # take_profit_offset=f"{take_profit_offset}%",
-            )
-        if sell_limit_amount > 0:
-            await op.limit(
+                amount=f"{min(order_amount, 100)}%",
+                offset=f"-{order_price_offset}%",
+                stop_loss_offset=f"-{stop_loss_offset}%" if should_set_stop_loss else None,
+                take_profit_offset=f"{take_profit_offset}%" if should_set_take_profit_loss else None,
+            ))
+        if order_type > -0.33:
+            created_orders.append(await op.limit(
                 ctx,
                 "sell",
-                amount=f"{min(sell_limit_amount, 100)}%",
-                offset=f"{price_offset}%",
-                # stop_loss_offset=f"{stop_loss_offset}%",
-                # take_profit_offset=f"-{take_profit_offset}%",
-            )
+                amount=f"{min(order_amount, 100)}%",
+                offset=f"{order_price_offset}%",
+                # stop_loss_offset=f"{stop_loss_offset}%" if should_set_stop_loss else None, => disable for now
+                # take_profit_offset=f"-{take_profit_offset}%" if should_set_take_profit_loss else None, => disable for now
+            ))
         else:
             # Nothing for now
             # cancel orders, idle ?
             pass
+        return created_orders
     except TypeError:
         pass
 
@@ -94,7 +120,7 @@ def get_flatten_pf(current_portfolio, symbol):
 
 class TradingEnv(gym.Env):
     def __init__(self,
-                action_types : list = [0, 0, 0, 0, 0],
+                action_types=[0],
                 dynamic_feature_functions = [],
                 reward_function = basic_reward_function,
                 trade_function = basic_trade_function,
@@ -108,17 +134,16 @@ class TradingEnv(gym.Env):
         self.verbose = verbose
         self.is_reset = False
 
-        self.action_types = action_types
         self.traded_symbols = traded_symbols
         self.static_features = [] # TODO there are computed once before being used in the environement
         self.dynamic_feature_functions = dynamic_feature_functions #  are computed at each step of the environment
-        self._nb_features = 14 + len(self.traded_symbols) * 4 + len(self.static_features) + len(self.dynamic_feature_functions)
+        self._nb_features = 59 + len(self.traded_symbols) * 4 + len(self.static_features) + len(self.dynamic_feature_functions)
 
         self.reward_function = reward_function
         self.trade_function = trade_function
         self.max_episode_duration = max_episode_duration
         
-        self.action_space = spaces.Box(low=0, high=100, shape=(4,))  # 4 float in range [0, 100]
+        self.action_space = spaces.Box(low=-1, high=1, shape=(len(action_types),))  # 3 float in range [0, 1]
         self.observation_space = spaces.Box(
             -np.inf,
             np.inf,
@@ -156,7 +181,7 @@ class TradingEnv(gym.Env):
         forced_reward = None
         # take content
         try: 
-            await self.trade_function(ctx, content)
+            created_orders = await self.trade_function(ctx, content)
         except octobot_trading_errors.PortfolioNegativeValueError:
             forced_reward = -1
 
@@ -173,7 +198,8 @@ class TradingEnv(gym.Env):
             reward = self.reward_function(current_pf_value, 
                                           self._previous_portfolio_value, 
                                           current_profitability, 
-                                          market_profitability)
+                                          market_profitability,
+                                          created_orders)
             self._previous_portfolio_value = current_pf_value
         else:
             reward = forced_reward
