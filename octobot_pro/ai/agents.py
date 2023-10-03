@@ -24,6 +24,7 @@ class DQNAgent:
         return np.argmax(act_values[0])  # returns action
 
     def replay(self, batch_size=32, tensorboard_callback=None):
+        # pylint: disable=unsubscriptable-object
         """ vectorized implementation; 30x speed up compared with for loop """
         minibatch = random.sample(self.memory, batch_size)
 
