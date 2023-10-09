@@ -18,7 +18,7 @@ import pytest
 import os
 import tulipy
 
-import octobot_script as op
+import octobot_script as obs
 from tests.functionnal import one_day_btc_usdt_data
 
 
@@ -30,8 +30,8 @@ async def test_precomputed_vs_iteration_rsi(one_day_btc_usdt_data):
     # 1. pre-compute entries at first iteration only
     async def _pre_compute_update(ctx):
         if run_data["entries"] is None:
-            closes = await op.Close(ctx, max_history=True)
-            times = await op.Time(ctx, max_history=True, use_close_time=True)
+            closes = await obs.Close(ctx, max_history=True)
+            times = await obs.Time(ctx, max_history=True, use_close_time=True)
             rsi_v = tulipy.rsi(closes, period=ctx.tentacle.trading_config["period"])
             delta = len(closes) - len(rsi_v)
             run_data["entries"] = {
@@ -39,9 +39,9 @@ async def test_precomputed_vs_iteration_rsi(one_day_btc_usdt_data):
                 for index, rsi_val in enumerate(rsi_v)
                 if rsi_val < ctx.tentacle.trading_config["rsi_value_buy_threshold"]
             }
-            await op.plot_indicator(ctx, "RSI", times[delta:], rsi_v, run_data["entries"])
-        if op.current_live_time(ctx) in run_data["entries"]:
-            await op.market(ctx, "buy", amount="10%", stop_loss_offset="-15%", take_profit_offset="25%")
+            await obs.plot_indicator(ctx, "RSI", times[delta:], rsi_v, run_data["entries"])
+        if obs.current_live_time(ctx) in run_data["entries"]:
+            await obs.market(ctx, "buy", amount="10%", stop_loss_offset="-15%", take_profit_offset="25%")
     run_data = {
         "entries": None,
     }
@@ -49,7 +49,7 @@ async def test_precomputed_vs_iteration_rsi(one_day_btc_usdt_data):
         "period": 10,
         "rsi_value_buy_threshold": 28,
     }
-    res = await op.run(
+    res = await obs.run(
         one_day_btc_usdt_data, _pre_compute_update, config,
         enable_logs=False, enable_storage=True
     )
@@ -69,7 +69,7 @@ async def test_precomputed_vs_iteration_rsi(one_day_btc_usdt_data):
     run_data = {
         "entries": None,
     }
-    res_2 = await op.run(
+    res_2 = await obs.run(
         one_day_btc_usdt_data, _pre_compute_update, config,
         enable_logs=True, enable_storage=False
     )
@@ -86,7 +86,7 @@ async def test_precomputed_vs_iteration_rsi(one_day_btc_usdt_data):
         "period": 10,
         "rsi_value_buy_threshold": 10,
     }
-    res_3 = await op.run(
+    res_3 = await obs.run(
         one_day_btc_usdt_data, _pre_compute_update, config,
         enable_logs=False, enable_storage=False
     )
@@ -98,17 +98,17 @@ async def test_precomputed_vs_iteration_rsi(one_day_btc_usdt_data):
 
     # 2. iteration computed entries at each iteration
     async def _iterations_update(ctx):
-        if op.current_live_time(ctx) != await op.current_candle_time(
+        if obs.current_live_time(ctx) != await obs.current_candle_time(
                 ctx, use_close_time=True):
             return
-        close = await op.Close(ctx)
+        close = await obs.Close(ctx)
         if len(close) <= ctx.tentacle.trading_config["period"]:
             return
         rsi_v = tulipy.rsi(close, period=ctx.tentacle.trading_config["period"])
         if rsi_v[-1] < ctx.tentacle.trading_config["rsi_value_buy_threshold"]:
-            await op.market(ctx, "buy", amount="10%", stop_loss_offset="-15%", take_profit_offset="25%")
+            await obs.market(ctx, "buy", amount="10%", stop_loss_offset="-15%", take_profit_offset="25%")
 
-    res_iteration = await op.run(
+    res_iteration = await obs.run(
         one_day_btc_usdt_data, _iterations_update, config,
         enable_logs=False, enable_storage=False
     )

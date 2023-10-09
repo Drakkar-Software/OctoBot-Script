@@ -3,7 +3,7 @@ import gymnasium as gym
 from gymnasium import spaces
 import numpy as np
 
-import octobot_script as op
+import octobot_script as obs
 import octobot_trading.errors as octobot_trading_errors
 import octobot_trading.api as trading_api
 
@@ -38,7 +38,7 @@ async def basic_trade_function(ctx, actions):
 
         created_orders = []
         if order_type > 0.66:
-            created_orders.append(await op.market(
+            created_orders.append(await obs.market(
                 ctx,
                 "buy",
                 amount=f"{real_order_amout}%",
@@ -46,7 +46,7 @@ async def basic_trade_function(ctx, actions):
                 take_profit_offset=f"{real_take_profit_offset}%" if real_take_profit_offset != 0 else None,
             ))
         elif order_type > 0.33:
-            created_orders.append(await op.market(
+            created_orders.append(await obs.market(
                 ctx,
                 "sell",
                 amount=f"{real_order_amout}%",
@@ -54,7 +54,7 @@ async def basic_trade_function(ctx, actions):
                 take_profit_offset=f"-{real_take_profit_offset}%" if real_take_profit_offset != 0 else None,
             ))
         if order_type > 0:
-            created_orders.append(await op.limit(
+            created_orders.append(await obs.limit(
                 ctx,
                 "buy",
                 amount=f"{real_order_amout}%",
@@ -63,7 +63,7 @@ async def basic_trade_function(ctx, actions):
                 take_profit_offset=f"{real_take_profit_offset}%" if real_take_profit_offset != 0 else None,
             ))
         if order_type > -0.33:
-            created_orders.append(await op.limit(
+            created_orders.append(await obs.limit(
                 ctx,
                 "sell",
                 amount=f"{real_order_amout}%",

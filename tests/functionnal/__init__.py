@@ -16,7 +16,7 @@
 
 import pytest_asyncio
 import os
-import octobot_script as op
+import octobot_script as obs
 
 
 # only load config once
@@ -28,7 +28,7 @@ ONE_DAY_BTC_USDT_DATA = os.path.join(BACKTESTING_FILES_DIR, "ExchangeHistoryData
 async def one_day_btc_usdt_data():
     data = None
     try:
-        data = await op.get_data("BTC/USDT", "1d", start_timestamp=1505606400, data_file=ONE_DAY_BTC_USDT_DATA)
+        data = await obs.get_data("BTC/USDT", "1d", start_timestamp=1505606400, data_file=ONE_DAY_BTC_USDT_DATA)
         yield data
     finally:
         if data is not None:

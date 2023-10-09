@@ -8,14 +8,14 @@ from tensorflow.keras.callbacks import TensorBoard
 import argparse
 
 import octobot_commons.symbols as symbols
-import octobot_script as op
+import octobot_script as obs
 
 async def basic_evaluation_function(ctx):
-    closes = await op.Close(ctx, max_history=True)
-    open = await op.Open(ctx, limit=30)
-    high = await op.High(ctx, limit=30)
-    low = await op.Low(ctx, limit=30)
-    vol = await op.Volume(ctx, limit=30)
+    closes = await obs.Close(ctx, max_history=True)
+    open = await obs.Open(ctx, limit=30)
+    high = await obs.High(ctx, limit=30)
+    low = await obs.Low(ctx, limit=30)
+    vol = await obs.Volume(ctx, limit=30)
     rsi_v = tulipy.rsi(closes, period=10)
 
     try:
@@ -53,7 +53,7 @@ async def run_strategy(data, env, agent, symbol, time_frame, is_training=False, 
             agent.remember(state, action, reward, next_state, done)  
 
     # Run a backtest using the above data, strategy and configuration.
-    res = await op.run(data, strategy, {}, enable_logs=False)
+    res = await obs.run(data, strategy, {}, enable_logs=False)
 
     if plot:
         print(res.describe())
@@ -80,10 +80,10 @@ def main():
     timestamp = time.strftime('%Y%m%d%H%M')
     symbol = symbols.parse_symbol(args.symbol)
     time_frame = args.timeframe
-    data = asyncio.run(op.get_data(symbol.merged_str_symbol(), time_frame, exchange=args.exchange, start_timestamp=1505606400))
+    data = asyncio.run(obs.get_data(symbol.merged_str_symbol(), time_frame, exchange=args.exchange, start_timestamp=1505606400))
 
     gym_env = gym.make(action_types=[0, 0, 0, 0], id='TradingEnv', name= "test", dynamic_feature_functions=[basic_evaluation_function], traded_symbols=[symbol])
-    agent = op.DQNAgent(4)
+    agent = obs.DQNAgent(4)
 
     logdir = "tensorboard_logs/scalars/" + datetime.now().strftime("%Y%m%d-%H%M%S")
     tensorboard_callback = TensorBoard(log_dir=logdir)
