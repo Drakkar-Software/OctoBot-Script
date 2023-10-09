@@ -20,7 +20,7 @@ import mock
 import octobot_commons.enums as commons_enums
 import octobot_trading.enums as trading_enums
 import octobot_backtesting.api as backtesting_api
-import octobot_script as op
+import octobot_script as obs
 import octobot_script.api.data_fetching as data_fetching
 
 from tests import mocked_config, TEST_CONFIG, TEST_TENTACLES_CONFIG
@@ -33,7 +33,7 @@ pytestmark = pytest.mark.asyncio
 async def test_historical_data():
     with mock.patch.object(backtesting_api, "initialize_and_run_data_collector", mock.AsyncMock(return_value="data")) \
          as initialize_and_run_data_collector_mock:
-        assert await op.historical_data("BTC/USDT", commons_enums.TimeFrames.ONE_DAY.value) == "data"
+        assert await obs.historical_data("BTC/USDT", commons_enums.TimeFrames.ONE_DAY.value) == "data"
         initialize_and_run_data_collector_mock.assert_awaited_once()
 
 
@@ -42,7 +42,7 @@ async def test_get_data(mocked_config):
                            mock.AsyncMock(return_value="data")) as historical_data_mock, \
             mock.patch.object(backtesting_api, "create_and_init_backtest_data",
                               mock.AsyncMock(return_value="backtest_data")) as create_and_init_backtest_data_mock:
-        assert await op.get_data("BTC/USDT", commons_enums.TimeFrames.ONE_DAY.value) == "backtest_data"
+        assert await obs.get_data("BTC/USDT", commons_enums.TimeFrames.ONE_DAY.value) == "backtest_data"
         historical_data_mock.assert_awaited_once_with(
             "BTC/USDT",
             timeframe=commons_enums.TimeFrames.ONE_DAY.value,
@@ -58,7 +58,7 @@ async def test_get_data(mocked_config):
         )
         historical_data_mock.reset_mock()
         create_and_init_backtest_data_mock.reset_mock()
-        assert await op.get_data("BTC/USDT", commons_enums.TimeFrames.ONE_DAY.value, data_file="existing_file") \
+        assert await obs.get_data("BTC/USDT", commons_enums.TimeFrames.ONE_DAY.value, data_file="existing_file") \
                == "backtest_data"
         historical_data_mock.assert_not_awaited()
         create_and_init_backtest_data_mock.assert_awaited_once_with(

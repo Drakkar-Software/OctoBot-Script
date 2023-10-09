@@ -17,7 +17,7 @@
 import pytest
 import mock
 
-import octobot_script as op
+import octobot_script as obs
 import octobot_script.internal.logging_util as logging_util
 import octobot_script.internal.runners as runners
 
@@ -31,13 +31,13 @@ async def test_run():
          mock.patch.object(runners, "run", mock.AsyncMock(return_value="ret")) as run_mock:
         def up_func():
             pass
-        assert await op.run("backtesting_data", up_func, "strat_config") == "ret"
+        assert await obs.run("backtesting_data", up_func, "strat_config") == "ret"
         load_logging_config_mock.assert_not_called()
         run_mock.assert_awaited_once_with("backtesting_data", up_func, "strat_config",
                                           enable_logs=False, enable_storage=True)
         load_logging_config_mock.reset_mock()
         run_mock.reset_mock()
-        assert await op.run("backtesting_data", up_func, "strat_config", enable_logs=True, enable_storage=False) \
+        assert await obs.run("backtesting_data", up_func, "strat_config", enable_logs=True, enable_storage=False) \
                == "ret"
         load_logging_config_mock.assert_called_once()
         run_mock.assert_awaited_once_with("backtesting_data", up_func, "strat_config",
