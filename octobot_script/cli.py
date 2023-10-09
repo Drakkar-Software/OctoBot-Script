@@ -1,4 +1,4 @@
-#  This file is part of OctoBot-Pro (https://github.com/Drakkar-Software/OctoBot-Pro)
+#  This file is part of OctoBot-Script (https://github.com/Drakkar-Software/OctoBot-Script)
 #  Copyright (c) 2023 Drakkar-Software, All rights reserved.
 #
 #  OctoBot is free software; you can redistribute it and/or
@@ -12,7 +12,7 @@
 #  General Public License for more details.
 #
 #  You should have received a copy of the GNU General Public
-#  License along with OctoBot-Pro. If not, see <https://www.gnu.org/licenses/>.
+#  License along with OctoBot-Script. If not, see <https://www.gnu.org/licenses/>.
 
 
 import click
@@ -20,14 +20,14 @@ import asyncio
 import aiohttp
 import sys
 
-import octobot_pro
-import octobot_pro.internal.octobot_mocks as octobot_mocks
-import octobot_pro.internal.logging_util as octobot_pro_logging
+import octobot_script
+import octobot_script.internal.octobot_mocks as octobot_mocks
+import octobot_script.internal.logging_util as octobot_script_logging
 import octobot_tentacles_manager.api as api
 
 
 async def install_all_tentacles(quite_mode) -> bool:
-    octobot_pro_logging.enable_base_logger()
+    octobot_script_logging.enable_base_logger()
     error_count = 0
     install_path = octobot_mocks.get_module_appdir_path()
     tentacles_path = octobot_mocks.get_tentacles_path()
@@ -44,10 +44,10 @@ async def install_all_tentacles(quite_mode) -> bool:
 
 
 @click.group
-@click.version_option(version=octobot_pro.VERSION, prog_name=octobot_pro.PROJECT_NAME)
+@click.version_option(version=octobot_script.VERSION, prog_name=octobot_script.PROJECT_NAME)
 def main():
     """
-    OctoBot-Pro command line interface.
+    OctoBot-Script command line interface.
     """
 
 

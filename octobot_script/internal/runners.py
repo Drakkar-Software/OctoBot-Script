@@ -1,4 +1,4 @@
-#  This file is part of OctoBot-Pro (https://github.com/Drakkar-Software/OctoBot-Pro)
+#  This file is part of OctoBot-Script (https://github.com/Drakkar-Software/OctoBot-Script)
 #  Copyright (c) 2023 Drakkar-Software, All rights reserved.
 #
 #  OctoBot is free software; you can redistribute it and/or
@@ -12,15 +12,15 @@
 #  General Public License for more details.
 #
 #  You should have received a copy of the GNU General Public
-#  License along with OctoBot-Pro. If not, see <https://www.gnu.org/licenses/>.
+#  License along with OctoBot-Script. If not, see <https://www.gnu.org/licenses/>.
 
 import octobot.api as octobot_api
 import octobot_backtesting.api as backtesting_api
 import octobot_commons.constants as commons_constants
 import octobot_commons.enums as commons_enums
 
-import octobot_pro.model as models
-import octobot_pro.internal.backtester_trading_mode as backtester_trading_mode
+import octobot_script.model as models
+import octobot_script.internal.backtester_trading_mode as backtester_trading_mode
 
 
 async def run(backtesting_data, update_func, strategy_config,

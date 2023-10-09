@@ -1,10 +1,10 @@
 # Fetching trading data
 
-In order to run a backtest, OctoBot-Pro requires historical 
+In order to run a backtest, OctoBot-Script requires historical 
 trading data, which is at least candles history.
 
 ## Fetching new data
-When using OctoBot-Pro, historical data can be fetched using:
+When using OctoBot-Script, historical data can be fetched using:
 `await op.get_data(symbol, time frame)`
 
 Where:

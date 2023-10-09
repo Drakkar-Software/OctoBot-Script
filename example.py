@@ -1,6 +1,6 @@
 import asyncio
 import tulipy    # Can be any TA library.
-import octobot_pro as op
+import octobot_script as op
 
 
 async def rsi_test():
@@ -48,5 +48,5 @@ async def rsi_test():
 
 
 # Call the execution of the script inside "asyncio.run" as
-# OctoBot-Pro runs using the python asyncio framework.
+# OctoBot-Script runs using the python asyncio framework.
 asyncio.run(rsi_test())

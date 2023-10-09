@@ -1,4 +1,4 @@
-#  This file is part of OctoBot-Pro (https://github.com/Drakkar-Software/OctoBot-Pro)
+#  This file is part of OctoBot-Script (https://github.com/Drakkar-Software/OctoBot-Script)
 #  Copyright (c) 2023 Drakkar-Software, All rights reserved.
 #
 #  OctoBot is free software; you can redistribute it and/or
@@ -12,7 +12,7 @@
 #  General Public License for more details.
 #
 #  You should have received a copy of the GNU General Public
-#  License along with OctoBot-Pro. If not, see <https://www.gnu.org/licenses/>.
+#  License along with OctoBot-Script. If not, see <https://www.gnu.org/licenses/>.
 
 import pytest
 import mock
@@ -20,8 +20,8 @@ import mock
 import octobot_commons.enums as commons_enums
 import octobot_trading.enums as trading_enums
 import octobot_backtesting.api as backtesting_api
-import octobot_pro as op
-import octobot_pro.api.data_fetching as data_fetching
+import octobot_script as op
+import octobot_script.api.data_fetching as data_fetching
 
 from tests import mocked_config, TEST_CONFIG, TEST_TENTACLES_CONFIG
 

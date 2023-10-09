@@ -8,7 +8,7 @@ from tensorflow.keras.callbacks import TensorBoard
 import argparse
 
 import octobot_commons.symbols as symbols
-import octobot_pro as op
+import octobot_script as op
 
 async def basic_evaluation_function(ctx):
     closes = await op.Close(ctx, max_history=True)

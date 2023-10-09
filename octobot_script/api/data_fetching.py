@@ -1,4 +1,4 @@
-#  This file is part of OctoBot-Pro (https://github.com/Drakkar-Software/OctoBot-Pro)
+#  This file is part of OctoBot-Script (https://github.com/Drakkar-Software/OctoBot-Script)
 #  Copyright (c) 2023 Drakkar-Software, All rights reserved.
 #
 #  OctoBot is free software; you can redistribute it and/or
@@ -12,13 +12,13 @@
 #  General Public License for more details.
 #
 #  You should have received a copy of the GNU General Public
-#  License along with OctoBot-Pro. If not, see <https://www.gnu.org/licenses/>.
+#  License along with OctoBot-Script. If not, see <https://www.gnu.org/licenses/>.
 
 import octobot_backtesting.api as backtesting_api
 import octobot_commons.symbols as commons_symbols
 import octobot_commons.enums as commons_enums
 import octobot_trading.enums as trading_enums
-import octobot_pro.internal.octobot_mocks as octobot_mocks
+import octobot_script.internal.octobot_mocks as octobot_mocks
 
 
 def _ensure_ms_timestamp(timestamp):

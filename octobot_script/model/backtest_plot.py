@@ -1,4 +1,4 @@
-#  This file is part of OctoBot-Pro (https://github.com/Drakkar-Software/OctoBot-Pro)
+#  This file is part of OctoBot-Script (https://github.com/Drakkar-Software/OctoBot-Script)
 #  Copyright (c) 2023 Drakkar-Software, All rights reserved.
 #
 #  OctoBot is free software; you can redistribute it and/or
@@ -12,7 +12,7 @@
 #  General Public License for more details.
 #
 #  You should have received a copy of the GNU General Public
-#  License along with OctoBot-Pro. If not, see <https://www.gnu.org/licenses/>.
+#  License along with OctoBot-Script. If not, see <https://www.gnu.org/licenses/>.
 import time
 import webbrowser
 import jinja2
@@ -25,8 +25,8 @@ import octobot_commons.display as display
 import octobot_commons.logging as logging
 import octobot_commons.timestamp_util as timestamp_util
 import octobot.api as octobot_api
-import octobot_pro.resources as resources
-import octobot_pro.internal.backtester_trading_mode as backtester_trading_mode
+import octobot_script.resources as resources
+import octobot_script.internal.backtester_trading_mode as backtester_trading_mode
 
 
 class BacktestPlot:

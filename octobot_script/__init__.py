@@ -1,4 +1,4 @@
-#  This file is part of OctoBot-Pro (https://github.com/Drakkar-Software/OctoBot-Pro)
+#  This file is part of OctoBot-Script (https://github.com/Drakkar-Software/OctoBot-Script)
 #  Copyright (c) 2023 Drakkar-Software, All rights reserved.
 #
 #  OctoBot is free software; you can redistribute it and/or
@@ -12,11 +12,11 @@
 #  General Public License for more details.
 #
 #  You should have received a copy of the GNU General Public
-#  License along with OctoBot-Pro. If not, see <https://www.gnu.org/licenses/>.
+#  License along with OctoBot-Script. If not, see <https://www.gnu.org/licenses/>.
 
-PROJECT_NAME = "OctoBot-Pro"
+PROJECT_NAME = "OctoBot-Script"
 AUTHOR = "Drakkar-Software"
-VERSION = "0.0.12"  # major.minor.revision
+VERSION = "0.0.13"  # major.minor.revision
 
 
 def _use_module_local_tentacles():
@@ -24,7 +24,7 @@ def _use_module_local_tentacles():
     import os
     import appdirs
     if os.getenv("USE_CUSTOM_TENTACLES", "").lower() == "true":
-        # do not use octobot_pro/imports tentacles
+        # do not use octobot_script/imports tentacles
         # WARNING: in this case, all the required tentacles imports still have to work
         # and therefore be bound to another tentacles folder
         return
@@ -34,15 +34,15 @@ def _use_module_local_tentacles():
     sys.path.insert(0, internal_import_path)
 
 
-# run this before any other code as only octobot_pro module-local tentacles should be used
+# run this before any other code as only octobot_script module-local tentacles should be used
 _use_module_local_tentacles()
 
 try:
-    # import tentacles from octobot_pro/imports directory after "_use_local_tentacles()" call
+    # import tentacles from octobot_script/imports directory after "_use_local_tentacles()" call
     from tentacles.Meta.Keywords import *
     # populate tentacles config helpers
     import octobot_tentacles_manager.loaders as loaders
-    import octobot_pro.internal.octobot_mocks as octobot_mocks
+    import octobot_script.internal.octobot_mocks as octobot_mocks
     loaders.reload_tentacle_by_tentacle_class(
         tentacles_path=octobot_mocks.get_imported_tentacles_path()
     )
@@ -53,7 +53,7 @@ except ImportError:
     # tentacles not available during first install
     pass
 
-from octobot_pro.constants import *
-from octobot_pro.api import *
-from octobot_pro.model import *
-from octobot_pro.ai import *
+from octobot_script.constants import *
+from octobot_script.api import *
+from octobot_script.model import *
+from octobot_script.ai import *

@@ -1,4 +1,4 @@
-name: OctoBot-Pro - CI
+name: OctoBot-Script - CI
 on:
   push:
     branches:
@@ -11,7 +11,7 @@ jobs:
   lint:
     uses: Drakkar-Software/.github/.github/workflows/python3_lint_workflow.yml@master
     with:
-      project_main_package: octobot_pro
+      project_main_package: octobot_script
 
   tests:
     name: ${{ matrix.os }} - Python - ${{ matrix.type }} - tests

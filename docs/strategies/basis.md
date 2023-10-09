@@ -1,6 +1,6 @@
-# OctoBot-Pro strategies
+# OctoBot-Script strategies
 
-On OctoBot-Pro, a trading strategy is a python async function that will be called at new price data.
+On OctoBot-Script, a trading strategy is a python async function that will be called at new price data.
 ``` python
 async def strategy(ctx):
     # your strategy content
@@ -12,7 +12,7 @@ In most cases, a strategy will:
 3. Decide to take (or not take) action depending on its configuration 
 4. Create / cancel or edit orders (see [Creating orders](../../docs/trading/orders.md))
 
-As OctoBot-Pro strategies are meant for backtesting, it is possible to create a strategy in 2 ways:
+As OctoBot-Script strategies are meant for backtesting, it is possible to create a strategy in 2 ways:
 ## Pre-computed strategies
 Pre-computed are only possible in backtesting: since the data is already known, when dealing with technical 
 evaluator based strategies, it is possible to compute the values of the evaluators for the whole backtest at once. 
