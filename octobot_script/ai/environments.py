@@ -3,7 +3,7 @@ import gymnasium as gym
 from gymnasium import spaces
 import numpy as np
 
-import octobot_pro as op
+import octobot_script as op
 import octobot_trading.errors as octobot_trading_errors
 import octobot_trading.api as trading_api
 

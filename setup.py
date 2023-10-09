@@ -5,28 +5,28 @@ from setuptools import setup
 from distutils.command.install import install
 
 
-# from octobot_pro import PROJECT_NAME, VERSION
-# todo figure out how not to import octobot_pro.__init__.py here
-PROJECT_NAME = "OctoBot-Pro"
+# from octobot_script import PROJECT_NAME, VERSION
+# todo figure out how not to import octobot_script.__init__.py here
+PROJECT_NAME = "OctoBot-Script"
 VERSION = "0.0.11"  # major.minor.revision
 
 
 def _post_install():
-    import octobot_pro.cli
-    asyncio.run(octobot_pro.cli.install_all_tentacles(True))
+    import octobot_script.cli
+    asyncio.run(octobot_script.cli.install_all_tentacles(True))
 
 
 class InstallWithPostInstallAction(install):
     def run(self):
         install.run(self)
-        self.execute(_post_install, (), msg="Installing OctoBot-Pro tentacles")
+        self.execute(_post_install, (), msg="Installing OctoBot-Script tentacles")
 
 
 PACKAGES = find_packages(
     exclude=[
         "tests",
-        "octobot_pro.imports*",
-        "octobot_pro.user*",
+        "octobot_script.imports*",
+        "octobot_script.user*",
     ]
 )
 
@@ -40,7 +40,7 @@ REQUIRES_PYTHON = '>=3.8'
 setup(
     name=PROJECT_NAME,
     version=VERSION,
-    url='https://github.com/Drakkar-Software/OctoBot-Pro',
+    url='https://github.com/Drakkar-Software/OctoBot-Script',
     license='GPL-3.0',
     author='Drakkar-Software',
     author_email='contact@drakkar.software',
@@ -58,7 +58,7 @@ setup(
     python_requires=REQUIRES_PYTHON,
     entry_points={
         'console_scripts': [
-            'octobot_pro = octobot_pro.cli:main'
+            'octobot_script = octobot_script.cli:main'
         ]
     },
     classifiers=[

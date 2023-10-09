@@ -1,4 +1,4 @@
-name: OctoBot-Pro - Docker
+name: OctoBot-Script - Docker
 on:
   push:
     branches:
@@ -31,7 +31,7 @@ jobs:
       - name: Set Environment Variables
         run: |
           OWNER="$(echo "${{ github.repository_owner }}" | tr '[:upper:]' '[:lower:]' | tr -d '-')"
-          IMG=octobot-pro
+          IMG=octobot-script
           echo "VERSION=${GITHUB_REF##*/}" >> $GITHUB_ENV
           echo "IMAGE=${OWNER}/${IMG}" >> $GITHUB_ENV
           echo "LATEST=latest" >> $GITHUB_ENV

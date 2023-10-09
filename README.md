@@ -1,29 +1,29 @@
-# Octobot-Pro [0.0.12](https://github.com/Drakkar-Software/OctoBot-Pro/tree/master/CHANGELOG.md)
-[![PyPI](https://img.shields.io/pypi/v/octobot-pro.svg?logo=pypi)](https://pypi.python.org/pypi/octobot-pro/)
-[![Downloads](https://static.pepy.tech/badge/octobot-pro/month)](https://pepy.tech/project/octobot-pro)
-[![Dockerhub](https://img.shields.io/docker/pulls/drakkarsoftware/octobot-pro.svg?logo=docker)](https://hub.docker.com/r/drakkarsoftware/octobot-pro)
-[![Github-Action-CI](https://github.com/Drakkar-Software/OctoBot-Pro/workflows/OctoBot-Pro-CI/badge.svg)](https://github.com/Drakkar-Software/OctoBot-Pro/actions)
+# OctoBot-Script [0.0.12](https://github.com/Drakkar-Software/OctoBot-Script/tree/master/CHANGELOG.md)
+[![PyPI](https://img.shields.io/pypi/v/OctoBot-Script.svg?logo=pypi)](https://pypi.python.org/pypi/OctoBot-Script/)
+[![Downloads](https://static.pepy.tech/badge/OctoBot-Script/month)](https://pepy.tech/project/OctoBot-Script)
+[![Dockerhub](https://img.shields.io/docker/pulls/drakkarsoftware/OctoBot-Script.svg?logo=docker)](https://hub.docker.com/r/drakkarsoftware/OctoBot-Script)
+[![Github-Action-CI](https://github.com/Drakkar-Software/OctoBot-Script/workflows/OctoBot-Script-CI/badge.svg)](https://github.com/Drakkar-Software/OctoBot-Script/actions)
 
-## Octobot-Pro Community
-[![Telegram Chat](https://img.shields.io/badge/telegram-chat-green.svg?logo=telegram&label=Telegram)](https://octobot.click/readme-telegram-octobot-pro)
-[![Discord](https://img.shields.io/discord/530629985661222912.svg?logo=discord&label=Discord)](https://octobot.click/gh-discord-octobot-pro)
-[![Twitter](https://img.shields.io/twitter/follow/DrakkarsOctobot.svg?label=twitter&style=social)](https://octobot.click/gh-twitter-octobot-pro)
+## OctoBot-Script Community
+[![Telegram Chat](https://img.shields.io/badge/telegram-chat-green.svg?logo=telegram&label=Telegram)](https://octobot.click/readme-telegram-OctoBot-Script)
+[![Discord](https://img.shields.io/discord/530629985661222912.svg?logo=discord&label=Discord)](https://octobot.click/gh-discord-OctoBot-Script)
+[![Twitter](https://img.shields.io/twitter/follow/DrakkarsOctobot.svg?label=twitter&style=social)](https://octobot.click/gh-twitter-OctoBot-Script)
 
 
-## OctoBot Pro is the backtesting framework using the OctoBot Ecosystem
+## OctoBot Script is the backtesting framework using the OctoBot Ecosystem
 
-> OctoBot Pro is in early alpha version
+> OctoBot Script is in early alpha version
 
 Documentation available at [https://pro.octobot.info/](https://octobot.click/Xzae1a6)
 
 
-## Install OctoBot Pro from pip
+## Install OctoBot Script from pip
 
-> OctoBot pro requires **Python 3.10**
+> OctoBot Script requires **Python 3.10**
 
 ``` {.sourceCode .bash}
 python3 -m pip install OctoBot wheel
-python3 -m pip install octobot-pro
+python3 -m pip install octobot-script
 ```
 
 ## Example of a backtesting script
@@ -32,7 +32,7 @@ python3 -m pip install octobot-pro
 ``` python
 import asyncio
 import tulipy    # Can be any TA library.
-import octobot_pro as op
+import octobot_script as op
 
 
 async def rsi_test():
@@ -80,14 +80,14 @@ async def rsi_test():
 
 
 # Call the execution of the script inside "asyncio.run" as
-# OctoBot-Pro runs using the python asyncio framework.
+# OctoBot-Script runs using the python asyncio framework.
 asyncio.run(rsi_test())
 ```
 
 ### Generated report
-![report-p1](https://raw.githubusercontent.com/Drakkar-Software/OctoBot-Pro/assets/images/report_1.jpg)
+![report-p1](https://raw.githubusercontent.com/Drakkar-Software/OctoBot-Script/assets/images/report_1.jpg)
 
 ### Join the community
-We recently created a telegram channel dedicated to OctoBot Pro.
+We recently created a telegram channel dedicated to OctoBot Script.
 
-[![Telegram News](https://img.shields.io/static/v1?label=Telegram%20chat&message=Join&logo=telegram&&color=007bff&style=for-the-badge)](https://octobot.click/readme-telegram-octobot-pro)
+[![Telegram News](https://img.shields.io/static/v1?label=Telegram%20chat&message=Join&logo=telegram&&color=007bff&style=for-the-badge)](https://octobot.click/readme-telegram-OctoBot-Pro)

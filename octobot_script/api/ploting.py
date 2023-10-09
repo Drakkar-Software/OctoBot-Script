@@ -1,4 +1,5 @@
-#  This file is part of OctoBot-Pro (https://github.com/Drakkar-Software/OctoBot-Pro)
+# pylint: disable=E1101
+#  This file is part of OctoBot-Script (https://github.com/Drakkar-Software/OctoBot-Script)
 #  Copyright (c) 2023 Drakkar-Software, All rights reserved.
 #
 #  OctoBot is free software; you can redistribute it and/or
@@ -12,7 +13,17 @@
 #  General Public License for more details.
 #
 #  You should have received a copy of the GNU General Public
-#  License along with OctoBot-Pro. If not, see <https://www.gnu.org/licenses/>.
+#  License along with OctoBot-Script. If not, see <https://www.gnu.org/licenses/>.
 
-class ParameterError(Exception):
-    pass
+async def plot_indicator(ctx, name, x, y, signals=None):
+    # lazy import
+    import octobot_script as op
+
+    await op.plot(ctx, name, x=list(x), y=list(y))
+    value_by_x = {
+        x: y
+        for x, y in zip(x, y)
+    }
+    if signals:
+        await op.plot(ctx, "signals", x=list(signals), y=[value_by_x[x] for x in signals], mode="markers")
+

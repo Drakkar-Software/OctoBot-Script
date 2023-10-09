@@ -1,4 +1,4 @@
-#  This file is part of OctoBot-Pro (https://github.com/Drakkar-Software/OctoBot-Pro)
+#  This file is part of OctoBot-Script (https://github.com/Drakkar-Software/OctoBot-Script)
 #  Copyright (c) 2023 Drakkar-Software, All rights reserved.
 #
 #  OctoBot is free software; you can redistribute it and/or
@@ -12,15 +12,15 @@
 #  General Public License for more details.
 #
 #  You should have received a copy of the GNU General Public
-#  License along with OctoBot-Pro. If not, see <https://www.gnu.org/licenses/>.
+#  License along with OctoBot-Script. If not, see <https://www.gnu.org/licenses/>.
 
 import os
 import json
 import appdirs
 
-import octobot_pro
-import octobot_pro.constants as constants
-import octobot_pro.internal.backtester_trading_mode
+import octobot_script
+import octobot_script.constants as constants
+import octobot_script.internal.backtester_trading_mode
 import octobot_commons.constants as commons_constants
 import octobot_tentacles_manager.api as octobot_tentacles_manager_api
 import octobot_tentacles_manager.constants as octobot_tentacles_manager_constants
@@ -35,7 +35,7 @@ def get_tentacles_config():
         commons_constants.CONFIG_TENTACLES_FILE
     )
     tentacles_setup_config = octobot_tentacles_manager_api.get_tentacles_setup_config(ref_tentacles_config_path)
-    # activate octobot-pro required tentacles
+    # activate OctoBot-Script required tentacles
     _force_tentacles_config_activation(tentacles_setup_config)
     return tentacles_setup_config
 
@@ -54,7 +54,7 @@ def get_module_config_path(file_name):
 
 
 def get_module_appdir_path():
-    dirs = appdirs.AppDirs(octobot_pro.PROJECT_NAME, octobot_pro.AUTHOR, octobot_pro.VERSION)
+    dirs = appdirs.AppDirs(octobot_script.PROJECT_NAME, octobot_script.AUTHOR, octobot_script.VERSION)
     return dirs.user_data_dir
 
 
@@ -84,7 +84,7 @@ def _force_tentacles_config_activation(tentacles_setup_config):
             tentacles.Evaluator.BlankStrategyEvaluator.get_name(): True
         },
         octobot_tentacles_manager_constants.TENTACLES_TRADING_PATH: {
-            octobot_pro.internal.backtester_trading_mode.BacktesterTradingMode.get_name(): True
+            octobot_script.internal.backtester_trading_mode.BacktesterTradingMode.get_name(): True
         }
     }
     for topic, activations in forced_tentacles.items():

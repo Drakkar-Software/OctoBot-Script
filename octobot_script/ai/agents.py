@@ -2,7 +2,7 @@ from collections import deque
 import random
 import numpy as np
 
-from octobot_pro.ai.models import mlp
+from octobot_script.ai.models import mlp
 
 class DQNAgent:
     def __init__(self, action_size):

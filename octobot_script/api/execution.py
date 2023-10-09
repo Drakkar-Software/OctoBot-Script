@@ -1,5 +1,4 @@
-# pylint: disable=E1101
-#  This file is part of OctoBot-Pro (https://github.com/Drakkar-Software/OctoBot-Pro)
+#  This file is part of OctoBot-Script (https://github.com/Drakkar-Software/OctoBot-Script)
 #  Copyright (c) 2023 Drakkar-Software, All rights reserved.
 #
 #  OctoBot is free software; you can redistribute it and/or
@@ -13,17 +12,17 @@
 #  General Public License for more details.
 #
 #  You should have received a copy of the GNU General Public
-#  License along with OctoBot-Pro. If not, see <https://www.gnu.org/licenses/>.
+#  License along with OctoBot-Script. If not, see <https://www.gnu.org/licenses/>.
 
-async def plot_indicator(ctx, name, x, y, signals=None):
-    # lazy import
-    import octobot_pro as op
+import octobot_script.internal.logging_util as logging_util
+import octobot_script.internal.runners as runners
 
-    await op.plot(ctx, name, x=list(x), y=list(y))
-    value_by_x = {
-        x: y
-        for x, y in zip(x, y)
-    }
-    if signals:
-        await op.plot(ctx, "signals", x=list(signals), y=[value_by_x[x] for x in signals], mode="markers")
 
+async def run(backtesting_data, update_func, strategy_config,
+              enable_logs=False, enable_storage=True):
+    if enable_logs:
+        logging_util.load_logging_config()
+    return await runners.run(
+        backtesting_data, update_func, strategy_config,
+        enable_logs=enable_logs, enable_storage=enable_storage
+    )

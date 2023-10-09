@@ -1,5 +1,5 @@
-recursive-include octobot_pro/config *.json *.ini
-recursive-include octobot_pro/resources *.js *.css *.html
+recursive-include octobot_script/config *.json *.ini
+recursive-include octobot_script/resources *.js *.css *.html
 
 include README.md
 include LICENSE
