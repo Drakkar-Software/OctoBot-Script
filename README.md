@@ -1,8 +1,8 @@
-# OctoBot-Script [0.0.12](https://github.com/Drakkar-Software/OctoBot-Script/tree/master/CHANGELOG.md)
-[![PyPI](https://img.shields.io/pypi/v/OctoBot-Script.svg?logo=pypi)](https://pypi.python.org/pypi/OctoBot-Script/)
-[![Downloads](https://static.pepy.tech/badge/OctoBot-Script/month)](https://pepy.tech/project/OctoBot-Script)
-[![Dockerhub](https://img.shields.io/docker/pulls/drakkarsoftware/OctoBot-Script.svg?logo=docker)](https://hub.docker.com/r/drakkarsoftware/OctoBot-Script)
-[![Github-Action-CI](https://github.com/Drakkar-Software/OctoBot-Script/workflows/OctoBot-Script-CI/badge.svg)](https://github.com/Drakkar-Software/OctoBot-Script/actions)
+# OctoBot-Script [0.0.13](https://github.com/Drakkar-Software/OctoBot-Script/tree/master/CHANGELOG.md)
+[![PyPI](https://img.shields.io/pypi/v/OctoBot-Script.svg?logo=pypi)](https://pypi.python.org/pypi/octobot-script/)
+[![Downloads](https://static.pepy.tech/badge/OctoBot-Script/month)](https://pepy.tech/project/octobot-script)
+[![Dockerhub](https://img.shields.io/docker/pulls/drakkarsoftware/OctoBot-Script.svg?logo=docker)](https://hub.docker.com/r/drakkarsoftware/octobot-script)
+[![Github-Action-CI](https://github.com/Drakkar-Software/OctoBot-Script/actions/workflows/main.yml/badge.svg)](https://github.com/Drakkar-Software/OctoBot-Script/actions/workflows/main.yml)
 
 ## OctoBot-Script Community
 [![Telegram Chat](https://img.shields.io/badge/telegram-chat-green.svg?logo=telegram&label=Telegram)](https://octobot.click/readme-telegram-OctoBot-Script)
