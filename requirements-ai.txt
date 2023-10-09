@@ -1,5 +1,5 @@
 numpy
-tensorflow==2.11.0
+tensorflow==2.11.1
 gymnasium
 tqdm
 tensorboard
