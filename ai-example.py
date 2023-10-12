@@ -1,7 +1,7 @@
 import asyncio
 import tulipy
 import gymnasium as gym
-from datetime import datetime
+from datetime import datetime, timedelta
 import numpy as np
 import time
 from tensorflow.keras.callbacks import TensorBoard
@@ -70,6 +70,7 @@ def init_argparse() -> argparse.ArgumentParser:
     parser.add_argument("-t", "--train", action=argparse.BooleanOptionalAction)
     parser.add_argument("-p", "--plot", action=argparse.BooleanOptionalAction)
     parser.add_argument('-w', '--weights', type=str, help='a trained model weights')
+    parser.add_argument("-d", "--days", type=int, default=365)
     return parser
 
 
@@ -80,7 +81,7 @@ def main():
     timestamp = time.strftime('%Y%m%d%H%M')
     symbol = symbols.parse_symbol(args.symbol)
     time_frame = args.timeframe
-    data = asyncio.run(obs.get_data(symbol.merged_str_symbol(), time_frame, exchange=args.exchange, start_timestamp=1505606400))
+    data = asyncio.run(obs.get_data(symbol.merged_str_symbol(), time_frame, exchange=args.exchange, start_timestamp=int(float(str((datetime.now() - timedelta(days=args.days)).timestamp()))))) # start_timestamp=1505606400
 
     gym_env = gym.make(action_types=[0, 0, 0, 0], id='TradingEnv', name= "test", dynamic_feature_functions=[basic_evaluation_function], traded_symbols=[symbol])
     agent = obs.DQNAgent(4)
