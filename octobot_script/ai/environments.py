@@ -41,14 +41,14 @@ async def basic_trade_function(ctx, action):
                 ctx,
                 "buy",
                 amount=f"{1 if action == 3 else 10 if action == 4 else 30}%",
-                offset=f"-{1 if action == 3 else 10 if action == 4 else 30}%",
+                offset=f"-{1 if action == 3 else 2 if action == 4 else 3}%",
             ))
         elif action in [6, 7, 8]:
             created_orders.append(await obs.limit(
                 ctx,
                 "sell",
                 amount=f"{1 if action == 6 else 10 if action == 7 else 30}%",
-                offset=f"{1 if action == 6 else 10 if action == 7 else 30}%",
+                offset=f"{1 if action == 6 else 2 if action == 7 else 3}%",
             ))
         else:
             # Nothing for now
