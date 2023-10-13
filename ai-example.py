@@ -17,21 +17,23 @@ async def basic_evaluation_function(ctx):
     low = await obs.Low(ctx, limit=30)
     vol = await obs.Volume(ctx, limit=30)
     rsi_v = tulipy.rsi(closes, period=10)
+    ema_values = tulipy.ema(closes, period=21)
 
     try:
-        if (len(rsi_v) > 5 and len(closes) > 5):
+        if (len(rsi_v) > 15 and len(ema_values) > 15):
             return np.array([
                 closes[-10:],
                 open[-10:],
                 high[-10:],
                 low[-10:],
                 vol[-10:],
-                rsi_v[-10:],
+                rsi_v[-15:],
+                ema_values[-15:]
             ], dtype=np.float32).flatten()
         else:
-            return np.zeros(60, dtype=np.float32) 
+            return np.zeros(80, dtype=np.float32) 
     except ValueError:
-        return np.zeros(60, dtype=np.float32) 
+        return np.zeros(80, dtype=np.float32) 
 
 async def run_strategy(data, env, agent, symbol, time_frame, is_training=False, plot=False):
     async def strategy(ctx):

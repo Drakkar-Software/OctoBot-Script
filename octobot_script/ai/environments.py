@@ -98,7 +98,7 @@ class TradingEnv(gym.Env):
         self.traded_symbols = traded_symbols
         self.static_features = [] # TODO there are computed once before being used in the environement
         self.dynamic_feature_functions = dynamic_feature_functions #  are computed at each step of the environment
-        self._nb_features = 59 + len(self.traded_symbols) * 4 + len(self.static_features) + len(self.dynamic_feature_functions)
+        self._nb_features = 79 + len(self.traded_symbols) * 4 + len(self.static_features) + len(self.dynamic_feature_functions)
 
         self.reward_function = reward_function
         self.trade_function = trade_function
