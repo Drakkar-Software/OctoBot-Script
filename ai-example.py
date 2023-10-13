@@ -73,7 +73,10 @@ def init_argparse() -> argparse.ArgumentParser:
     parser.add_argument("-p", "--plot", action=argparse.BooleanOptionalAction)
     parser.add_argument('-w', '--weights', type=str, help='a trained model weights')
     parser.add_argument("-d", "--days", type=int, default=365)
+    parser.add_argument("-ev", "--evaluate", action=argparse.BooleanOptionalAction)
+    parser.add_argument("-ep", "--epochs", type=int, default=20)
     return parser
+
 
 
 def main():
@@ -90,7 +93,7 @@ def main():
     agent = obs.DQNAgent(action_size)
 
     logdir = "tensorboard_logs/scalars/" + datetime.now().strftime("%Y%m%d-%H%M%S")
-    tensorboard_callback = TensorBoard(log_dir=logdir)
+    tensorboard_callback = TensorBoard(log_dir=logdir, histogram_freq=1, write_images=False, batch_size=args.batch_size)
 
     if args.weights:
         print(f"Loading model {args.weights}...")
@@ -107,7 +110,9 @@ def main():
         
         if args.train and len(agent.memory) > args.batch_size:
             print("Starting replay...")
-            agent.replay(args.batch_size, tensorboard_callback)
+            score = agent.replay(args.batch_size, args.epochs, args.evaluate, tensorboard_callback)
+            if args.evaluate:
+                print(f"Score = {score}")
 
         if args.train and (episode + 1) % 10 == 0:  # checkpoint weights
             print("Saving...")

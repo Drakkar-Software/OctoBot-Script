@@ -23,7 +23,7 @@ class DQNAgent:
         act_values = self.model.predict(state)
         return np.argmax(act_values[0])  # returns action
 
-    def replay(self, batch_size=32, tensorboard_callback=None):
+    def replay(self, batch_size=32, epochs=1, evaluate=False, tensorboard_callback=None):
         # pylint: disable=unsubscriptable-object
         """ vectorized implementation; 30x speed up compared with for loop """
         minibatch = random.sample(self.memory, batch_size)
@@ -44,10 +44,14 @@ class DQNAgent:
         # make the agent to approximately map the current state to future discounted reward
         target_f[range(batch_size), actions] = target
 
-        self.model.fit(states, target_f, epochs=1, verbose=0)
+        self.model.fit(states, target_f, batch_size=batch_size, epochs=epochs, verbose=0, callbacks=[tensorboard_callback])
 
         if self.epsilon > self.epsilon_min:
             self.epsilon *= self.epsilon_decay
+        
+        if evaluate:
+            return self.model.evaluate(states, target_f, batch_size=32)
+        return 0
 
     def load(self, name):
         self.model.load_weights(name)
