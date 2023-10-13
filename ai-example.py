@@ -83,8 +83,9 @@ def main():
     time_frame = args.timeframe
     data = asyncio.run(obs.get_data(symbol.merged_str_symbol(), time_frame, exchange=args.exchange, start_timestamp=int(float(str((datetime.now() - timedelta(days=args.days)).timestamp()))))) # start_timestamp=1505606400
 
-    gym_env = gym.make(action_types=[0, 0, 0, 0], id='TradingEnv', name= "test", dynamic_feature_functions=[basic_evaluation_function], traded_symbols=[symbol])
-    agent = obs.DQNAgent(4)
+    action_size = 9
+    gym_env = gym.make(action_size=action_size, id='TradingEnv', name= "test", dynamic_feature_functions=[basic_evaluation_function], traded_symbols=[symbol])
+    agent = obs.DQNAgent(action_size)
 
     logdir = "tensorboard_logs/scalars/" + datetime.now().strftime("%Y%m%d-%H%M%S")
     tensorboard_callback = TensorBoard(log_dir=logdir)

@@ -18,62 +18,40 @@ def basic_reward_function(current_portfolio_value, previous_portfolio_value, cur
     except ZeroDivisionError:
         return 0
 
-async def basic_trade_function(ctx, actions):
+async def basic_trade_function(ctx, action):
     try:
-        (
-            order_type,
-            order_amount,
-            order_price_offset,
-            stop_loss_or_take_profit,
-        ) = list(actions)
-        real_order_amout = min(abs(order_amount), 1) * 30 # max 30%
-        real_order_price_offset = min(abs(order_price_offset), 1) * 10
-
-        real_take_profit_offset = 0
-        real_stop_loss_offset = 0
-        if stop_loss_or_take_profit > 0:
-            real_take_profit_offset = min(abs(stop_loss_or_take_profit), 1) * 10
-        elif stop_loss_or_take_profit < 0:
-            real_stop_loss_offset = min(abs(stop_loss_or_take_profit), 1) * 10
-
         created_orders = []
-        if order_type > 0.66:
+        if action == 0:
+            # TODO cancel orders
+            pass
+        elif action == 1:
             created_orders.append(await obs.market(
                 ctx,
                 "buy",
-                amount=f"{real_order_amout}%",
-                stop_loss_offset=f"-{real_stop_loss_offset}%" if real_stop_loss_offset != 0 else None,
-                take_profit_offset=f"{real_take_profit_offset}%" if real_take_profit_offset != 0 else None,
+                amount=f"10%"
             ))
-        elif order_type > 0.33:
+        elif action == 2:
             created_orders.append(await obs.market(
                 ctx,
                 "sell",
-                amount=f"{real_order_amout}%",
-                stop_loss_offset=f"{real_stop_loss_offset}%" if real_stop_loss_offset != 0 else None,
-                take_profit_offset=f"-{real_take_profit_offset}%" if real_take_profit_offset != 0 else None,
+                amount=f"{10}%"
             ))
-        if order_type > 0:
+        elif action in [3, 4, 5]:
             created_orders.append(await obs.limit(
                 ctx,
                 "buy",
-                amount=f"{real_order_amout}%",
-                offset=f"-{real_order_price_offset}%",
-                stop_loss_offset=f"-{real_stop_loss_offset}%" if real_stop_loss_offset != 0 else None,
-                take_profit_offset=f"{real_take_profit_offset}%" if real_take_profit_offset != 0 else None,
+                amount=f"{1 if action == 3 else 10 if action == 4 else 30}%",
+                offset=f"-{1 if action == 3 else 10 if action == 4 else 30}%",
             ))
-        if order_type > -0.33:
+        elif action in [6, 7, 8]:
             created_orders.append(await obs.limit(
                 ctx,
                 "sell",
-                amount=f"{real_order_amout}%",
-                offset=f"{real_order_price_offset}%",
-                stop_loss_offset=f"{real_stop_loss_offset}%" if real_stop_loss_offset != 0 else None,
-                take_profit_offset=f"-{real_take_profit_offset}%" if real_take_profit_offset != 0 else None,
+                amount=f"{1 if action == 6 else 10 if action == 7 else 30}%",
+                offset=f"{1 if action == 6 else 10 if action == 7 else 30}%",
             ))
         else:
             # Nothing for now
-            # cancel orders, idle ?
             pass
         return created_orders
     except TypeError:
@@ -103,7 +81,7 @@ def get_flatten_pf(current_portfolio, symbol):
 
 class TradingEnv(gym.Env):
     def __init__(self,
-                action_types=[0],
+                action_size=1,
                 dynamic_feature_functions = [],
                 reward_function = basic_reward_function,
                 trade_function = basic_trade_function,
@@ -126,7 +104,7 @@ class TradingEnv(gym.Env):
         self.trade_function = trade_function
         self.max_episode_duration = max_episode_duration
         
-        self.action_space = spaces.Box(low=-1, high=1, shape=(len(action_types),))  # 3 float in range [0, 1]
+        self.action_space = spaces.Discrete(action_size)
         self.observation_space = spaces.Box(
             -np.inf,
             np.inf,
