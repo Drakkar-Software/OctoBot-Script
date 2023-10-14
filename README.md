@@ -10,9 +10,9 @@
 [![Twitter](https://img.shields.io/twitter/follow/DrakkarsOctobot.svg?label=twitter&style=social)](https://octobot.click/gh-twitter-OctoBot-Script)
 
 
-## OctoBot Script is the backtesting framework using the OctoBot Ecosystem
+## OctoBot Script is the Quant framework by OctoBot
 
-> OctoBot Script is in early alpha version
+> OctoBot Script is in alpha version
 
 Documentation available at [https://pro.octobot.info/](https://octobot.click/Xzae1a6)
 
