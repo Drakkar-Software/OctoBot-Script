@@ -1,7 +1,7 @@
 # Table of contents
 
 * [Getting Started](README.md)
-* [OctoBot](https://www.octobot.online)
+* [OctoBot](https://www.octobot.cloud)
 
 ## Trading strategies
 
