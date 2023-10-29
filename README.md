@@ -14,7 +14,7 @@
 
 > OctoBot Script is in alpha version
 
-Documentation available at [https://pro.octobot.info/](https://octobot.click/Xzae1a6)
+Documentation available at [octobot.cloud/guides/octobot-script](https://www.octobot.cloud/guides/octobot-script?utm_source=octobot&utm_medium=dk&utm_campaign=regular_open_source_content&utm_content=octobot_script_readme)
 
 
 ## Install OctoBot Script from pip
