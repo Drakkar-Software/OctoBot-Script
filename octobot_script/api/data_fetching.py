@@ -53,4 +53,5 @@ async def get_data(symbol, time_frame, exchange="binance", exchange_type=trading
         [data],
         octobot_mocks.get_config(),
         octobot_mocks.get_tentacles_config(),
+        use_accurate_price_time_frame=False
     )
