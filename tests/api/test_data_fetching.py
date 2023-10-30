@@ -54,7 +54,8 @@ async def test_get_data(mocked_config):
         create_and_init_backtest_data_mock.assert_awaited_once_with(
             ["data"],
             TEST_CONFIG,
-            TEST_TENTACLES_CONFIG
+            TEST_TENTACLES_CONFIG,
+            use_accurate_price_time_frame=True
         )
         historical_data_mock.reset_mock()
         create_and_init_backtest_data_mock.reset_mock()
@@ -64,6 +65,7 @@ async def test_get_data(mocked_config):
         create_and_init_backtest_data_mock.assert_awaited_once_with(
             ["existing_file"],
             TEST_CONFIG,
-            TEST_TENTACLES_CONFIG
+            TEST_TENTACLES_CONFIG,
+            use_accurate_price_time_frame=True
         )
 
