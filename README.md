@@ -1,4 +1,4 @@
-# OctoBot-Script [0.0.15](https://github.com/Drakkar-Software/OctoBot-Script/tree/master/CHANGELOG.md)
+# OctoBot-Script [0.0.16](https://github.com/Drakkar-Software/OctoBot-Script/tree/master/CHANGELOG.md)
 [![PyPI](https://img.shields.io/pypi/v/OctoBot-Script.svg?logo=pypi)](https://pypi.python.org/pypi/octobot-script/)
 [![Downloads](https://static.pepy.tech/badge/OctoBot-Script/month)](https://pepy.tech/project/octobot-script)
 [![Dockerhub](https://img.shields.io/docker/pulls/drakkarsoftware/OctoBot-Script.svg?logo=docker)](https://hub.docker.com/r/drakkarsoftware/octobot-script)
@@ -14,7 +14,7 @@
 
 > OctoBot Script is in alpha version
 
-Documentation available at [octobot.cloud/guides/octobot-script](https://www.octobot.cloud/guides/octobot-script?utm_source=octobot&utm_medium=dk&utm_campaign=regular_open_source_content&utm_content=octobot_script_readme)
+Documentation available at [octobot.cloud/en/guides/octobot-script](https://www.octobot.cloud/en/guides/octobot-script?utm_source=octobot&utm_medium=dk&utm_campaign=regular_open_source_content&utm_content=octobot_script_readme)
 
 
 ## Install OctoBot Script from pip
