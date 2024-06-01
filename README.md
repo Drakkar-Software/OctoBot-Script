@@ -22,7 +22,7 @@ Documentation available at [octobot.cloud/en/guides/octobot-script](https://www.
 > OctoBot Script requires **Python 3.10**
 
 ``` {.sourceCode .bash}
-python3 -m pip install OctoBot wheel
+python3 -m pip install OctoBot wheel appdirs==1.4.4
 python3 -m pip install octobot-script
 ```
 
