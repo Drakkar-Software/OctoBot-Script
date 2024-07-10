@@ -5,9 +5,9 @@
 [![Github-Action-CI](https://github.com/Drakkar-Software/OctoBot-Script/actions/workflows/main.yml/badge.svg)](https://github.com/Drakkar-Software/OctoBot-Script/actions/workflows/main.yml)
 
 ## OctoBot-Script Community
-[![Telegram Chat](https://img.shields.io/badge/telegram-chat-green.svg?logo=telegram&label=Telegram)](https://octobot.click/readme-telegram-OctoBot-Script)
-[![Discord](https://img.shields.io/discord/530629985661222912.svg?logo=discord&label=Discord)](https://octobot.click/gh-discord-OctoBot-Script)
-[![Twitter](https://img.shields.io/twitter/follow/DrakkarsOctobot.svg?label=twitter&style=social)](https://octobot.click/gh-twitter-OctoBot-Script)
+[![Telegram Chat](https://img.shields.io/badge/telegram-chat-green.svg?logo=telegram&label=Telegram)](https://t.me/+366CLLZ2NC0xMjFk)
+[![Discord](https://img.shields.io/discord/530629985661222912.svg?logo=discord&label=Discord)](https://discord.com/invite/vHkcb8W)
+[![Twitter](https://img.shields.io/twitter/follow/DrakkarsOctobot.svg?label=twitter&style=social)](https://twitter.com/DrakkarsOctoBot)
 
 
 ## OctoBot Script is the Quant framework by OctoBot
@@ -90,4 +90,4 @@ asyncio.run(rsi_test())
 ### Join the community
 We recently created a telegram channel dedicated to OctoBot Script.
 
-[![Telegram News](https://img.shields.io/static/v1?label=Telegram%20chat&message=Join&logo=telegram&&color=007bff&style=for-the-badge)](https://octobot.click/readme-telegram-OctoBot-Pro)
+[![Telegram News](https://img.shields.io/static/v1?label=Telegram%20chat&message=Join&logo=telegram&&color=007bff&style=for-the-badge)](https://t.me/+366CLLZ2NC0xMjFk)
