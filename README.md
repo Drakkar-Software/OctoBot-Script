@@ -1,4 +1,4 @@
-# OctoBot-Script [0.0.17](https://github.com/Drakkar-Software/OctoBot-Script/tree/master/CHANGELOG.md)
+# OctoBot-Script [0.0.18](https://github.com/Drakkar-Software/OctoBot-Script/tree/master/CHANGELOG.md)
 [![PyPI](https://img.shields.io/pypi/v/OctoBot-Script.svg?logo=pypi)](https://pypi.python.org/pypi/octobot-script/)
 [![Downloads](https://static.pepy.tech/badge/OctoBot-Script/month)](https://pepy.tech/project/octobot-script)
 [![Dockerhub](https://img.shields.io/docker/pulls/drakkarsoftware/OctoBot-Script.svg?logo=docker)](https://hub.docker.com/r/drakkarsoftware/octobot-script)
