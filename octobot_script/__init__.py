@@ -16,7 +16,7 @@
 
 PROJECT_NAME = "OctoBot-Script"
 AUTHOR = "Drakkar-Software"
-VERSION = "0.0.19"  # major.minor.revision => don't forget to also update the setup.py version
+VERSION = "0.0.20"  # major.minor.revision => don't forget to also update the setup.py version
 
 
 def _use_module_local_tentacles():
