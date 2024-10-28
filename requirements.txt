@@ -1,5 +1,5 @@
 # Drakkar-Software requirements
-OctoBot==2.0.6
+OctoBot==2.0.7
 
 # manage tentacles install path
 appdirs==1.4.4
