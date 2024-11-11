@@ -1,0 +1,37 @@
+/*global*/
+.w2ui-empty-record, .w2ui-empty-record:hover, .w2ui-grid-footer, .w2ui-grid-columns,
+w2ui-grid-columns *, .w2ui-grid-toolbar,.w2ui-grid-toolbar *, .w2ui-grid-header, .w2ui-record,
+.grid_RSI_footer, .w2ui-overlay *, .w2ui-message *{
+    background-color: var(--brdr) !important;
+    color: var(--fnt) !important;
+    background-image: unset !important;
+}
+
+/*searches*/
+.w2ui-head, .w2ui-grid .w2ui-grid-toolbar .w2ui-grid-search-input .w2ui-search-all,
+.w2ui-grid .w2ui-grid-toolbar .w2ui-grid-search-input .w2ui-search-all:focus {
+    background-color: var(--bg) !important;
+    color: var(--fnt) !important;
+    background-image: unset !important;
+}
+
+/*rows*/
+.w2ui-even{
+    background-color: var(--bg) !important;
+}
+
+.w2ui-odd{
+    background-color: var(--brdr) !important;
+}
+
+/*hover*/
+.w2ui-record:hover {
+    background-color: var(--bg-hvr) !important;
+}
+
+/*selected*/
+.w2ui-grid .w2ui-grid-body .w2ui-grid-records table tr.w2ui-inactive,
+.w2ui-grid .w2ui-grid-body .w2ui-grid-records table tr.w2ui-selected {
+    background-color: var(--brdr-actv) !important;
+    color: var(--fnt) !important;
+}

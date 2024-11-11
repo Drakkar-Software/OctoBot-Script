@@ -1,0 +1,44 @@
+{
+  "backtesting": {
+      "files": []
+  },
+  "exchanges": {},
+  "services": {
+        "web": {
+            "auto-open-in-web-browser": true
+        }
+  },
+  "trader": {
+      "enabled": false,
+      "load-trade-history": false
+  },
+  "trader-simulator": {
+      "enabled": true,
+      "fees": {
+          "maker": 0.01,
+          "taker": 0.06
+      },
+      "starting-portfolio": {
+          "BTC": 0,
+          "ETH": 0,
+          "USD": 0,
+          "USDT": 10000
+      }
+  },
+  "trading": {
+      "reference-market": "USDT",
+      "risk": 0.5
+  },
+  "notification":{
+    "global-info": true,
+    "price-alerts": true,
+    "trades": true,
+    "trading-script-alerts": true,
+    "other": true,
+    "notification-type": [
+      "web"
+    ]
+  },
+  "profile": "daily_trading",
+  "accepted_terms": false
+}
