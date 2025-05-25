@@ -14,6 +14,8 @@
 #  You should have received a copy of the GNU General Public
 #  License along with OctoBot-Script. If not, see <https://www.gnu.org/licenses/>.
 
+# import API first to avoid import issues
+import octobot_trading.api  # pylint: disable=unused-import
 import octobot_trading.modes as modes
 import octobot_trading.enums as trading_enums
 
