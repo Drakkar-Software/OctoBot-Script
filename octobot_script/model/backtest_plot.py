@@ -82,7 +82,9 @@ class BacktestPlot:
             "title": f"{', '.join(symbols)}",
             "top_title": f"{', '.join(symbols)} on {', '.join(time_frames)} from "
                          f"{', '.join([e.capitalize() for e in exchanges])}",
-            "creation_time": timestamp_util.convert_timestamp_to_datetime(time.time(), self.GENERATED_TIME_FORMAT),
+            "creation_time": timestamp_util.convert_timestamp_to_datetime(
+                time.time(), self.GENERATED_TIME_FORMAT, local_timezone=True
+            ),
             "middle_title": "Portfolio value",
             "bottom_title": "Details",
             "strategy_config": self.backtest_result.strategy_config
