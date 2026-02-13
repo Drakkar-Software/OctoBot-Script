@@ -38,4 +38,5 @@ class BacktesterTradingMode(modes.AbstractScriptedTradingMode):
             trading_enums.ExchangeTypes.SPOT,
             trading_enums.ExchangeTypes.FUTURE,
             trading_enums.ExchangeTypes.MARGIN,
+            trading_enums.ExchangeTypes.OPTION,
         ]
