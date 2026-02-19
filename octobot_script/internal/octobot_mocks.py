@@ -35,6 +35,13 @@ def get_tentacles_config():
         commons_constants.CONFIG_TENTACLES_FILE
     )
     tentacles_setup_config = octobot_tentacles_manager_api.get_tentacles_setup_config(ref_tentacles_config_path)
+    if not tentacles_setup_config.is_successfully_loaded:
+        # reference config not available (tentacles not yet installed via CLI),
+        # populate from currently imported tentacles
+        octobot_tentacles_manager_api.fill_with_installed_tentacles(
+            tentacles_setup_config,
+            tentacles_folder=get_imported_tentacles_path()
+        )
     # activate OctoBot-Script required tentacles
     _force_tentacles_config_activation(tentacles_setup_config)
     return tentacles_setup_config
