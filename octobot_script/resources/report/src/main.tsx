@@ -54,19 +54,25 @@ function Root() {
   // Load selected history run (latest by default), fallback to current dir when no history exists
   useEffect(() => {
     if (!historyLoaded) return
+    const controller = new AbortController()
     setState((prev) => (prev.status === "ready"
       ? { ...prev, switching: true }
       : { status: "loading" }))
     const base = currentRunId ? `./history/${currentRunId}` : "."
     loadReport(base)
-      .then(({ data, meta }) => setState({ status: "ready", data, meta, switching: false }))
-      .catch((err) =>
+      .then(({ data, meta }) => {
+        if (controller.signal.aborted) return
+        setState({ status: "ready", data, meta, switching: false })
+      })
+      .catch((err) => {
+        if (controller.signal.aborted) return
         setState((prev) =>
           prev.status === "ready"
             ? { ...prev, switching: false }
             : { status: "error", message: String(err) }
         )
-      )
+      })
+    return () => controller.abort()
   }, [currentRunId, historyLoaded])
 
   const clearHistories = async () => {

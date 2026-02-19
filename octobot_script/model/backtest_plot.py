@@ -25,6 +25,7 @@ import octobot_commons.display as display
 import octobot_commons.logging as logging
 import octobot_commons.timestamp_util as timestamp_util
 import octobot.api as octobot_api
+import octobot_tentacles_manager.api as tentacles_manager_api
 import octobot_script.resources as resources
 import octobot_script.internal.backtester_trading_mode as backtester_trading_mode
 from octobot_script.model.backtest_report_server import BacktestReportServer
@@ -48,20 +49,30 @@ class BacktestPlot:
         self.backtest_result = backtest_result
         self.report_file = report_file
         self.run_db_identifier = run_db_identifier
-        self.backtesting_analysis_settings = self.default_backtesting_analysis_settings()
+        self.backtesting_analysis_settings = (
+            self.default_backtesting_analysis_settings()
+        )
 
     async def fill(self, template_file=None):
         template_name = template_file or self.DEFAULT_TEMPLATE
         template_data = await self._get_template_data()
         report_dir = os.path.dirname(os.path.abspath(self.report_file))
-        shutil.copy2(resources.get_report_resource_path(template_name), self.report_file)
+        shutil.copy2(
+            resources.get_report_resource_path(template_name), self.report_file
+        )
         meta = template_data["meta"]
-        with open(os.path.join(report_dir, self.REPORT_DATA_FILENAME), "w", encoding="utf-8") as f:
+        with open(
+            os.path.join(report_dir, self.REPORT_DATA_FILENAME), "w", encoding="utf-8"
+        ) as f:
             f.write(template_data["full_data"])
-        with open(os.path.join(report_dir, self.REPORT_META_FILENAME), "w", encoding="utf-8") as f:
+        with open(
+            os.path.join(report_dir, self.REPORT_META_FILENAME), "w", encoding="utf-8"
+        ) as f:
             json.dump(meta, f)
         bundle = {"meta": meta, "data": json.loads(template_data["full_data"])}
-        with open(os.path.join(report_dir, self.REPORT_BUNDLE_FILENAME), "w", encoding="utf-8") as f:
+        with open(
+            os.path.join(report_dir, self.REPORT_BUNDLE_FILENAME), "w", encoding="utf-8"
+        ) as f:
             json.dump(bundle, f)
         self._save_history_entry(report_dir, template_data["full_data"], meta, bundle)
 
@@ -69,17 +80,26 @@ class BacktestPlot:
         ts = time.strftime(self.HISTORY_TIMESTAMP_FORMAT)
         run_dir = os.path.join(report_dir, self.HISTORY_DIR, ts)
         os.makedirs(run_dir, exist_ok=True)
-        with open(os.path.join(run_dir, self.REPORT_DATA_FILENAME), "w", encoding="utf-8") as f:
+        with open(
+            os.path.join(run_dir, self.REPORT_DATA_FILENAME), "w", encoding="utf-8"
+        ) as f:
             f.write(data_str)
-        with open(os.path.join(run_dir, self.REPORT_META_FILENAME), "w", encoding="utf-8") as f:
+        with open(
+            os.path.join(run_dir, self.REPORT_META_FILENAME), "w", encoding="utf-8"
+        ) as f:
             json.dump(meta, f)
-        with open(os.path.join(run_dir, self.REPORT_BUNDLE_FILENAME), "w", encoding="utf-8") as f:
+        with open(
+            os.path.join(run_dir, self.REPORT_BUNDLE_FILENAME), "w", encoding="utf-8"
+        ) as f:
             json.dump(bundle, f)
 
     def show(self):
+        import octobot_script.internal.octobot_mocks as octobot_mocks
+
         report_dir = os.path.dirname(os.path.abspath(self.report_file))
         report_name = os.path.basename(self.report_file)
         runs_root_dir = os.path.dirname(report_dir)
+        user_data_dir = octobot_mocks.get_module_appdir_path()
         print(f"Report: {self.report_file}")
         server = BacktestReportServer(
             report_file=self.report_file,
@@ -94,11 +114,13 @@ class BacktestPlot:
             meta_filename=self.REPORT_META_FILENAME,
             bundle_filename=self.REPORT_BUNDLE_FILENAME,
         )
+        server.user_data_dir = user_data_dir
         server.serve()
 
     async def _get_template_data(self):
         full_data, symbols, time_frames, exchanges = await self._get_full_data()
         summary = self._extract_summary_metrics(full_data)
+        trading_mode = self._resolve_trading_mode_class()
         return {
             "full_data": full_data,
             "meta": {
@@ -111,6 +133,7 @@ class BacktestPlot:
                 "time_frames": time_frames,
                 "exchanges": exchanges,
                 "summary": summary,
+                "trading_mode": trading_mode.get_name() if trading_mode else None,
             },
         }
 
@@ -121,10 +144,12 @@ class BacktestPlot:
             sub_elements = parsed.get("data", {}).get("sub_elements", [])
             details = next(
                 (
-                    element for element in sub_elements
-                    if element.get("name") == "backtesting-details" and element.get("type") == "value"
+                    element
+                    for element in sub_elements
+                    if element.get("name") == "backtesting-details"
+                    and element.get("type") == "value"
                 ),
-                None
+                None,
             )
             values = details.get("data", {}).get("elements", []) if details else []
             metrics = {}
@@ -145,8 +170,12 @@ class BacktestPlot:
                 return None
 
             return {
-                "profitability": _find_metric(("usdt gains", "profitability", "profit", "roi", "return")),
-                "portfolio": _find_metric(("end portfolio usdt value", "end portfolio", "portfolio")),
+                "profitability": _find_metric(
+                    ("usdt gains", "profitability", "profit", "roi", "return")
+                ),
+                "portfolio": _find_metric(
+                    ("end portfolio usdt value", "end portfolio", "portfolio")
+                ),
                 "metrics": metrics,
             }
         except Exception:
@@ -156,10 +185,10 @@ class BacktestPlot:
     def _extract_metrics_from_html(metric_html):
         metrics = {}
         matches = re.findall(
-            r'backtesting-run-container-values-label[^>]*>\s*(.*?)\s*</div>\s*'
-            r'<div[^>]*backtesting-run-container-values-value[^>]*>\s*(.*?)\s*</div>',
+            r"backtesting-run-container-values-label[^>]*>\s*(.*?)\s*</div>\s*"
+            r"<div[^>]*backtesting-run-container-values-value[^>]*>\s*(.*?)\s*</div>",
             metric_html,
-            flags=re.IGNORECASE | re.DOTALL
+            flags=re.IGNORECASE | re.DOTALL,
         )
         for raw_label, raw_value in matches:
             label = BacktestPlot._html_to_text(raw_label)
@@ -176,31 +205,75 @@ class BacktestPlot:
     async def _get_full_data(self):
         # tentacles not available during first install
         import tentacles.Meta.Keywords.scripting_library as scripting_library
+
+        logger = logging.get_logger(self.__class__.__name__)
         elements = display.display_translator_factory()
-        trading_mode = backtester_trading_mode.BacktesterTradingMode
+        trading_mode = self._resolve_trading_mode_class()
         symbols = []
         time_frames = []
         exchanges = []
-        for exchange, available_symbols in octobot_api.get_independent_backtesting_symbols_by_exchanges(
-                self.backtest_result.independent_backtesting
+        for (
+            exchange,
+            available_symbols,
+        ) in octobot_api.get_independent_backtesting_symbols_by_exchanges(
+            self.backtest_result.independent_backtesting
         ).items():
             exchanges.append(exchange)
             for symbol in available_symbols:
                 symbol = str(symbol)
                 symbols.append(symbol)
                 for time_frame in octobot_api.get_independent_backtesting_config(
-                        self.backtest_result.independent_backtesting)[commons_constants.CONFIG_TIME_FRAME]:
+                    self.backtest_result.independent_backtesting
+                )[commons_constants.CONFIG_TIME_FRAME]:
                     time_frames.append(time_frame.value)
                     await elements.fill_from_database(
-                        trading_mode, self.run_db_identifier, exchange, symbol, time_frame.value,
-                        None, with_inputs=False
+                        trading_mode,
+                        self.run_db_identifier,
+                        exchange,
+                        symbol,
+                        time_frame.value,
+                        None,
+                        with_inputs=False,
                     )
                     ctx = scripting_library.Context.minimal(
-                        trading_mode, logging.get_logger(self.__class__.__name__), exchange, symbol,
-                        self.run_db_identifier.backtesting_id, self.run_db_identifier.optimizer_id,
-                        self.run_db_identifier.optimization_campaign_name, self.backtesting_analysis_settings)
-                    elements.add_parts_from_other(await scripting_library.default_backtesting_analysis_script(ctx))
+                        trading_mode,
+                        logger,
+                        exchange,
+                        symbol,
+                        self.run_db_identifier.backtesting_id,
+                        self.run_db_identifier.optimizer_id,
+                        self.run_db_identifier.optimization_campaign_name,
+                        self.backtesting_analysis_settings,
+                    )
+                    try:
+                        elements.add_parts_from_other(
+                            await scripting_library.default_backtesting_analysis_script(
+                                ctx
+                            )
+                        )
+                    except Exception as err:
+                        logger.error(
+                            f"Failed to build advanced analysis for {exchange} {symbol} {time_frame.value}: {err}"
+                        )
         return json.dumps(elements.to_json()), symbols, time_frames, exchanges
+
+    def _resolve_trading_mode_class(self):
+        trading_mode_name = getattr(self.run_db_identifier, "tentacle_class", None)
+        if trading_mode_name:
+            try:
+                if (
+                    trading_mode_name
+                    == backtester_trading_mode.BacktesterTradingMode.__name__
+                ):
+                    return backtester_trading_mode.BacktesterTradingMode
+                resolved = tentacles_manager_api.get_tentacle_class_from_string(
+                    trading_mode_name
+                )
+                if resolved is not None:
+                    return resolved
+            except Exception:
+                pass
+        return backtester_trading_mode.BacktesterTradingMode
 
     def default_backtesting_analysis_settings(self):
         return {

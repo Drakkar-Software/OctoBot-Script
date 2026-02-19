@@ -55,17 +55,28 @@ class BacktestReportServer:
     def _encode_path(path):
         return base64.urlsafe_b64encode(path.encode()).decode().rstrip("=")
 
-    def _collect_run_dirs(self):
-        run_dirs = []
-        try:
-            for entry in os.scandir(self.runs_root_dir):
-                if entry.is_dir() and entry.name.startswith("backtesting_"):
-                    run_dirs.append(entry.path)
-        except Exception:
-            pass
-        if self.report_dir not in run_dirs:
-            run_dirs.append(self.report_dir)
-        return run_dirs
+    def _get_all_backtesting_dirs(self):
+        backtesting_dirs = []
+        base_dirs = set()
+
+        base_dirs.add(self.runs_root_dir)
+
+        if hasattr(self, "user_data_dir") and self.user_data_dir:
+            base_dirs.add(self.user_data_dir)
+
+        for base_dir in base_dirs:
+            if not os.path.isdir(base_dir):
+                continue
+            for root, dirs, files in os.walk(base_dir):
+                for d in dirs:
+                    if d.startswith("backtesting_"):
+                        full_path = os.path.join(root, d)
+                        backtesting_dirs.append(full_path)
+
+        if self.report_dir not in backtesting_dirs:
+            backtesting_dirs.append(self.report_dir)
+
+        return backtesting_dirs
 
     def _load_meta_from_dir(self, root_path):
         meta_path = os.path.join(root_path, self.meta_filename)
@@ -80,23 +91,27 @@ class BacktestReportServer:
         data_path = os.path.join(root_path, self.data_filename)
         meta_path = os.path.join(root_path, self.meta_filename)
         bundle_path = os.path.join(root_path, self.bundle_filename)
-        return os.path.isfile(bundle_path) or (os.path.isfile(meta_path) and os.path.isfile(data_path))
+        return os.path.isfile(bundle_path) or (
+            os.path.isfile(meta_path) and os.path.isfile(data_path)
+        )
 
     def _collect_history_entries(self):
         entries = []
-        for run_dir in self._collect_run_dirs():
+        for run_dir in self._get_all_backtesting_dirs():
             run_name = os.path.basename(run_dir)
             try:
                 if self._has_report_data(run_dir):
                     try:
                         meta = self._load_meta_from_dir(run_dir)
-                        entries.append({
-                            "id": self._encode_path(run_dir),
-                            "meta": meta,
-                            "path": run_dir,
-                            "timestamp": meta.get("creation_time", ""),
-                            "run_name": run_name,
-                        })
+                        entries.append(
+                            {
+                                "id": self._encode_path(run_dir),
+                                "meta": meta,
+                                "path": run_dir,
+                                "timestamp": meta.get("creation_time", ""),
+                                "run_name": run_name,
+                            }
+                        )
                     except Exception:
                         pass
             except Exception:
@@ -111,13 +126,15 @@ class BacktestReportServer:
                         continue
                     try:
                         meta = self._load_meta_from_dir(history_entry.path)
-                        entries.append({
-                            "id": self._encode_path(history_entry.path),
-                            "meta": meta,
-                            "path": history_entry.path,
-                            "timestamp": history_entry.name,
-                            "run_name": run_name,
-                        })
+                        entries.append(
+                            {
+                                "id": self._encode_path(history_entry.path),
+                                "meta": meta,
+                                "path": history_entry.path,
+                                "timestamp": history_entry.name,
+                                "run_name": run_name,
+                            }
+                        )
                     except Exception:
                         pass
             except Exception:
@@ -129,18 +146,22 @@ class BacktestReportServer:
         cleared_history_dirs = 0
         cleared_run_reports = 0
         try:
-            for entry in os.scandir(self.runs_root_dir):
-                if not (entry.is_dir() and entry.name.startswith("backtesting_")):
-                    continue
-                is_current_run = os.path.abspath(entry.path) == os.path.abspath(self.report_dir)
-                history_root = os.path.join(entry.path, self.history_dir)
+            for run_dir in self._get_all_backtesting_dirs():
+                is_current_run = os.path.abspath(run_dir) == os.path.abspath(
+                    self.report_dir
+                )
+                history_root = os.path.join(run_dir, self.history_dir)
                 if os.path.isdir(history_root):
                     shutil.rmtree(history_root, ignore_errors=True)
                     cleared_history_dirs += 1
                 if not is_current_run:
                     removed_any = False
-                    for filename in (self.bundle_filename, self.data_filename, self.meta_filename):
-                        file_path = os.path.join(entry.path, filename)
+                    for filename in (
+                        self.bundle_filename,
+                        self.data_filename,
+                        self.meta_filename,
+                    ):
+                        file_path = os.path.join(run_dir, filename)
                         if os.path.isfile(file_path):
                             try:
                                 os.remove(file_path)
@@ -169,7 +190,11 @@ class BacktestReportServer:
                 path = self.path.split("?")[0]
                 if path == "/history.json":
                     history = [
-                        {"id": entry["id"], "run_name": entry["run_name"], **entry["meta"]}
+                        {
+                            "id": entry["id"],
+                            "run_name": entry["run_name"],
+                            **entry["meta"],
+                        }
                         for entry in server._collect_history_entries()
                     ]
                     self._send_json(history)
@@ -185,17 +210,33 @@ class BacktestReportServer:
                     self.send_error(404)
                     return
                 run_id, filename = parts[1], parts[2]
-                if filename not in {server.data_filename, server.meta_filename, server.bundle_filename}:
+                if filename not in {
+                    server.data_filename,
+                    server.meta_filename,
+                    server.bundle_filename,
+                }:
                     self.send_error(404)
                     return
-                history_entry = next(
-                    (entry for entry in server._collect_history_entries() if entry["id"] == run_id),
-                    None
-                )
-                if history_entry is None:
+                # Decode the base64 path directly instead of re-scanning the filesystem,
+                # which avoids any inconsistency between the history.json scan and this request.
+                try:
+                    padding = (4 - len(run_id) % 4) % 4
+                    decoded_path = base64.urlsafe_b64decode(
+                        (run_id + "=" * padding).encode()
+                    ).decode("utf-8")
+                except Exception:
                     self.send_error(404)
                     return
-                file_path = os.path.join(history_entry["path"], filename)
+                # Security: the decoded path must be within the allowed root directories.
+                abs_decoded = os.path.realpath(decoded_path)
+                allowed_roots = [
+                    os.path.realpath(server.runs_root_dir),
+                    os.path.realpath(server.report_dir),
+                ]
+                if not any(abs_decoded.startswith(root) for root in allowed_roots):
+                    self.send_error(404)
+                    return
+                file_path = os.path.join(decoded_path, filename)
                 if not os.path.isfile(file_path):
                     self.send_error(404)
                     return
@@ -217,12 +258,14 @@ class BacktestReportServer:
                     {"id": entry["id"], "run_name": entry["run_name"], **entry["meta"]}
                     for entry in server._collect_history_entries()
                 ]
-                self._send_json({
-                    "cleared": cleared_history_dirs,
-                    "cleared_history_dirs": cleared_history_dirs,
-                    "cleared_run_reports": cleared_run_reports,
-                    "history": history,
-                })
+                self._send_json(
+                    {
+                        "cleared": cleared_history_dirs,
+                        "cleared_history_dirs": cleared_history_dirs,
+                        "cleared_run_reports": cleared_run_reports,
+                        "history": history,
+                    }
+                )
 
             def log_request(self, *_):
                 pass
@@ -237,10 +280,17 @@ class BacktestReportServer:
         try:
             with socketserver.TCPServer(("", self.server_port), handler) as httpd:
                 url = f"http://{self.server_host}:{self.server_port}/{self.report_name}"
-                webbrowser.open(url)
-                server_thread = threading.Thread(target=httpd.serve_forever, daemon=True)
+                print(f"Serving report on: {url}")
+                opened = webbrowser.open(url, new=2)
+                if not opened:
+                    print(
+                        "Couldn't open a browser automatically. Open the URL manually."
+                    )
+                server_thread = threading.Thread(
+                    target=httpd.serve_forever, daemon=True
+                )
                 server_thread.start()
                 server_thread.join(timeout=self.serve_timeout)
                 httpd.shutdown()
         except Exception:
-            webbrowser.open(self.report_file)
+            webbrowser.open(self.report_file, new=2)

@@ -18,11 +18,17 @@ import octobot_script.internal.logging_util as logging_util
 import octobot_script.internal.runners as runners
 
 
-async def run(backtesting_data, update_func, strategy_config,
-              enable_logs=False, enable_storage=True):
+async def run(backtesting_data, strategy_config,
+              enable_logs=False, enable_storage=True,
+              strategy_func=None, initialize_func=None,
+              tentacles_config=None, profile_id=None):
+    if tentacles_config is not None and profile_id is not None:
+        raise ValueError("Only one of tentacles_config or profile_id can be provided.")
     if enable_logs:
         logging_util.load_logging_config()
     return await runners.run(
-        backtesting_data, update_func, strategy_config,
-        enable_logs=enable_logs, enable_storage=enable_storage
+        backtesting_data, strategy_config,
+        enable_logs=enable_logs, enable_storage=enable_storage,
+        strategy_func=strategy_func, initialize_func=initialize_func,
+        tentacles_config=tentacles_config, profile_id=profile_id,
     )

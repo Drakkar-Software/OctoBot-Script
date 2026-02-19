@@ -81,6 +81,9 @@ export function AppSidebar({
                     <div className="min-w-0">
                       <div className="text-xs font-medium truncate">{run.creation_time}</div>
                       <div className="text-[11px] text-muted-foreground truncate">{run.run_name ?? run.title}</div>
+                      {run.trading_mode && (
+                        <div className="text-[11px] text-blue-500 truncate">{run.trading_mode}</div>
+                      )}
                       {run.summary?.profitability && (
                         <div className="text-[11px] text-foreground/90 truncate">
                           {run.summary.profitability}

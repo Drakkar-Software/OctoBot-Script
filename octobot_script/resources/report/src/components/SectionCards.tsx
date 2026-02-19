@@ -60,13 +60,6 @@ export function SectionCards({ meta }: { meta: ReportMeta }) {
               <CardTitle className="text-xl font-semibold tabular-nums @[250px]/card:text-2xl">
                 {value}
               </CardTitle>
-              <CardAction>
-                {positive !== null && (
-                  <Badge variant="outline">
-                    {positive ? <IconTrendingUp /> : <IconTrendingDown />}
-                  </Badge>
-                )}
-              </CardAction>
             </CardHeader>
             <CardContent className="pt-0">
               <div className="line-clamp-1 text-xs font-medium">
