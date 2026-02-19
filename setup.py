@@ -1,14 +1,58 @@
 import asyncio
+import os
+import subprocess
+import sys
 
 from setuptools import find_packages
 from setuptools import setup
+from setuptools.command.build_py import build_py
 from distutils.command.install import install
 
 
 # from octobot_script import PROJECT_NAME, VERSION
 # todo figure out how not to import octobot_script.__init__.py here
 PROJECT_NAME = "OctoBot-Script"
-VERSION = "0.0.29"  # major.minor.revision
+VERSION = "0.0.30"  # major.minor.revision
+
+ROOT_DIR = os.path.dirname(os.path.abspath(__file__))
+REPORT_DIST = os.path.join(
+    ROOT_DIR, "octobot_script", "resources", "report", "dist", "index.html"
+)
+
+
+def _build_report():
+    npm = "npm"
+
+    print("[report] Installing JS dependencies…")
+    result = subprocess.run(
+        [npm, "install", "--prefer-offline"],
+        cwd=ROOT_DIR,
+        check=False,
+    )
+    if result.returncode != 0:
+        print("[report] 'npm install' failed – skipping JS build.", file=sys.stderr)
+        return
+
+    print("[report] Building React bundle…")
+    result = subprocess.run(
+        [npm, "run", "build"],
+        cwd=ROOT_DIR,
+        check=False,
+    )
+    if result.returncode != 0:
+        print("[report] 'npm run build' failed – skipping JS bundle.", file=sys.stderr)
+        return
+
+    if os.path.isfile(REPORT_DIST):
+        print(f"[report] Built successfully → {REPORT_DIST}")
+    else:
+        print("[report] Build finished but dist/index.html not found.", file=sys.stderr)
+
+
+class BuildPyWithReport(build_py):
+    def run(self):
+        _build_report()
+        super().run()
 
 
 def _post_install():
@@ -46,7 +90,10 @@ setup(
     author_email='contact@drakkar.software',
     description='Backtesting framework of the OctoBot Ecosystem',
     packages=PACKAGES,
-    cmdclass={'install': InstallWithPostInstallAction},
+    cmdclass={
+        'install': InstallWithPostInstallAction,
+        'build_py': BuildPyWithReport,
+    },
     long_description=DESCRIPTION,
     long_description_content_type='text/markdown',
     tests_require=["pytest"],
