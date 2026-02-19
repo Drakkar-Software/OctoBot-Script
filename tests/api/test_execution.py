@@ -29,16 +29,81 @@ pytestmark = pytest.mark.asyncio
 async def test_run():
     with mock.patch.object(logging_util, "load_logging_config", mock.Mock()) as load_logging_config_mock, \
          mock.patch.object(runners, "run", mock.AsyncMock(return_value="ret")) as run_mock:
-        def up_func():
+        def strategy_func():
             pass
-        assert await obs.run("backtesting_data", up_func, "strat_config") == "ret"
+        assert await obs.run("backtesting_data", "strat_config", strategy_func=strategy_func) == "ret"
         load_logging_config_mock.assert_not_called()
-        run_mock.assert_awaited_once_with("backtesting_data", up_func, "strat_config",
-                                          enable_logs=False, enable_storage=True)
+        run_mock.assert_awaited_once_with(
+            "backtesting_data",
+            "strat_config",
+            enable_logs=False,
+            enable_storage=True,
+            strategy_func=strategy_func,
+            initialize_func=None,
+            tentacles_config=None,
+            profile_id=None,
+        )
         load_logging_config_mock.reset_mock()
         run_mock.reset_mock()
-        assert await obs.run("backtesting_data", up_func, "strat_config", enable_logs=True, enable_storage=False) \
-               == "ret"
+        assert await obs.run(
+            "backtesting_data", "strat_config",
+            enable_logs=True, enable_storage=False,
+            strategy_func=strategy_func,
+        ) == "ret"
         load_logging_config_mock.assert_called_once()
-        run_mock.assert_awaited_once_with("backtesting_data", up_func, "strat_config",
-                                          enable_logs=True, enable_storage=False)
+        run_mock.assert_awaited_once_with(
+            "backtesting_data",
+            "strat_config",
+            enable_logs=True,
+            enable_storage=False,
+            strategy_func=strategy_func,
+            initialize_func=None,
+            tentacles_config=None,
+            profile_id=None,
+        )
+
+
+async def test_run_with_tentacles_config():
+    with mock.patch.object(logging_util, "load_logging_config", mock.Mock()) as load_logging_config_mock, \
+         mock.patch.object(runners, "run", mock.AsyncMock(return_value="ret")) as run_mock:
+        tentacles_config = {"services": {"AlternativeMeServiceFeed": True}}
+        assert await obs.run("backtesting_data", "strat_config", tentacles_config=tentacles_config) == "ret"
+        load_logging_config_mock.assert_not_called()
+        run_mock.assert_awaited_once_with(
+            "backtesting_data",
+            "strat_config",
+            enable_logs=False,
+            enable_storage=True,
+            strategy_func=None,
+            initialize_func=None,
+            tentacles_config=tentacles_config,
+            profile_id=None,
+        )
+
+
+async def test_run_with_profile_id():
+    with mock.patch.object(logging_util, "load_logging_config", mock.Mock()) as load_logging_config_mock, \
+         mock.patch.object(runners, "run", mock.AsyncMock(return_value="ret")) as run_mock:
+        profile_id = "profile-1"
+        assert await obs.run("backtesting_data", "strat_config", profile_id=profile_id) == "ret"
+        load_logging_config_mock.assert_not_called()
+        run_mock.assert_awaited_once_with(
+            "backtesting_data",
+            "strat_config",
+            enable_logs=False,
+            enable_storage=True,
+            strategy_func=None,
+            initialize_func=None,
+            tentacles_config=None,
+            profile_id=profile_id,
+        )
+
+
+async def test_run_with_profile_id_and_tentacles_config_raises():
+    with pytest.raises(ValueError):
+        await obs.run(
+            "backtesting_data",
+            "strat_config",
+            tentacles_config={"any": {}},
+            profile_id="profile-1",
+        )

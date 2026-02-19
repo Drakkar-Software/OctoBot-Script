@@ -83,6 +83,7 @@ export interface ReportMeta {
     portfolio?: string | null
     metrics?: Record<string, string>
   }
+  trading_mode?: string | null
 }
 
 export interface HistoryRun {
@@ -94,4 +95,5 @@ export interface HistoryRun {
     profitability?: string | null
     portfolio?: string | null
   }
+  trading_mode?: string | null
 }

@@ -18,18 +18,29 @@ import octobot.api as octobot_api
 import octobot_backtesting.api as backtesting_api
 import octobot_commons.constants as commons_constants
 import octobot_commons.enums as commons_enums
+import octobot_commons.logging as logging
 
 import octobot_script.model as models
 import octobot_script.internal.backtester_trading_mode as backtester_trading_mode
+import octobot_script.internal.octobot_mocks as octobot_mocks
 
 
-async def run(backtesting_data, update_func, strategy_config,
-              enable_logs=False, enable_storage=False):
+async def run(backtesting_data, strategy_config,
+              enable_logs=False, enable_storage=False,
+              strategy_func=None, initialize_func=None,
+              tentacles_config=None, profile_id=None):
     backtest_result = models.BacktestResult(backtesting_data, strategy_config)
-    _register_strategy(update_func, strategy_config)
+    registered_func = _build_script(strategy_func, initialize_func)
+    _register_script(registered_func, strategy_config)
+    run_tentacles_config = _resolve_run_tentacles_config(
+        backtesting_data,
+        strategy_func,
+        tentacles_config,
+        profile_id,
+    )
     independent_backtesting = octobot_api.create_independent_backtesting(
         backtesting_data.config,
-        backtesting_data.tentacles_config,
+        run_tentacles_config,
         backtesting_data.data_files,
         run_on_common_part_only=True,
         start_timestamp=None,
@@ -48,6 +59,22 @@ async def run(backtesting_data, update_func, strategy_config,
     return backtest_result
 
 
+def _resolve_run_tentacles_config(backtesting_data, strategy_func, tentacles_config, profile_id):
+    activate_strategy_tentacles = strategy_func is not None
+    if tentacles_config is None and profile_id is None:
+        run_tentacles_config = backtesting_data.tentacles_config
+        octobot_mocks.force_tentacles_config_activation(
+            run_tentacles_config,
+            activate_strategy_tentacles=activate_strategy_tentacles,
+        )
+        return run_tentacles_config
+    return octobot_mocks.get_tentacles_config(
+        tentacles_config,
+        profile_id,
+        activate_strategy_tentacles=activate_strategy_tentacles,
+    )
+
+
 async def _gather_results(independent_backtesting, backtest_result):
     backtest_result.independent_backtesting = independent_backtesting
     backtest_result.duration = backtesting_api.get_backtesting_duration(
@@ -61,9 +88,37 @@ async def _gather_results(independent_backtesting, backtest_result):
     backtest_result.bot_id = independent_backtesting.octobot_backtesting.bot_id
 
 
-def _register_strategy(update_func, strategy_config):
+def _build_script(strategy_func, initialize_func):
+    """
+    Compose strategy_func and initialize_func into a single
+    async callable that the backtesting engine will invoke on every candle.
+
+    Execution order per candle:
+      1. initialize_func(ctx)  => only on the very first candle tick
+      2. strategy_func(ctx)    => always (signal computation)
+    """
+    logger = logging.get_logger("Script Runner")
+    initialized = [False]  # mutable container so the closure can mutate it
+
+    async def _combined(ctx):
+        if initialize_func is not None and not initialized[0]:
+            try:
+                await initialize_func(ctx)
+            except Exception as err:
+                logger.exception(err, True, f"Failed to execute initialization function: {err}")
+            finally:
+                initialized[0] = True
+        try:
+            if strategy_func is not None:
+                await strategy_func(ctx)
+        except Exception as err:
+            logger.exception(err, True, f"Failed to execute strategy function: {err}")
+    return _combined
+
+
+def _register_script(script_func, strategy_config):
     def _local_import_scripts(self, *args):
-        self._live_script = update_func
+        self._live_script = script_func
         original_reload_config = self.reload_config
 
         async def _local_reload_config(*args, **kwargs):

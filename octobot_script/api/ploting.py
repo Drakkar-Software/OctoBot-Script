@@ -15,15 +15,33 @@
 #  You should have received a copy of the GNU General Public
 #  License along with OctoBot-Script. If not, see <https://www.gnu.org/licenses/>.
 
+
 async def plot_indicator(ctx, name, x, y, signals=None):
     # lazy import
     import octobot_script as obs
 
     await obs.plot(ctx, name, x=list(x), y=list(y))
-    value_by_x = {
-        x: y
-        for x, y in zip(x, y)
-    }
+    value_by_x = {x: y for x, y in zip(x, y)}
     if signals:
-        await obs.plot(ctx, "signals", x=list(signals), y=[value_by_x[x] for x in signals], mode="markers")
+        await obs.plot(
+            ctx,
+            "signals",
+            x=list(signals),
+            y=[value_by_x[x] for x in signals],
+            mode="markers",
+        )
 
+
+async def generate_and_show_report(res):
+    """Generate a backtest report and show it.
+
+    Args:
+        res: BacktestResult instance
+
+    Returns:
+        The generated report object
+    """
+    report = await res.plot(show=False)
+    print(f"Report generated at: {report.report_file}")
+    report.show()
+    return report
