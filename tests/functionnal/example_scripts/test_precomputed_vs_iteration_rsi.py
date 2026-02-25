@@ -61,8 +61,8 @@ async def test_precomputed_vs_iteration_rsi(one_day_btc_usdt_data):
     }
     res = await obs.run(
         one_day_btc_usdt_data,
-        _pre_compute_update,
-        strategy_config=config,
+        config,
+        strategy_func=_pre_compute_update,
         enable_logs=False,
         enable_storage=True,
     )
@@ -86,8 +86,8 @@ async def test_precomputed_vs_iteration_rsi(one_day_btc_usdt_data):
     }
     res_2 = await obs.run(
         one_day_btc_usdt_data,
-        _pre_compute_update,
-        strategy_config=config,
+        config,
+        strategy_func=_pre_compute_update,
         enable_logs=True,
         enable_storage=False,
     )
@@ -111,8 +111,8 @@ async def test_precomputed_vs_iteration_rsi(one_day_btc_usdt_data):
     }
     res_3 = await obs.run(
         one_day_btc_usdt_data,
-        _pre_compute_update,
-        strategy_config=config,
+        config,
+        strategy_func=_pre_compute_update,
         enable_logs=False,
         enable_storage=False,
     )
@@ -148,8 +148,8 @@ async def test_precomputed_vs_iteration_rsi(one_day_btc_usdt_data):
 
     res_iteration = await obs.run(
         one_day_btc_usdt_data,
-        _iterations_update,
-        strategy_config=config,
+        config,
+        strategy_func=_iterations_update,
         enable_logs=False,
         enable_storage=False,
     )
