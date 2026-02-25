@@ -32,10 +32,10 @@ pytestmark = pytest.mark.asyncio
 
 async def test_historical_data():
     with (
-        mock.patch.object(
-            backtesting_api,
-            "find_matching_data_file",
+        mock.patch(
+            "octobot_script.api.data_fetching.backtesting_api.find_matching_data_file",
             mock.AsyncMock(return_value=None),
+            create=True,
         ) as find_matching_data_file_mock,
         mock.patch.object(
             backtesting_api,
@@ -55,10 +55,10 @@ async def test_historical_data():
 
 async def test_social_historical_data():
     with (
-        mock.patch.object(
-            backtesting_api,
-            "find_matching_data_file",
+        mock.patch(
+            "octobot_script.api.data_fetching.backtesting_api.find_matching_data_file",
             mock.AsyncMock(return_value=None),
+            create=True,
         ) as find_matching_data_file_mock,
         mock.patch.object(
             backtesting_api,
