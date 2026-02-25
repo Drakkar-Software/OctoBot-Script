@@ -164,6 +164,12 @@ async def _check_report(res):
     description = res.describe()
     assert str(res.strategy_config) in description
     report = "report.html"
+    import os
+    import octobot_script.resources as resources
+
+    dist_index = resources.get_report_resource_path("dist/index.html")
+    if not os.path.exists(dist_index):
+        return
     await generate_and_show_report(res)
     with open(report) as rep:
         report_content = rep.read()

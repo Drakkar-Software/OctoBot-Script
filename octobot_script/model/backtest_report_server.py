@@ -99,24 +99,6 @@ class BacktestReportServer:
         entries = []
         for run_dir in self._get_all_backtesting_dirs():
             run_name = os.path.basename(run_dir)
-            try:
-                if self._has_report_data(run_dir):
-                    try:
-                        meta = self._load_meta_from_dir(run_dir)
-                        entries.append(
-                            {
-                                "id": self._encode_path(run_dir),
-                                "meta": meta,
-                                "path": run_dir,
-                                "timestamp": meta.get("creation_time", ""),
-                                "run_name": run_name,
-                            }
-                        )
-                    except Exception:
-                        pass
-            except Exception:
-                pass
-
             history_root = os.path.join(run_dir, self.history_dir)
             try:
                 for history_entry in os.scandir(history_root):
