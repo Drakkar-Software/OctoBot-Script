@@ -60,6 +60,11 @@ async def test_social_historical_data():
             mock.AsyncMock(return_value=None),
             create=True,
         ) as find_matching_data_file_mock,
+        mock.patch(
+            "octobot_script.api.data_fetching.backtesting_api.social_historical_data_collector_factory",
+            mock.Mock(return_value="collector"),
+            create=True,
+        ) as factory_mock,
         mock.patch.object(
             backtesting_api,
             "initialize_and_run_data_collector",
@@ -76,6 +81,7 @@ async def test_social_historical_data():
             == "social_data"
         )
         find_matching_data_file_mock.assert_awaited_once()
+        factory_mock.assert_called_once()
         initialize_and_run_data_collector_mock.assert_awaited_once()
 
 
