@@ -91,3 +91,12 @@ asyncio.run(rsi_test())
 We recently created a telegram channel dedicated to OctoBot Script.
 
 [![Telegram News](https://img.shields.io/static/v1?label=Telegram%20chat&message=Join&logo=telegram&&color=007bff&style=for-the-badge)](https://t.me/+366CLLZ2NC0xMjFk)
+
+### Developers
+
+To build report from sources:
+
+```bash
+npm install
+npm run build
+```

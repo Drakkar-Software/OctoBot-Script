@@ -100,7 +100,6 @@ class BacktestPlot:
         report_name = os.path.basename(self.report_file)
         runs_root_dir = os.path.dirname(report_dir)
         user_data_dir = octobot_mocks.get_module_appdir_path()
-        print(f"Report: {self.report_file}")
         server = BacktestReportServer(
             report_file=self.report_file,
             report_dir=report_dir,
