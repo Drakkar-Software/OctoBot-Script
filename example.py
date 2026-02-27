@@ -1,7 +1,6 @@
 import asyncio
 import tulipy  # Can be any TA library.
 import octobot_script as obs
-from octobot_script.api.ploting import generate_and_show_report
 
 
 async def example():
@@ -54,7 +53,7 @@ async def example():
     )
     print(res.describe())
     # Generate and open report including indicators plots
-    await generate_and_show_report(res)
+    await obs.generate_and_show_report(res)
     # Stop data to release local databases.
     await data.stop()
 

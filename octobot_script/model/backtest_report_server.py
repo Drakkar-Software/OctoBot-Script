@@ -23,6 +23,8 @@ import webbrowser
 import http.server
 import socketserver
 
+import octobot_commons.logging as logging
+
 
 class BacktestReportServer:
     def __init__(
@@ -50,6 +52,7 @@ class BacktestReportServer:
         self.data_filename = data_filename
         self.meta_filename = meta_filename
         self.bundle_filename = bundle_filename
+        self.logger = logging.get_logger(self.__class__.__name__)
 
     @staticmethod
     def _encode_path(path):
@@ -262,10 +265,10 @@ class BacktestReportServer:
         try:
             with socketserver.TCPServer(("", self.server_port), handler) as httpd:
                 url = f"http://{self.server_host}:{self.server_port}/{self.report_name}"
-                print(f"Serving report on: {url}")
+                self.logger.info(f"Serving report on: {url}")
                 opened = webbrowser.open(url, new=2)
                 if not opened:
-                    print(
+                    self.logger.error(
                         "Couldn't open a browser automatically. Open the URL manually."
                     )
                 server_thread = threading.Thread(
