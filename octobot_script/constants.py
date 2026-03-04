@@ -13,7 +13,10 @@
 #
 #  You should have received a copy of the GNU General Public
 #  License along with OctoBot-Script. If not, see <https://www.gnu.org/licenses/>.
+import os
 
 
 ADDITIONAL_IMPORT_PATH = "imports"
 CONFIG_PATH = "config"
+
+PROFILES_PATH = os.getenv("PROFILES_PATH")
