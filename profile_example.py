@@ -12,6 +12,7 @@ async def start_profile():
         "1d",
         start_timestamp=1505606400,
         profile_id=profile_id,
+        social_services=[] # disable social data fetching
     )
     # Run a backtest using the above data, strategy and configuration.
     res = await obs.run(data, config, profile_id=profile_id)

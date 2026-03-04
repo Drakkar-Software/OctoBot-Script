@@ -57,9 +57,13 @@ class BacktestPlot:
         template_name = template_file or self.DEFAULT_TEMPLATE
         template_data = await self._get_template_data()
         report_dir = os.path.dirname(os.path.abspath(self.report_file))
-        shutil.copy2(
-            resources.get_report_resource_path(template_name), self.report_file
-        )
+        try:
+            shutil.copy2(
+                resources.get_report_resource_path(template_name), self.report_file
+            )
+        except FileNotFoundError:
+            if not os.path.exists(resources.get_report_resource_path(template_name)):
+                raise FileNotFoundError(f"Missing report template. Please generate report templates.")
         meta = template_data["meta"]
         with open(
             os.path.join(report_dir, self.REPORT_DATA_FILENAME), "w", encoding="utf-8"

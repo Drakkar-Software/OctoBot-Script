@@ -133,7 +133,7 @@ def get_activated_social_services(forced_tentacles_by_topic=None, profile_id=Non
 def _get_tentacles_config_path(profile_id=None):
     if profile_id:
         profile = commons_profiles.Profile.load_profile(
-            os.path.join(get_module_appdir_path(), commons_constants.USER_PROFILES_FOLDER),
+            constants.PROFILES_PATH or os.path.join(get_module_appdir_path(), commons_constants.USER_PROFILES_FOLDER),
             profile_id,
         )
         return profile.get_tentacles_config_path()
