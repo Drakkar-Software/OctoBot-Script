@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [0.1.1] - 2026-03-22
 ### Updated
 - OctoBot to 2.1.0
+- Added python 3.13 support
 
 ## [0.1.0] - 2026-02-27
 ### Added
