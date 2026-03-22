@@ -31,7 +31,7 @@ def load_logging_config(config_file="logging_config.ini"):
         os.mkdir(logs_folder)
     try:
         config.fileConfig(config_file)
-    except KeyError:
+    except (KeyError, FileNotFoundError):
         logging_config = os.path.join(octobot_mocks.get_module_install_path(), "config", config_file)
         config.fileConfig(logging_config)
     octobot.logger.init_bot_channel_logger()
