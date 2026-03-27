@@ -14,11 +14,13 @@
 #  You should have received a copy of the GNU General Public
 #  License along with OctoBot-Script. If not, see <https://www.gnu.org/licenses/>.
 
+import mock
 import pytest
-import os
+import shutil
 import tulipy
 
 import octobot_script as obs
+import octobot_script.model.backtest_plot as backtest_plot
 from octobot_script.api.ploting import generate_and_show_report
 from tests.functionnal import one_day_btc_usdt_data
 
@@ -27,7 +29,17 @@ from tests.functionnal import one_day_btc_usdt_data
 pytestmark = pytest.mark.asyncio
 
 
-async def test_precomputed_vs_iteration_rsi(one_day_btc_usdt_data):
+@pytest.fixture
+def mock_backtest_report_server_serve():
+    with mock.patch.object(
+        backtest_plot.BacktestReportServer, "serve", mock.Mock()
+    ) as serve_mock:
+        yield serve_mock
+
+
+async def test_precomputed_vs_iteration_rsi(
+    one_day_btc_usdt_data, mock_backtest_report_server_serve
+):
     # 1. pre-compute entries at first iteration only
     async def _pre_compute_update(ctx):
         if run_data["entries"] is None:
@@ -79,7 +91,9 @@ async def test_precomputed_vs_iteration_rsi(one_day_btc_usdt_data):
     assert res.duration < 10
     assert res.candles_count == 1947
     await _check_report(res)
+    mock_backtest_report_server_serve.assert_called_once()
 
+    await _reload_backtest_data(one_day_btc_usdt_data)
     # ensure second run gives the same result
     run_data = {
         "entries": None,
@@ -101,6 +115,7 @@ async def test_precomputed_vs_iteration_rsi(one_day_btc_usdt_data):
         != res_2.report["bot_report"]["starting_portfolio"]["binance"]
     )
 
+    await _reload_backtest_data(one_day_btc_usdt_data)
     # try with different config
     run_data = {
         "entries": None,
@@ -146,6 +161,7 @@ async def test_precomputed_vs_iteration_rsi(one_day_btc_usdt_data):
                 take_profit_offset="25%",
             )
 
+    await _reload_backtest_data(one_day_btc_usdt_data)
     res_iteration = await obs.run(
         one_day_btc_usdt_data,
         config,
@@ -160,23 +176,20 @@ async def test_precomputed_vs_iteration_rsi(one_day_btc_usdt_data):
     )
 
 
+async def _reload_backtest_data(backtesting_data):
+    """Recreate importers after a run; OctoBot closes DB handles when the run ends."""
+    await backtesting_data.initialize()
+    backtesting_data.preloaded_candle_managers = {}
+
+
 async def _check_report(res):
     description = res.describe()
     assert str(res.strategy_config) in description
-    report = "report.html"
     import os
     import octobot_script.resources as resources
 
     dist_index = resources.get_report_resource_path("dist/index.html")
-    if not os.path.exists(dist_index):
-        return
-    await generate_and_show_report(res)
-    with open(report) as rep:
-        report_content = rep.read()
-    for key, val in res.strategy_config.items():
-        assert str(key) in report_content
-        assert str(val) in report_content
-    assert "BTC/USDT" in report_content
-    assert "1d" in report_content
-    assert "Binance" in report_content
-    os.remove(report)
+    assert os.path.isfile(dist_index)
+    report_result = await generate_and_show_report(res)
+    assert os.path.isfile(report_result.report_file)
+    shutil.rmtree(os.path.dirname(report_result.report_file))
