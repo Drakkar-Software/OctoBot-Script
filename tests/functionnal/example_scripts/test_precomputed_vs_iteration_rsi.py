@@ -18,8 +18,10 @@ import mock
 import pytest
 import shutil
 import tulipy
+import os
 
 import octobot_script as obs
+import octobot_script.resources as resources
 import octobot_script.model.backtest_plot as backtest_plot
 from octobot_script.api.ploting import generate_and_show_report
 from tests.functionnal import one_day_btc_usdt_data
@@ -185,9 +187,6 @@ async def _reload_backtest_data(backtesting_data):
 async def _check_report(res):
     description = res.describe()
     assert str(res.strategy_config) in description
-    import os
-    import octobot_script.resources as resources
-
     dist_index = resources.get_report_resource_path("dist/index.html")
     assert os.path.isfile(dist_index)
     report_result = await generate_and_show_report(res)
