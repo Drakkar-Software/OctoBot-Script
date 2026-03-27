@@ -40,6 +40,11 @@ jobs:
       - name: Install tentacles from cli
         run: python start.py install_tentacles
 
+      - name: Build report templates
+        run: |
+          npm install
+          npm run build
+
       - name: Pytests
         run: pytest  --cov=. --cov-config=.coveragerc --durations=0 -rw tests
 
