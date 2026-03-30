@@ -12,7 +12,7 @@ from distutils.command.install import install
 # from octobot_script import PROJECT_NAME, VERSION
 # todo figure out how not to import octobot_script.__init__.py here
 PROJECT_NAME = "OctoBot-Script"
-VERSION = "0.0.30"  # major.minor.revision
+VERSION = "0.1.1"  # major.minor.revision
 
 ROOT_DIR = os.path.dirname(os.path.abspath(__file__))
 REPORT_DIST = os.path.join(
