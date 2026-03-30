@@ -21,6 +21,10 @@ REPORT_DIST = os.path.join(
 
 
 def _build_report():
+    if os.path.isfile(REPORT_DIST):
+        print(f"[report] Pre-built bundle found → {REPORT_DIST}, skipping JS build.")
+        return
+
     npm = "npm"
 
     print("[report] Installing JS dependencies…")
