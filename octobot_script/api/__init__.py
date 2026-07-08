@@ -17,4 +17,5 @@
 
 from octobot_script.api.data_fetching import *
 from octobot_script.api.execution import *
+from octobot_script.api.fxmacrodata import *
 from octobot_script.api.ploting import *
